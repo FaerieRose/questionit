@@ -17,6 +17,11 @@ import org.springframework.stereotype.Component;
 import nl.programit.domain.Question;
 import nl.programit.persistence.QuestionService;
 
+/**
+ * 
+ * @author FaerieRose
+ * @version v0.1
+ */
 @Path("questions")
 public class QuestionEndpoint {
 	
