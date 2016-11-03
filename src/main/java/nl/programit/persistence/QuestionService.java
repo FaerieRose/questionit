@@ -6,6 +6,11 @@ import org.springframework.transaction.annotation.Transactional;
 
 import nl.programit.domain.Question;
 
+/**
+ * 
+ * @author FaerieRose
+ * @version v0.1
+ */
 @Service
 @Transactional
 public class QuestionService {
