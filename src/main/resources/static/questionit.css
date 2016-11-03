@@ -1,0 +1,30 @@
+* {
+  margin: 0px;
+  padding: 0px;
+  font-family: Verdana, Geneva, sans-serif;
+}
+
+body {
+  background-color: #99e6ff;
+  color: #2f0095;
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  text-align: center;
+}
+
+#hdr1 {
+	margin-top: 15vh;
+}
+
+#art1 {
+	margin-top: 10vh;
+}
+
+h1 {
+	font-size: 10vh;
+}
+
+h2 {
+  font-size: 5vh;
+}
