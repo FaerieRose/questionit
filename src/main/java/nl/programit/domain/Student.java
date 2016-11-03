@@ -1,5 +1,6 @@
 package nl.programit.domain;
 
+import java.io.Serializable;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -11,21 +12,14 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
 @Entity
-public class Student extends Person {
+public class Student extends Person implements Serializable{
+	
+	private static final long serialVersionUID = 5536315112148141660L;
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	private long id;
+
 	
 //	@OneToMany(fetch=FetchType.EAGER, mappedBy="student", cascade = CascadeType.ALL)
 //	private List<Exam> exams;
 
-	public long getId() {
-		return id;
-	}
-
-	public void setId(long id) {
-		this.id = id;
-	}
 
 }

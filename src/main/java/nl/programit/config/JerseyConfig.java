@@ -5,7 +5,7 @@ import javax.ws.rs.ApplicationPath;
 import org.glassfish.jersey.server.ResourceConfig;
 import org.springframework.stereotype.Component;
 
-//import com.liebregts.rest.service.KlantEndpoint;
+import nl.programit.rest.service.StudentEndpoint;
 
 //hier Endpoint classes importeren, tenzij ze geregistreerd worden d.m.v. "packages"
 //import ....KlantEndpoint;
@@ -30,7 +30,7 @@ public class JerseyConfig extends ResourceConfig {
 		// alle endpoints uit given package in een keer registreren:
 
 //		packages("com.liebregts.rest.service"); // appears not to work when running the jar file!!!!!!!!!!!!!!!!!!!!
-//		register(KlantEndpoint.class);
+		register(StudentEndpoint.class);
 	}
 
 }

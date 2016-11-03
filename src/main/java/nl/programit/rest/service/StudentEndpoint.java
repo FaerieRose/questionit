@@ -40,9 +40,9 @@ public class StudentEndpoint {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public Response list() {
-        Iterable<Student> klanten = this.studentService.findAll();
+        Iterable<Student> studenten = this.studentService.findAll();
         
-        return Response.ok(klanten).build();
+        return Response.ok(studenten).build();
     }
     
 }
