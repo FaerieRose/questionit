@@ -1,0 +1,12 @@
+/build/
+.mvn/
+.metadata/
+target/
+/documentatie
+bin
+*.class
+*.project
+*.settings
+*.classpath
+*.idea
+*.iml
