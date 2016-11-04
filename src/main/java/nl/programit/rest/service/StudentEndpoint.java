@@ -22,13 +22,7 @@ import org.springframework.stereotype.Component;
 
 import nl.programit.domain.Student;	
 import nl.programit.persistence.StudentService;
-/**
- * 
- * @author stefan
- *
- */
 
-//class KlantEndpoint is to interact with REST request concerning the Klant
 
 @Path("/students")
 @Component
@@ -54,6 +48,7 @@ public class StudentEndpoint {
         this.studentService.save(student);
         return Response.accepted(student).build();
     }
+    
 
     
 }
