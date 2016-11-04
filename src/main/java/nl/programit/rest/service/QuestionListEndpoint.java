@@ -67,8 +67,9 @@ public class QuestionListEndpoint {
 	}
 
 	/**
-	 * POST one QuestionList. If no id included, a new entry
-	 * is created, otherwise an existing one is overwritten
+	 * POST one QuestionList. If no id included, a new entry is created,
+	 * otherwise an existing one is overwritten. Questions must be excluded
+	 * from JSON
 	 * Path = 'api/questionlists'
 	 * @return 200 + JSON if there is data, otherwise 404 
 	 */
@@ -80,10 +81,16 @@ public class QuestionListEndpoint {
 		return Response.accepted(questionList).build();
 	}
 	
+	/**
+	 * POST a new Question. The Question is created and attached to 
+	 * the QuestionList with the specified id.
+	 * Path = 'api/questionlists/{id}/question'
+	 * @return 200 + JSON if there is data, otherwise 204 
+	 */
 	@POST
 	@Produces(MediaType.APPLICATION_JSON)
 	@Path("{id}/question")
-	public Response addQuestionToQuestionList(@PathParam("id") Long id, Question question) {
+	public Response addNewQuestionToQuestionList(@PathParam("id") Long id, Question question) {
 		QuestionList questionList = this.questionListService.findById(id);
 		if (questionList != null) {
 			this.questionService.save(question);
@@ -93,6 +100,29 @@ public class QuestionListEndpoint {
 		} else {
 			return Response.noContent().build();
 		}
+	}
+
+	
+	/**
+	 * POST a existing Question id. If the Question exists it is attached to 
+	 * the QuestionList with the specified id.
+	 * Path = 'api/questionlists/{id}/question/{question_id}'
+	 * @return 200 + JSON if there is data, otherwise 204 
+	 */
+	@POST
+	@Produces(MediaType.APPLICATION_JSON)
+	@Path("{id}/question/{question_id}")
+	public Response addExistingQuestionToQuestionList(@PathParam("id") Long id, @PathParam("question_id") Long question_id) {
+		QuestionList questionList = this.questionListService.findById(id);
+		if (questionList != null) {
+			Question question = this.questionService.findById(question_id);
+			if (question != null) {
+				questionList.addQuestion(question);
+				this.questionListService.save(questionList);
+		        return Response.accepted(question).build();
+			}
+		}
+		return Response.noContent().build();
 	}
 	
 }
