@@ -47,4 +47,10 @@ public class QuestionList extends QuestionTemplate implements Serializable {
 	public void setQuestions(List<Question> questions) {
 		this.questions = questions;
 	}
+	
+	// ---------------------------------------------------
+	// Method to add a question to the questionlist
+	public void addQuestion(Question question) {
+		questions.add(question);
+	}
 }
