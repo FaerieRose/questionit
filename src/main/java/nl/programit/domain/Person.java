@@ -5,6 +5,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 
+import org.apache.commons.lang3.NotImplementedException;
+
 @MappedSuperclass
 public class Person {
 	@Id
@@ -13,22 +15,28 @@ public class Person {
 	
 	// fields
 	private String firstName;
+	private String lastName;
+	private String email;
+	private String password;
+	
+	// Methods
+	public boolean checkPassword(){
+		throw new NotImplementedException("CheckPassword in Person Not implemented yet");
+	}
+	
+	// Getters and Setters
 	public String getFirstName() {
 		return firstName;
 	}
-
 	public void setFirstName(String firstName) {
 		this.firstName = firstName;
 	}
-
 	public String getLastName() {
 		return lastName;
 	}
-
 	public void setLastName(String lastName) {
 		this.lastName = lastName;
 	}
-
 	public String getEmail() {
 		return email;
 	}
@@ -40,11 +48,6 @@ public class Person {
 	public void setPassword(String password) {
 		this.password = password;
 	}
-
-	private String lastName;
-	private String email;
-	private String password;
-
 	public long getId() {
 		return id;
 	}
@@ -52,5 +55,4 @@ public class Person {
 	public void setId(long id) {
 		this.id = id;
 	}
-
 }

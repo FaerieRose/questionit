@@ -18,6 +18,8 @@ import javax.ws.rs.core.Response.Status;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+
+
 import nl.programit.domain.Student;	
 import nl.programit.persistence.StudentService;
 /**
@@ -28,7 +30,7 @@ import nl.programit.persistence.StudentService;
 
 //class KlantEndpoint is to interact with REST request concerning the Klant
 
-@Path("/studenten")
+@Path("/students")
 @Component
 public class StudentEndpoint {
 
@@ -40,9 +42,18 @@ public class StudentEndpoint {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public Response list() {
-        Iterable<Student> studenten = this.studentService.findAll();
+        Iterable<Student> students = this.studentService.findAll();
         
-        return Response.ok(studenten).build();
+        return Response.ok(students).build();
     }
+    // response for POST request for complete Klant class
+    @POST
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response postStudent(Student student) {
+        this.studentService.save(student);
+        return Response.accepted(student).build();
+    }
+
     
 }

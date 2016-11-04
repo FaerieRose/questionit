@@ -21,4 +21,8 @@ public class StudentService {
 			Iterable<Student> result = this.studentRepository.findAll();
 			return result;
 		}
+		
+		public void save(Student student) {
+			this.studentRepository.save(student);
+		}
 }
