@@ -7,9 +7,12 @@ import org.springframework.transaction.annotation.Transactional;
 import nl.programit.domain.Question;
 
 /**
+ * This class contains several methods to interact with QuestionRepository
+ * to add, get or remove data from the database
  * 
  * @author FaerieRose
  * @version v0.1
+ * @since 2016-11-03
  */
 @Service
 @Transactional
@@ -44,6 +47,17 @@ public class QuestionService {
 	 */
 	public Question findById(long id) {
 		return this.questionRepository.findOne(id);
+	}
+	
+	/**
+	 * Delete the Question with the requested id
+	 * @param id This is the identifier of Question in the Database
+	 * @return the Question of the removed item or NULL if nothing removed
+	 */
+	public Question deleteById(long id) {
+		Question result = this.findById(id);
+		this.questionRepository.delete(id);
+		return result;
 	}
 	
 }
