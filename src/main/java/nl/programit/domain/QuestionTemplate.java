@@ -2,10 +2,15 @@ package nl.programit.domain;
 
 import java.util.Date;
 
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
+import javax.persistence.OneToOne;
+
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
 //See: https://en.wikibooks.org/wiki/Java_Persistence/Inheritance look for Mapped Superclasses
 
@@ -26,6 +31,19 @@ public abstract class QuestionTemplate {
 	private String programmingLanguage;
 	private String forExam;
 	private Date creationDateTime = new Date();
+	
+	@OneToOne(fetch=FetchType.EAGER)
+	@Fetch(FetchMode.SELECT)
+	private Instructor creator;
+	
+	// ---------------------------------------------------
+	// GETTER & SETTER for creator
+	public Instructor getCreator() {
+		return creator;
+	}
+	public void setCreator(Instructor creator) {
+		this.creator = creator;
+	}
 	
 	// ---------------------------------------------------
 	// GETTER & SETTER for creationDateTime
