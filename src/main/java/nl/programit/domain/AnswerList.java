@@ -28,7 +28,8 @@ public class AnswerList {
 	@ElementCollection(fetch=FetchType.EAGER)
 	List<Character> answers = new ArrayList<>();
 	
-	// GETTER & SETTER for Id
+	// ---------------------------------------------------
+	// GETTER & SETTER for id
 	public long getId() {
 		return id;
 	}
@@ -36,6 +37,7 @@ public class AnswerList {
 		this.id = id;
 	}
 
+	// ---------------------------------------------------
 	// GETTER & SETTER for answers
 	public List<Character> getAnswers() {
 		return answers;
@@ -43,6 +45,4 @@ public class AnswerList {
 	public void setAnswers(List<Character> answers) {
 		this.answers = answers;
 	}
-
-
 }

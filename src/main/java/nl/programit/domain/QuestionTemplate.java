@@ -27,6 +27,8 @@ public abstract class QuestionTemplate {
 	private String forExam;
 	private Date creationDateTime = new Date();
 	
+	// ---------------------------------------------------
+	// GETTER & SETTER for creationDateTime
 	public Date getCreationDateTime() {
 		return creationDateTime;
 	}
@@ -34,6 +36,8 @@ public abstract class QuestionTemplate {
 		this.creationDateTime = creationDateTime;
 	}
 	
+	// ---------------------------------------------------
+	// GETTER & SETTER for id
 	public long getId() {
 		return id;
 	}
@@ -41,6 +45,8 @@ public abstract class QuestionTemplate {
 		this.id = id;
 	}
 	
+	// ---------------------------------------------------
+	// GETTER & SETTER for name
 	public String getName() {
 		return name;
 	}
@@ -48,6 +54,8 @@ public abstract class QuestionTemplate {
 		this.name = name;
 	}
 	
+	// ---------------------------------------------------
+	// GETTER & SETTER for programmingLanguage
 	public String getProgrammingLanguage() {
 		return programmingLanguage;
 	}
@@ -55,11 +63,12 @@ public abstract class QuestionTemplate {
 		this.programmingLanguage = programmingLanguage;
 	}
 	
+	// ---------------------------------------------------
+	// GETTER & SETTER for forExam
 	public String getForExam() {
 		return forExam;
 	}
 	public void setForExam(String forExam) {
 		this.forExam = forExam;
-	}
-		
+	}		
 }

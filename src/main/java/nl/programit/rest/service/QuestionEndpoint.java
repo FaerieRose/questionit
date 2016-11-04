@@ -19,6 +19,7 @@ import nl.programit.persistence.QuestionService;
 
 /**
  * 
+ * 
  * @author FaerieRose
  * @version v0.1
  */
@@ -28,15 +29,45 @@ public class QuestionEndpoint {
 	@Autowired
 	QuestionService questionService;
 
-	//	GET	Questions
+	/**
+	 * GET all Questions
+	 * Path = 'api/questions'
+	 * @return 200 + JSON if there is data, otherwise 204 (noContent) 
+	 */
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response listQuestions() {
 		Iterable<Question> result = this.questionService.findAll();
-		return Response.ok(result).build();
+		if (result != null) {
+			return Response.ok(result).build();
+		} else {
+			return Response.noContent().build();
+		}
 	}
 
-	//	POST Question
+	/**
+	 * GET one Question with specified id
+	 * Path = 'api/questions/{id}'
+	 * @return 200 + JSON if there is data, otherwise 204 (noContent)
+	 */
+	@GET
+	@Produces(MediaType.APPLICATION_JSON)
+	@Path("{id}")
+	public Response oneQuestions(@PathParam("id") Long id) {
+		Question result = this.questionService.findById(id);
+		if (result != null) {
+			return Response.ok(result).build();
+		} else {
+			return Response.noContent().build();
+		}
+	}
+
+
+	/**
+	 * POST one Question with specified id
+	 * Path = 'api/questions/{id}'
+	 * @return 200 + JSON if there is data, otherwise 404 
+	 */
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)

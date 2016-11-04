@@ -2,7 +2,6 @@ package nl.programit.domain;
 
 import java.io.Serializable;
 
-import javax.persistence.CascadeType;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -16,6 +15,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * Class for storing exam question the possible answers, correct answers and all
+ * answers given by students
  * 
  * @author FaerieRose
  * @version v0.1
@@ -41,6 +42,8 @@ public class Question extends QuestionTemplate implements Serializable {
 	@Fetch(FetchMode.SELECT)
 	private List<AnswerList> givenAnswers = new ArrayList<>();
 	
+	// ---------------------------------------------------
+	// GETTER & SETTER for givenAnswers
 	public List<AnswerList> getGivenAnswers() {
 		return givenAnswers;
 	}
@@ -48,6 +51,8 @@ public class Question extends QuestionTemplate implements Serializable {
 		this.givenAnswers = givenAnswers;
 	}
 	
+	// ---------------------------------------------------
+	// GETTER & SETTER for correctAnswers
 	public AnswerList getCorrectAnswers() {
 		return correctAnswers;
 	}
@@ -55,6 +60,8 @@ public class Question extends QuestionTemplate implements Serializable {
 		this.correctAnswers = correctAnswers;
 	}
 	
+	// ---------------------------------------------------
+	// GETTER & SETTER for possibleAnswers
 	public List<String> getPossibleAnswers() {
 		return possibleAnswers;
 	}
@@ -62,7 +69,8 @@ public class Question extends QuestionTemplate implements Serializable {
 		this.possibleAnswers = possibleAnswers;
 	}
 
-	
+	// ---------------------------------------------------
+	// GETTER & SETTER for question
 	public String getQuestion() {
 		return question;
 	}
@@ -70,6 +78,8 @@ public class Question extends QuestionTemplate implements Serializable {
 		this.question = question;
 	}
 	
+	// ---------------------------------------------------
+	// GETTER & SETTER for explanationAnswer
 	public String getExplantionAnswer() {
 		return explantionAnswer;
 	}
@@ -77,13 +87,12 @@ public class Question extends QuestionTemplate implements Serializable {
 		this.explantionAnswer = explantionAnswer;
 	}
 	
+	// ---------------------------------------------------
+	// GETTER & SETTER for typeOfQuestion
 	public String getTypeOfQuestion() {
 		return typeOfQuestion;
 	}
 	public void setTypeOfQuestion(String typeOfQuestion) {
 		this.typeOfQuestion = typeOfQuestion;
 	}
-	
-	
-	
 }
