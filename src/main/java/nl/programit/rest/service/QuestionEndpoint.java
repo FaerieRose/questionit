@@ -28,8 +28,6 @@ public class QuestionEndpoint {
 	@Autowired
 	QuestionService questionService;
 
-	
-
 	//	GET	Questions
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
@@ -37,7 +35,6 @@ public class QuestionEndpoint {
 		Iterable<Question> result = this.questionService.findAll();
 		return Response.ok(result).build();
 	}
-
 
 	//	POST Question
 	@POST

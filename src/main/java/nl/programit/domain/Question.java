@@ -2,18 +2,25 @@ package nl.programit.domain;
 
 import java.io.Serializable;
 
+import javax.persistence.CascadeType;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 
-//import java.util.ArrayList;
-//import java.util.List;
-//import org.hibernate.annotations.Fetch;
-//import org.hibernate.annotations.FetchMode;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 
  * @author FaerieRose
  * @version v0.1
- */
+ * @since 2016-11-03
+*/
 @Entity
 public class Question extends QuestionTemplate implements Serializable {
 	
@@ -22,10 +29,31 @@ public class Question extends QuestionTemplate implements Serializable {
 	private String question;
 	private String explantionAnswer;
 	private String typeOfQuestion;
-
-/*	
+	
+	@OneToOne(fetch=FetchType.EAGER)
 	@Fetch(FetchMode.SELECT)
-	private List<String> possibleAnswers = new ArrayList<>();
+	private AnswerList correctAnswers;
+
+	@ElementCollection(fetch=FetchType.EAGER)
+	private List<String> possibleAnswers = new ArrayList<String>();
+	
+	@OneToMany(fetch=FetchType.EAGER)
+	@Fetch(FetchMode.SELECT)
+	private List<AnswerList> givenAnswers = new ArrayList<>();
+	
+	public List<AnswerList> getGivenAnswers() {
+		return givenAnswers;
+	}
+	public void setGivenAnswers(List<AnswerList> givenAnswers) {
+		this.givenAnswers = givenAnswers;
+	}
+	
+	public AnswerList getCorrectAnswers() {
+		return correctAnswers;
+	}
+	public void setCorrectAnswers(AnswerList correctAnswers) {
+		this.correctAnswers = correctAnswers;
+	}
 	
 	public List<String> getPossibleAnswers() {
 		return possibleAnswers;
@@ -33,7 +61,7 @@ public class Question extends QuestionTemplate implements Serializable {
 	public void setPossibleAnswers(List<String> possibleAnswers) {
 		this.possibleAnswers = possibleAnswers;
 	}
-*/
+
 	
 	public String getQuestion() {
 		return question;
