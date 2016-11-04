@@ -12,21 +12,20 @@ import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 
 @Entity
-public class Student extends Person implements Serializable{
-	
-	private static final long serialVersionUID = 5536315112148141660L;
+public class Instructor extends Person implements Serializable {
 
+	private static final long serialVersionUID = -4795224222157957673L;
+	
 	@OneToMany(fetch=FetchType.EAGER)
 	@Fetch(FetchMode.SELECT)
-	private List<Exam> exams = new ArrayList<>();
+	private List<StudentClass> studentClasses = new ArrayList<>();
 
-	public List<Exam> getExams() {
-		return exams;
+	public List<StudentClass> getStudentClasses() {
+		return studentClasses;
 	}
 
-	public void setExams(List<Exam> exams) {
-		this.exams = exams;
+	public void setStudentClasses(List<StudentClass> studentClasses) {
+		this.studentClasses = studentClasses;
 	}
-
 
 }
