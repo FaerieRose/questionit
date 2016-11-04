@@ -7,9 +7,12 @@ import org.springframework.transaction.annotation.Transactional;
 import nl.programit.domain.Question;
 
 /**
+ * This class contains several methods to interact with QuestionRepository
+ * to add, get or remove data from the database
  * 
  * @author FaerieRose
  * @version v0.1
+ * @since 2016-11-03
  */
 @Service
 @Transactional

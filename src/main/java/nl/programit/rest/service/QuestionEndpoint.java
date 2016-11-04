@@ -4,7 +4,6 @@ import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
-import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
@@ -18,10 +17,11 @@ import nl.programit.domain.Question;
 import nl.programit.persistence.QuestionService;
 
 /**
- * 
+ * Endpoint for serveral ReST services to GET, POST and DELETE Questions 
  * 
  * @author FaerieRose
  * @version v0.1
+ * @since 2016-11-03
  */
 @Path("questions")
 public class QuestionEndpoint {
@@ -75,6 +75,11 @@ public class QuestionEndpoint {
 		return Response.accepted(question).build();
 	}	
 
+	/**
+	 * DELETE one Question with specified id
+	 * Path = 'api/questions/{id}'
+	 * @return 200 + JSON if there is data, otherwise 404 
+	 */
 	@DELETE
 	@Produces(MediaType.APPLICATION_JSON)
 	@Path("{id}")
@@ -86,7 +91,6 @@ public class QuestionEndpoint {
 		} else {
 			return Response.status(Status.NOT_FOUND).build();
 		}
-		
 	}
 	
 	
