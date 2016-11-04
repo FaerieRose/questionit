@@ -29,29 +29,45 @@ public class QuestionEndpoint {
 	@Autowired
 	QuestionService questionService;
 
-	// ---------------------------------------------------
-	//	GET	All Questions
-	//  Path = 'api/questions'
+	/**
+	 * GET all Questions
+	 * Path = 'api/questions'
+	 * @return 200 + JSON if there is data, otherwise 204 (noContent) 
+	 */
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response listQuestions() {
 		Iterable<Question> result = this.questionService.findAll();
-		return Response.ok(result).build();
+		if (result != null) {
+			return Response.ok(result).build();
+		} else {
+			return Response.noContent().build();
+		}
 	}
 
-	// ---------------------------------------------------
-	//	GET	One Questions
-	//  Path = 'api/questions/{id}'
+	/**
+	 * GET one Question with specified id
+	 * Path = 'api/questions/{id}'
+	 * @return 200 + JSON if there is data, otherwise 204 (noContent)
+	 */
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	@Path("{id}")
 	public Response oneQuestions(@PathParam("id") Long id) {
 		Question result = this.questionService.findById(id);
-		return Response.ok(result).build();
+		if (result != null) {
+			return Response.ok(result).build();
+		} else {
+			return Response.noContent().build();
+		}
 	}
 
-	// ---------------------------------------------------
-	//	POST Question
+
+	/**
+	 * POST one Question with specified id
+	 * Path = 'api/questions/{id}'
+	 * @return 200 + JSON if there is data, otherwise 404 
+	 */
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
