@@ -10,9 +10,11 @@ import javax.persistence.MappedSuperclass;
 //See: https://en.wikibooks.org/wiki/Java_Persistence/Inheritance look for Mapped Superclasses
 
 /**
- * Parent class for Question and QuestionList 
+ * Parent class for Question and QuestionList.
+ * 
  * @author FaerieRose
  * @version v0.1
+ * @since 2016-11-03
  */
 @MappedSuperclass
 public abstract class QuestionTemplate {
