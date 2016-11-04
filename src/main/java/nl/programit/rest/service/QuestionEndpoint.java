@@ -19,6 +19,7 @@ import nl.programit.persistence.QuestionService;
 
 /**
  * 
+ * 
  * @author FaerieRose
  * @version v0.1
  */
@@ -28,7 +29,9 @@ public class QuestionEndpoint {
 	@Autowired
 	QuestionService questionService;
 
-	//	GET	Questions
+	// ---------------------------------------------------
+	//	GET	All Questions
+	//  Path = 'api/questions'
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response listQuestions() {
@@ -36,6 +39,18 @@ public class QuestionEndpoint {
 		return Response.ok(result).build();
 	}
 
+	// ---------------------------------------------------
+	//	GET	One Questions
+	//  Path = 'api/questions/{id}'
+	@GET
+	@Produces(MediaType.APPLICATION_JSON)
+	@Path("{id}")
+	public Response oneQuestions(@PathParam("id") Long id) {
+		Question result = this.questionService.findById(id);
+		return Response.ok(result).build();
+	}
+
+	// ---------------------------------------------------
 	//	POST Question
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)

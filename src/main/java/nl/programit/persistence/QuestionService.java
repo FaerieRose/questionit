@@ -36,4 +36,14 @@ public class QuestionService {
 		return result;
 	}
 	
+	/**
+	 * Retrieves one question from the database with specified id. If the id
+	 * does not exist, null is returned 
+	 * @param id the id of the Question
+	 * @return requested Question or null if it does not exist
+	 */
+	public Question findById(long id) {
+		return this.questionRepository.findOne(id);
+	}
+	
 }
