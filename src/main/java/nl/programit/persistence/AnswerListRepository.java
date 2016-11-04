@@ -3,16 +3,16 @@ package nl.programit.persistence;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Component;
 
-import nl.programit.domain.Question;;
+import nl.programit.domain.AnswerList;
 
 /**
- * CrudRepository for Question
+ * CrudRepository for AnswerList
  * 
  * @author FaerieRose
  * @version v0.1
- * @since 2016-11-03
+ * @since 2016-11-04
  */
 @Component
-public interface QuestionRepository extends CrudRepository<Question, Long> {
+public interface AnswerListRepository extends CrudRepository<AnswerList, Long> {
 
 }

@@ -11,13 +11,12 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 
 import nl.programit.domain.Question;
 import nl.programit.persistence.QuestionService;
 
 /**
- * Endpoint for serveral ReST services to GET, POST and DELETE Questions 
+ * Endpoint for serveral ReST services to GET, POST and DELETE Questions
  * 
  * @author FaerieRose
  * @version v0.1
