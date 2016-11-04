@@ -7,6 +7,7 @@ import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
@@ -28,13 +29,16 @@ public class Question extends QuestionTemplate implements Serializable {
 	private String question;
 	private String explantionAnswer;
 	private String typeOfQuestion;
-/*	private AnswerList correctAnswers;
+	
+	@OneToOne(fetch=FetchType.EAGER)
+	@Fetch(FetchMode.SELECT)
+	private AnswerList correctAnswers;
 	public AnswerList getCorrectAnswers() {
 		return correctAnswers;
 	}
 	public void setCorrectAnswers(AnswerList correctAnswers) {
 		this.correctAnswers = correctAnswers;
-	}*/
+	}
 	
 	@ElementCollection(fetch=FetchType.EAGER)
 	private List<String> possibleAnswers = new ArrayList<String>();
