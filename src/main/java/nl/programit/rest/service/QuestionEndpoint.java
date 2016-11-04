@@ -62,7 +62,6 @@ public class QuestionEndpoint {
 		}
 	}
 
-
 	/**
 	 * POST one Question with specified id
 	 * Path = 'api/questions/{id}'
@@ -75,6 +74,20 @@ public class QuestionEndpoint {
 		this.questionService.save(question);
 		return Response.accepted(question).build();
 	}	
+
+	@DELETE
+	@Produces(MediaType.APPLICATION_JSON)
+	@Path("{id}")
+	public Response removeQuestion(@PathParam("id") Long id) {
+		Question question = this.questionService.findById(id);
+		if (question != null) {
+			Question result = this.questionService.deleteById(id);
+			return Response.ok(result).build();
+		} else {
+			return Response.status(Status.NOT_FOUND).build();
+		}
+		
+	}
 	
 	
 }

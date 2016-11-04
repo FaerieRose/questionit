@@ -46,4 +46,15 @@ public class QuestionService {
 		return this.questionRepository.findOne(id);
 	}
 	
+	/**
+	 * Delete the Question with the requested id
+	 * @param id This is the identifier of Question in the Database
+	 * @return the Question of the removed item or NULL if nothing removed
+	 */
+	public Question deleteById(long id) {
+		Question result = this.findById(id);
+		this.questionRepository.delete(id);
+		return result;
+	}
+	
 }
