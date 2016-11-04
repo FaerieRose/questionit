@@ -33,16 +33,27 @@ public class Question extends QuestionTemplate implements Serializable {
 	@OneToOne(fetch=FetchType.EAGER)
 	@Fetch(FetchMode.SELECT)
 	private AnswerList correctAnswers;
+
+	@ElementCollection(fetch=FetchType.EAGER)
+	private List<String> possibleAnswers = new ArrayList<String>();
+	
+	@OneToMany(fetch=FetchType.EAGER)
+	@Fetch(FetchMode.SELECT)
+	private List<AnswerList> givenAnswers = new ArrayList<>();
+	
+	public List<AnswerList> getGivenAnswers() {
+		return givenAnswers;
+	}
+	public void setGivenAnswers(List<AnswerList> givenAnswers) {
+		this.givenAnswers = givenAnswers;
+	}
+	
 	public AnswerList getCorrectAnswers() {
 		return correctAnswers;
 	}
 	public void setCorrectAnswers(AnswerList correctAnswers) {
 		this.correctAnswers = correctAnswers;
 	}
-	
-	@ElementCollection(fetch=FetchType.EAGER)
-	private List<String> possibleAnswers = new ArrayList<String>();
-	
 	
 	public List<String> getPossibleAnswers() {
 		return possibleAnswers;
