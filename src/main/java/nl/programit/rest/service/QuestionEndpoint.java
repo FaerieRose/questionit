@@ -52,7 +52,7 @@ public class QuestionEndpoint {
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	@Path("{id}")
-	public Response oneQuestions(@PathParam("id") Long id) {
+	public Response oneQuestion(@PathParam("id") Long id) {
 		Question result = this.questionService.findById(id);
 		if (result != null) {
 			return Response.ok(result).build();
@@ -62,14 +62,15 @@ public class QuestionEndpoint {
 	}
 
 	/**
-	 * POST one Question with specified id
-	 * Path = 'api/questions/{id}'
+	 * POST one Question. If no id included, a new entry
+	 * is created, otherwise an existing one is overwritten
+	 * Path = 'api/questions'
 	 * @return 200 + JSON if there is data, otherwise 404 
 	 */
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response post(Question question) {
+	public Response postQuestion(Question question) {
 		this.questionService.save(question);
 		return Response.accepted(question).build();
 	}	
