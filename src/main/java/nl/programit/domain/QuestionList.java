@@ -1,16 +1,15 @@
-package nl.programit.persistence;
+package nl.programit.domain;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.OneToOne;
+import javax.persistence.OneToMany;
 
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
-
-import nl.programit.domain.Question;
-import nl.programit.domain.QuestionTemplate;
 
 
 /**
@@ -27,9 +26,9 @@ public class QuestionList extends QuestionTemplate implements Serializable {
 	
 	private int examTimeInMinutes;
 	
-	@OneToOne(fetch=FetchType.EAGER)
+	@OneToMany(fetch=FetchType.EAGER)
 	@Fetch(FetchMode.SELECT)
-	private Question questions;
+	private List<Question> questions = new ArrayList<>();
 
 	// ---------------------------------------------------
 	// GETTER & SETTER for examTimeInMinutes
@@ -42,10 +41,10 @@ public class QuestionList extends QuestionTemplate implements Serializable {
 
 	// ---------------------------------------------------
 	// GETTER & SETTER for questions
-	public Question getQuestions() {
+	public List<Question> getQuestions() {
 		return questions;
 	}
-	public void setQuestions(Question questions) {
+	public void setQuestions(List<Question> questions) {
 		this.questions = questions;
 	}
 }
