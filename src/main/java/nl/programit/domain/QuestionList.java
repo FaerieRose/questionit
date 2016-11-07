@@ -6,6 +6,7 @@ import java.util.List;
 
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 
 import org.hibernate.annotations.Fetch;
@@ -26,7 +27,7 @@ public class QuestionList extends QuestionTemplate implements Serializable {
 	
 	private int examTimeInMinutes;
 	
-	@OneToMany(fetch=FetchType.EAGER)
+	@ManyToMany(fetch=FetchType.EAGER)
 	@Fetch(FetchMode.SELECT)
 	private List<Question> questions = new ArrayList<>();
 
@@ -55,14 +56,5 @@ public class QuestionList extends QuestionTemplate implements Serializable {
 	 */
 	public void addQuestion(Question question) {
 		questions.add(question);
-	}
-	
-	// ---------------------------------------------------
-	/**
-	 * Method to add a Instructor to the Questionlist
-	 * @param question
-	 */
-	public void addInstructor(Instructor instructor) {
-		this.setCreator(instructor);
 	}
 }

@@ -46,7 +46,7 @@ public class QuestionService {
 	}
 	
 	/**
-	 * Retrieves one question from the database with specified id. If the id
+	 * Retrieves one Question from the database with specified id. If the id
 	 * does not exist, null is returned 
 	 * @param id the id of the Question
 	 * @return requested Question or null if it does not exist
