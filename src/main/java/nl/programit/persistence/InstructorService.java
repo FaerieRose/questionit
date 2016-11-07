@@ -18,8 +18,18 @@ public class InstructorService {
 		Iterable<Instructor> result = this.instructorRepository.findAll();
 		return result;
 	}
+	
 	public void save(Instructor instructor) {
 		this.instructorRepository.save(instructor);
 	}
 
+	/**
+	 * Retrieves one Question from the database with specified id. If the id
+	 * does not exist, null is returned 
+	 * @param id the id of the Question
+	 * @return requested Question or null if it does not exist
+	 */
+	public Instructor findById(long id) {
+		return this.instructorRepository.findOne(id);
+	}	
 }

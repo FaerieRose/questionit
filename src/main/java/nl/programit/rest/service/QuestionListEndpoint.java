@@ -12,8 +12,10 @@ import javax.ws.rs.core.Response.Status;
 import org.springframework.beans.factory.annotation.Autowired;
 
 
+import nl.programit.domain.Instructor;
 import nl.programit.domain.Question;
 import nl.programit.domain.QuestionList;
+import nl.programit.persistence.InstructorService;
 import nl.programit.persistence.QuestionService;
 import nl.programit.persistence.QuestionListService;
 
@@ -32,6 +34,9 @@ public class QuestionListEndpoint {
 
 	@Autowired
 	QuestionService questionService;
+
+	@Autowired
+	InstructorService instructorService;
 	
 	/**
 	 * GET all Questions
@@ -104,6 +109,32 @@ public class QuestionListEndpoint {
 
 	
 	/**
+	 * POST a existing Instructor id. If the Instructor exists it is attached to 
+	 * the QuestionList with the specified id.
+	 * Path = 'api/questionlists/{id}/instructor/{instructor_id}'
+	 * @return 200 + JSON if there is data, otherwise 204 
+	 */
+	@POST
+	@Produces(MediaType.APPLICATION_JSON)
+	@Path("{id}/instructor/{instructor_id}")
+	public Response addExistingInstructorToQuestionList(@PathParam("id") Long id, @PathParam("instructor_id") Long instructor_id) {
+		System.out.println("addInstructor called: " + instructor_id);
+		QuestionList questionList = this.questionListService.findById(id);
+		if (questionList != null) {
+			System.out.println("addInstructor called: Questionlist Found: " + id);
+			Instructor instructor = this.instructorService.findById(instructor_id);
+			if (instructor != null) {
+				System.out.println("addInstructor called: Instructor Found");
+				questionList.addInstructor(instructor);
+				this.questionListService.save(questionList);
+		        return Response.accepted(instructor).build();
+			}
+		}
+		return Response.noContent().build();
+	}
+
+	
+	/**
 	 * POST a existing Question id. If the Question exists it is attached to 
 	 * the QuestionList with the specified id.
 	 * Path = 'api/questionlists/{id}/question/{question_id}'
@@ -124,5 +155,5 @@ public class QuestionListEndpoint {
 		}
 		return Response.noContent().build();
 	}
-	
+
 }
