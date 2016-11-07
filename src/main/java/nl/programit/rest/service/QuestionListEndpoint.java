@@ -39,7 +39,7 @@ public class QuestionListEndpoint {
 	InstructorService instructorService;
 	
 	/**
-	 * GET all Questions
+	 * GET all Questions<br>
 	 * Path = 'api/questionlists'
 	 * @return 200 + JSON if there is data, otherwise 204 (noContent) 
 	 */
@@ -55,7 +55,7 @@ public class QuestionListEndpoint {
 	}	
 	
 	/**
-	 * GET one QuestionList with specified id
+	 * GET one QuestionList with specified id<br>
 	 * Path = 'api/questionlists/{id}'
 	 * @return 200 + JSON if there is data, otherwise 204 (noContent)
 	 */
@@ -72,9 +72,8 @@ public class QuestionListEndpoint {
 	}
 
 	/**
-	 * POST one QuestionList. If no id included, a new entry is created,
-	 * otherwise an existing one is overwritten. Questions must be excluded
-	 * from JSON
+	 * POST one QuestionList. If no id included, a new entry is created, otherwise an existing one
+	 * is overwritten. Questions and Creator must be excluded from JSON<br>
 	 * Path = 'api/questionlists'
 	 * @return 200 + JSON if there is data, otherwise 404 
 	 */
@@ -87,8 +86,7 @@ public class QuestionListEndpoint {
 	}
 	
 	/**
-	 * POST a new Question. The Question is created and attached to 
-	 * the QuestionList with the specified id.
+	 * POST a new Question. The Question is created and attached to the QuestionList with the specified id.<br>
 	 * Path = 'api/questionlists/{id}/question'
 	 * @return 200 + JSON if there is data, otherwise 204 
 	 */
@@ -106,11 +104,9 @@ public class QuestionListEndpoint {
 			return Response.noContent().build();
 		}
 	}
-
 	
 	/**
-	 * POST a existing Instructor id. If the Instructor exists it is attached to 
-	 * the QuestionList with the specified id.
+	 * POST an existing Instructor id. If the Instructor exists it is attached to the QuestionList with the specified id.<br>
 	 * Path = 'api/questionlists/{id}/instructor/{instructor_id}'
 	 * @return 200 + JSON if there is data, otherwise 204 
 	 */
@@ -122,7 +118,7 @@ public class QuestionListEndpoint {
 		if (questionList != null) {
 			Instructor instructor = this.instructorService.findById(instructor_id);
 			if (instructor != null) {
-				questionList.addInstructor(instructor);
+				questionList.setCreator(instructor);
 				this.questionListService.save(questionList);
 		        return Response.accepted(instructor).build();
 			}
@@ -132,8 +128,7 @@ public class QuestionListEndpoint {
 
 	
 	/**
-	 * POST a existing Question id. If the Question exists it is attached to 
-	 * the QuestionList with the specified id.
+	 * POST a existing Question id. If the Question exists it is attached to the QuestionList with the specified id.<br>
 	 * Path = 'api/questionlists/{id}/question/{question_id}'
 	 * @return 200 + JSON if there is data, otherwise 204 
 	 */

@@ -95,4 +95,5 @@ public class Question extends QuestionTemplate implements Serializable {
 	public void setTypeOfQuestion(String typeOfQuestion) {
 		this.typeOfQuestion = typeOfQuestion;
 	}
+
 }
