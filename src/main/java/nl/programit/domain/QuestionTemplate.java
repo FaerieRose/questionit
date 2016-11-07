@@ -28,8 +28,8 @@ public abstract class QuestionTemplate {
 	private long id;
 	
 	private String name;
-	private String programmingLanguage;
-	private String forExam;
+	private EnumProgrammingLanguage programmingLanguage;
+	private EnumForExam forExam;
 	private Date creationDateTime = new Date();
 	
 	@OneToOne(fetch=FetchType.EAGER)
@@ -75,18 +75,18 @@ public abstract class QuestionTemplate {
 	// ---------------------------------------------------
 	// GETTER & SETTER for programmingLanguage
 	public String getProgrammingLanguage() {
-		return programmingLanguage;
+		return programmingLanguage.getLanguage();
 	}
-	public void setProgrammingLanguage(String programmingLanguage) {
+	public void setProgrammingLanguage(EnumProgrammingLanguage programmingLanguage) {
 		this.programmingLanguage = programmingLanguage;
 	}
 	
 	// ---------------------------------------------------
 	// GETTER & SETTER for forExam
 	public String getForExam() {
-		return forExam;
+		return forExam.getExam();
 	}
-	public void setForExam(String forExam) {
+	public void setForExam(EnumForExam forExam) {
 		this.forExam = forExam;
 	}		
 }

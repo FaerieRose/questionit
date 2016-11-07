@@ -15,7 +15,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import nl.programit.domain.AnswerList;
 import nl.programit.domain.Instructor;
 import nl.programit.domain.Question;
-import nl.programit.domain.QuestionList;
 import nl.programit.persistence.AnswerListService;
 import nl.programit.persistence.InstructorService;
 import nl.programit.persistence.QuestionService;
