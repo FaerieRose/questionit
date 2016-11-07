@@ -55,7 +55,6 @@ public class QuestionList extends QuestionTemplate implements Serializable {
 	 * @param question
 	 */
 	public void addQuestion(Question question) {
-		System.out.println("QuestionList: addQuestion(question)");
 		questions.add(question);
 	}
 	
