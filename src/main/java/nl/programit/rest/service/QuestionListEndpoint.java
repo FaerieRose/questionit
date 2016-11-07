@@ -144,10 +144,13 @@ public class QuestionListEndpoint {
 	@Produces(MediaType.APPLICATION_JSON)
 	@Path("{id}/question/{question_id}")
 	public Response addExistingQuestionToQuestionList(@PathParam("id") Long id, @PathParam("question_id") Long question_id) {
+		System.out.println("addQuestion called: " + question_id);
 		QuestionList questionList = this.questionListService.findById(id);
 		if (questionList != null) {
+			System.out.println("addQuestion called: Questionlist Found: " + id);
 			Question question = this.questionService.findById(question_id);
 			if (question != null) {
+				System.out.println("addQuestion called: Question Found");
 				questionList.addQuestion(question);
 				this.questionListService.save(questionList);
 		        return Response.accepted(question).build();
