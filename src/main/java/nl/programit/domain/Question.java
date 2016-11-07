@@ -96,4 +96,14 @@ public class Question extends QuestionTemplate implements Serializable {
 		this.typeOfQuestion = typeOfQuestion;
 	}
 
+	
+	// ---------------------------------------------------
+	/**
+	 * Method to add an AnswerList to the givenAnswers of Question
+	 * @param answerlist
+	 */
+	public void addGivenAnswerList(AnswerList answerList) {
+		this.givenAnswers.add(answerList);
+	}
+	
 }

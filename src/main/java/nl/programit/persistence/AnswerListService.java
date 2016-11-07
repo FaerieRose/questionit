@@ -30,4 +30,13 @@ public class AnswerListService {
 		this.answerListRepository.save(answerList);
 	}
 	
+	/**
+	 * Retrieves one AnswerList from the database with specified id. If the id
+	 * does not exist, null is returned 
+	 * @param id the id of the AnswerList
+	 * @return requested AnswerList or null if it does not exist
+	 */
+	public AnswerList findById(long id) {
+		return this.answerListRepository.findOne(id);
+	}
 }

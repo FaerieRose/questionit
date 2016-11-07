@@ -109,6 +109,29 @@ public class QuestionEndpoint {
 	}	
 	
 	/**
+	 * POST an existing givenAnswerList id. If the AnswerList exists it is attached to 
+	 * the Question with the specified id.
+	 * Path = 'api/questions/{id}/given-answers/{answerlist_id}'
+	 * @return 200 + JSON if there is data, otherwise 204 
+	 */
+	@POST
+	@Produces(MediaType.APPLICATION_JSON)
+	@Path("{id}/given-answers/{answerlist_id}")
+	public Response addExistingGivenAnswerListToQuestion(@PathParam("id") Long id, @PathParam("answerlist_id") Long answerlist_id) {
+		System.out.println("called: addExistingGivenAnswerListToQuestion with id " + id);
+		Question question = this.questionService.findById(id);
+		if (question != null) {
+			AnswerList answerlist = this.answerListService.findById(answerlist_id);
+			if (answerlist != null) {
+				question.addGivenAnswerList(answerlist);
+				this.questionService.save(question);
+		        return Response.accepted(answerlist).build();
+			}
+		}
+		return Response.noContent().build();
+	}	
+	
+	/**
 	 * POST a new correctAnswerList. The correctAnswerList is created and attached to the Question with the specified id.<br>
 	 * Path = 'api/questions/{id}/correct-answers'
 	 * @return 200 + JSON if there is data, otherwise 204 
