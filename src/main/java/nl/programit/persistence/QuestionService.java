@@ -28,17 +28,17 @@ public class QuestionService {
 	private AnswerListRepository answerListRepository;
 
 	/**
-	 * Saves a question to the database. If no id included, a new entry
+	 * Saves a Question to the database. If no id included, a new entry
 	 * is created, otherwise an existing one is overwritten
-	 * @param question the question to be saved
+	 * @param question the Question to be saved
 	 */
 	public void save(Question question) {
 		this.questionRepository.save(question);
 	}
 
 	/**
-	 * Retrieves all questions stored in the database 
-	 * @return all questions
+	 * Retrieves all Questions stored in the database 
+	 * @return all Questions
 	 */
 	public Iterable<Question> findAll() {
 		Iterable<Question> result = this.questionRepository.findAll();
