@@ -26,7 +26,7 @@ public class AnswerList {
 	private long id;
 	
 	@ElementCollection(fetch=FetchType.EAGER)
-	List<Character> answers = new ArrayList<>();
+	List<EnumAnswers> answers = new ArrayList<>();
 	
 	// ---------------------------------------------------
 	// GETTER & SETTER for id
@@ -39,10 +39,10 @@ public class AnswerList {
 
 	// ---------------------------------------------------
 	// GETTER & SETTER for answers
-	public List<Character> getAnswers() {
+	public List<EnumAnswers> getAnswers() {
 		return answers;
 	}
-	public void setAnswers(List<Character> answers) {
+	public void setAnswers(List<EnumAnswers> answers) {
 		this.answers = answers;
 	}
 }
