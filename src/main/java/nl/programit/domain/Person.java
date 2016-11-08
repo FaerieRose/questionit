@@ -18,7 +18,8 @@ public class Person {
 	private String lastName;
 	private String email;
 	private String password;
-	
+	private boolean isValid;
+
 	// Methods
 	public boolean checkPassword(){
 		throw new NotImplementedException("CheckPassword in Person Not implemented yet");
@@ -55,4 +56,16 @@ public class Person {
 	public void setId(long id) {
 		this.id = id;
 	}
+	
+	
+	// ---------------------------------------------------
+	// GETTER & SETTER for isValid
+	public boolean isValid() {
+		return isValid;
+	}
+	public void setValid(boolean isValid) {
+		this.isValid = isValid;
+	}
+	
+	
 }
