@@ -33,15 +33,24 @@ public enum EnumAnswers {
 	private final char lowerCase;
 	private final int number;
 	
+	/**
+	 * Constructor
+	 * @param i
+	 * @param c
+	 */
 	private EnumAnswers(int i, char c) {
 		this.lowerCase = c;
 		this.number = i;
 	}
-	
+
+	// ---------------------------------------------------
+	// GETTER for lowercase		
 	public char getLowerCase() {
 		return this.lowerCase;
-	}
-	
+	}	
+
+	// ---------------------------------------------------
+	// GETTER for number		
 	public int getNumber() {
 		return this.number;
 	}
