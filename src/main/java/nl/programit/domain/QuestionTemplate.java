@@ -28,8 +28,8 @@ public abstract class QuestionTemplate {
 	private long id;
 	
 	private String name;
-	private EnumProgrammingLanguage programmingLanguage;
-	private EnumForExam forExam;
+	private EnumLanguages programmingLanguage;
+	private EnumExams forExam;
 	private Date creationDateTime = new Date();
 	private boolean isEnabled;
 
@@ -78,7 +78,7 @@ public abstract class QuestionTemplate {
 	public String getProgrammingLanguage() {
 		return programmingLanguage.getLanguage();
 	}
-	public void setProgrammingLanguage(EnumProgrammingLanguage programmingLanguage) {
+	public void setProgrammingLanguage(EnumLanguages programmingLanguage) {
 		this.programmingLanguage = programmingLanguage;
 	}
 	
@@ -87,7 +87,7 @@ public abstract class QuestionTemplate {
 	public String getForExam() {
 		return forExam.getExam();
 	}
-	public void setForExam(EnumForExam forExam) {
+	public void setForExam(EnumExams forExam) {
 		this.forExam = forExam;
 	}		
 
