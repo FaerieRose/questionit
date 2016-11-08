@@ -78,5 +78,4 @@ public class ExamEndpoint {
 		this.examService.save(exam);
 		return Response.accepted(exam).build();
 	}
-	
 }

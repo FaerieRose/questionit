@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import nl.programit.domain.AnswerList;
 import nl.programit.domain.Instructor;
 import nl.programit.domain.Question;
+import nl.programit.domain.models.QuestionModelExam;
 import nl.programit.persistence.AnswerListService;
 import nl.programit.persistence.InstructorService;
 import nl.programit.persistence.QuestionService;
@@ -65,6 +66,24 @@ public class QuestionEndpoint {
 	public Response getQuestionById(@PathParam("id") Long id) {
 		Question result = this.questionService.findById(id);
 		if (result != null) {
+			return Response.ok(result).build();
+		} else {
+			return Response.noContent().build();
+		}
+	}
+
+	/**
+	 * GET one Question with specified id
+	 * Path = 'api/questions/{id}'
+	 * @return 200 + JSON if there is data, otherwise 204 (noContent)
+	 */
+	@GET
+	@Produces(MediaType.APPLICATION_JSON)
+	@Path("exam/{id}")
+	public Response getQuestionForExam(@PathParam("id") Long id) {
+		Question question = this.questionService.findById(id);
+		if (question != null) {
+			QuestionModelExam result = new QuestionModelExam(question);
 			return Response.ok(result).build();
 		} else {
 			return Response.noContent().build();
