@@ -13,6 +13,9 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
+
 /**
  * Class for storing exam results during the exam and when the exam is completed
  * 
@@ -30,13 +33,15 @@ public class Exam {
 	private Date startDateTime = new Date();
 	private int timeToCompleteInSeconds;
 	
-	@OneToOne
+	@OneToOne(fetch=FetchType.EAGER)
+	@Fetch(FetchMode.SELECT)
 	private QuestionList questionList;
 	
 	@ElementCollection(fetch=FetchType.EAGER)
 	private List<Boolean> markedQuestions = new ArrayList<Boolean>();
 	
-	@OneToMany
+	@OneToMany(fetch=FetchType.EAGER)
+	@Fetch(FetchMode.SELECT)
 	private List<AnswerList> givenAnswers = new ArrayList<>();
 
 	// ---------------------------------------------------

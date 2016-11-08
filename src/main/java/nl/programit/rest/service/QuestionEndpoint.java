@@ -45,7 +45,7 @@ public class QuestionEndpoint {
 	 */
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response listQuestions() {
+	public Response getQuestionsAll() {
 		Iterable<Question> result = this.questionService.findAll();
 		if (result != null) {
 			return Response.ok(result).build();
@@ -62,7 +62,7 @@ public class QuestionEndpoint {
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	@Path("{id}")
-	public Response oneQuestion(@PathParam("id") Long id) {
+	public Response getQuestionById(@PathParam("id") Long id) {
 		Question result = this.questionService.findById(id);
 		if (result != null) {
 			return Response.ok(result).build();
@@ -75,12 +75,12 @@ public class QuestionEndpoint {
 	 * POST one Question. If no id included, a new entry is created, otherwise an existing one is overwritten.
 	 * Creator, correctAnswers & givenAnswers may not be included in JSON<br>
 	 * Path = 'api/questions'
-	 * @return 200 + JSON if there is data, otherwise 404 
+	 * @return 204 + JSON if there is data, otherwise 404 
 	 */
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response postQuestion(Question question) {
+	public Response postNewQuestion(Question question) {
 		this.questionService.save(question);
 		return Response.accepted(question).build();
 	}	
