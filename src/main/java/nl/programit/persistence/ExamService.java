@@ -40,7 +40,6 @@ public class ExamService {
 		return this.examRepository.findOne(id);
 	}
 	
-
 	/**
 	 * Retrieves all Exams stored in the database 
 	 * @return all Exams

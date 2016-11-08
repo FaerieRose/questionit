@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import nl.programit.domain.AnswerList;
 import nl.programit.domain.Instructor;
 import nl.programit.domain.Question;
+import nl.programit.domain.models.QuestionModelExam;
 import nl.programit.persistence.AnswerListService;
 import nl.programit.persistence.InstructorService;
 import nl.programit.persistence.QuestionService;
@@ -45,7 +46,7 @@ public class QuestionEndpoint {
 	 */
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response listQuestions() {
+	public Response getQuestionsAll() {
 		Iterable<Question> result = this.questionService.findAll();
 		if (result != null) {
 			return Response.ok(result).build();
@@ -62,9 +63,27 @@ public class QuestionEndpoint {
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	@Path("{id}")
-	public Response oneQuestion(@PathParam("id") Long id) {
+	public Response getQuestionById(@PathParam("id") Long id) {
 		Question result = this.questionService.findById(id);
 		if (result != null) {
+			return Response.ok(result).build();
+		} else {
+			return Response.noContent().build();
+		}
+	}
+
+	/**
+	 * GET one Question with specified id
+	 * Path = 'api/questions/{id}'
+	 * @return 200 + JSON if there is data, otherwise 204 (noContent)
+	 */
+	@GET
+	@Produces(MediaType.APPLICATION_JSON)
+	@Path("exam/{id}")
+	public Response getQuestionForExam(@PathParam("id") Long id) {
+		Question question = this.questionService.findById(id);
+		if (question != null) {
+			QuestionModelExam result = new QuestionModelExam(question);
 			return Response.ok(result).build();
 		} else {
 			return Response.noContent().build();
@@ -75,12 +94,12 @@ public class QuestionEndpoint {
 	 * POST one Question. If no id included, a new entry is created, otherwise an existing one is overwritten.
 	 * Creator, correctAnswers & givenAnswers may not be included in JSON<br>
 	 * Path = 'api/questions'
-	 * @return 200 + JSON if there is data, otherwise 404 
+	 * @return 204 + JSON if there is data, otherwise 404 
 	 */
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response postQuestion(Question question) {
+	public Response postNewQuestion(Question question) {
 		this.questionService.save(question);
 		return Response.accepted(question).build();
 	}	
