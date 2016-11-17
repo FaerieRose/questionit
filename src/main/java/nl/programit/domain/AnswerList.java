@@ -26,7 +26,14 @@ public class AnswerList {
 	private long id;
 	
 	@ElementCollection(fetch=FetchType.EAGER)
-	List<EnumAnswers> answers = new ArrayList<>();
+	private List<Boolean> answers = new ArrayList<Boolean>();
+	
+	// Constructor where an array of 10 answers is created
+	public AnswerList() {
+		for (int i = 0 ; i < 10 ; i++) {
+			answers.add(false);
+		}
+	}
 	
 	// ---------------------------------------------------
 	// GETTER & SETTER for id
@@ -39,10 +46,19 @@ public class AnswerList {
 
 	// ---------------------------------------------------
 	// GETTER & SETTER for answers
-	public List<EnumAnswers> getAnswers() {
+	// The setter copies the answers into the existing array. If the posted array is larger than 10, only the first 10 are copied
+	public List<Boolean> getAnswers() {
 		return answers;
 	}
-	public void setAnswers(List<EnumAnswers> answers) {
-		this.answers = answers;
+	public void setAnswers(List<Boolean> answers) {
+		int size = answers.size();
+		if (size > 10) size = 10;
+		for (int i = 0 ; i < 10 ; i++) {
+			if (i < size) this.answers.set(i, answers.get(i));
+			else          this.answers.set(i, false);
+		}
+	}
+	public void setAnswer(boolean answer, int index) {
+		this.answers.set(index, answer);
 	}
 }

@@ -17,7 +17,6 @@ import nl.programit.rest.service.InstructorEndpoint;
 @ApplicationPath("/api")
 public class JerseyConfig extends ResourceConfig {
 	public JerseyConfig() {
-
 		register(QuestionEndpoint.class);
 		register(QuestionListEndpoint.class);
 		register(ExamEndpoint.class);
@@ -25,5 +24,4 @@ public class JerseyConfig extends ResourceConfig {
 		register(StudentClassEndpoint.class);
 		register(InstructorEndpoint.class);
 	}
-
 }

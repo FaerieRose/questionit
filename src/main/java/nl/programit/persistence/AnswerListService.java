@@ -39,4 +39,10 @@ public class AnswerListService {
 	public AnswerList findById(long id) {
 		return this.answerListRepository.findOne(id);
 	}
+	
+	public void setAnswer(long id, int position, boolean answer) {
+		AnswerList answerList = this.answerListRepository.findOne(id);
+		answerList.setAnswer(answer, position);
+		this.answerListRepository.save(answerList);
+	}
 }

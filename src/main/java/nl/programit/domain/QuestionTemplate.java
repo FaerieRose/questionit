@@ -75,8 +75,8 @@ public abstract class QuestionTemplate {
 	
 	// ---------------------------------------------------
 	// GETTER & SETTER for programmingLanguage
-	public String getProgrammingLanguage() {
-		return programmingLanguage.getLanguage();
+	public int getProgrammingLanguage() {
+		return programmingLanguage.ordinal();
 	}
 	public void setProgrammingLanguage(EnumLanguages programmingLanguage) {
 		this.programmingLanguage = programmingLanguage;
@@ -84,8 +84,8 @@ public abstract class QuestionTemplate {
 	
 	// ---------------------------------------------------
 	// GETTER & SETTER for forExam
-	public String getForExam() {
-		return forExam.getExam();
+	public int getForExam() {
+		return forExam.ordinal();
 	}
 	public void setForExam(EnumExams forExam) {
 		this.forExam = forExam;
