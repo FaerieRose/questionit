@@ -5,13 +5,15 @@ package nl.programit.domain;
  *  0 = None<br>
  *  1 = Java<br>
  *  2 = HTHML, CSS, JavaScript<br>
+ *  3 = PHP<br>
+ *  4 = C#
  * 
  * @author FaerieRose
  * @version v0.1
  * @since 2016-11-08
  */
 public enum EnumLanguages {
-	NONE ("None"), JAVA ("Java"), HTML_CSS_JS ("HTML, CSS, JavaScript");
+	NONE ("None"), JAVA ("Java"), HTML_CSS_JS ("HTML, CSS, JavaScript"), PHP ("PHP"), C_SHARP ("C#");
 	private final String language;
 	
 	/**

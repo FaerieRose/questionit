@@ -101,6 +101,8 @@ public class QuestionEndpoint {
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response postNewQuestion(Question question) {
 		this.questionService.save(question);
+//		return Response.accepted(question).build();
+		System.out.println("====== POST: Question: " + question.getName());
 		return Response.accepted(question).build();
 	}	
 	

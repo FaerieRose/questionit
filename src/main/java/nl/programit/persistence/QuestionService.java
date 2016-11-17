@@ -33,6 +33,15 @@ public class QuestionService {
 	 * @param question the Question to be saved
 	 */
 	public void save(Question question) {
+		AnswerList answerList;
+		Question qstn = this.questionRepository.findOne(question.getId());
+		if (qstn == null) {
+			answerList = new AnswerList();
+			this.answerListRepository.save(answerList);
+		} else {
+			answerList = qstn.getCorrectAnswers();
+		}
+		question.setCorrectAnswers(answerList);
 		this.questionRepository.save(question);
 	}
 
