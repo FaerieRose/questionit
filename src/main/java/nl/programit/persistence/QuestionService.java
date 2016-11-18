@@ -33,14 +33,19 @@ public class QuestionService {
 	 * @param question the Question to be saved
 	 */
 	public void save(Question question) {
-		AnswerList answerList;
-		Question qstn = this.questionRepository.findOne(question.getId());
-		if (qstn == null) {
+		AnswerList answerList = question.getCorrectAnswers();
+		if (answerList == null) {
 			answerList = new AnswerList();
 			this.answerListRepository.save(answerList);
-		} else {
-			answerList = qstn.getCorrectAnswers();
 		}
+		
+		Question qstn = this.questionRepository.findOne(question.getId());
+		if (qstn != null) {
+			qstn.setObsolete(true);
+			this.questionRepository.save(qstn);
+			question.setId(0L);
+		}
+		question.setObsolete(false);
 		question.setCorrectAnswers(answerList);
 		this.questionRepository.save(question);
 	}

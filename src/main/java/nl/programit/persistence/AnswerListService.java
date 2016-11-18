@@ -26,8 +26,8 @@ public class AnswerListService {
 	 * is created, otherwise an existing one is overwritten
 	 * @param answerList the answerList to be saved
 	 */
-	public void save(AnswerList answerList) {
-		this.answerListRepository.save(answerList);
+	public AnswerList save(AnswerList answerList) {
+		return this.answerListRepository.save(answerList);
 	}
 	
 	/**

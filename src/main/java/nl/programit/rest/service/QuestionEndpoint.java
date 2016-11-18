@@ -1,5 +1,9 @@
 package nl.programit.rest.service;
 
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -15,6 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import nl.programit.domain.AnswerList;
 import nl.programit.domain.Instructor;
 import nl.programit.domain.Question;
+import nl.programit.domain.models.QuestionModelBasic;
 import nl.programit.domain.models.QuestionModelExam;
 import nl.programit.persistence.AnswerListService;
 import nl.programit.persistence.InstructorService;
@@ -47,8 +52,13 @@ public class QuestionEndpoint {
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response getQuestionsAll() {
-		Iterable<Question> result = this.questionService.findAll();
-		if (result != null) {
+		Iterable<Question> questions = this.questionService.findAll();
+		if (questions != null) {
+			List<QuestionModelBasic> result = new ArrayList<>();
+			for (Question question: questions) {
+				QuestionModelBasic questionModel = new QuestionModelBasic(question);
+				result.add(questionModel);
+			}
 			return Response.ok(result).build();
 		} else {
 			return Response.noContent().build();
@@ -64,8 +74,9 @@ public class QuestionEndpoint {
 	@Produces(MediaType.APPLICATION_JSON)
 	@Path("{id}")
 	public Response getQuestionById(@PathParam("id") Long id) {
-		Question result = this.questionService.findById(id);
-		if (result != null) {
+		Question question = this.questionService.findById(id);
+		if (question != null) {
+			QuestionModelBasic result = new QuestionModelBasic(question);
 			return Response.ok(result).build();
 		} else {
 			return Response.noContent().build();
@@ -91,54 +102,65 @@ public class QuestionEndpoint {
 	}
 
 	/**
-	 * POST one Question. If no id included, a new entry is created, otherwise an existing one is overwritten.
+	 * POST a Question. A new entry is created. If the question has a valid id, that question is made obsolete.
+	 * If no valid instructor_id or answerlist_id are supplied, the question is not saved!
 	 * Creator, correctAnswers & givenAnswers may not be included in JSON<br>
-	 * Path = 'api/questions'
-	 * @return 204 + JSON if there is data, otherwise 404 
+	 * Path = 'api/questions/creator/{instructor_id}/correct-answers/{answerlist_id}'
+	 * @param instructor_id must be a valid existing instructor that will be attached to Creator
+	 * @param answerlist_id must be a valid existing answerlist that will be attached to CorrectAnswers
+	 * @param question new Question
+	 * @return 202 + JSON if new entry created, otherwise 304 
 	 */
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response postNewQuestion(Question question) {
-		this.questionService.save(question);
-//		return Response.accepted(question).build();
-		System.out.println("====== POST: Question: " + question.getName());
-		return Response.accepted(question).build();
+	@Path("creator/{instructor_id}/correct-answers/{answerlist_id}")
+	public Response postQuestion(@PathParam("instructor_id") Long instructor_id, @PathParam("answerlist_id") Long answerlist_id, Question question) {
+		Instructor creator = this.instructorService.findById(instructor_id);
+		if (creator != null) {
+			AnswerList answerList = this.answerListService.findById(answerlist_id);
+			if (answerList != null) {
+				Date dateNow = new Date();
+				question.setCreationDateTime(dateNow);
+				question.setCreator(creator);
+				question.setCorrectAnswers(answerList);
+				this.questionService.save(question);
+				return Response.accepted(question).build();
+			}
+			return Response.notModified("Invalid AnswerList ID").build();
+		}
+		return Response.notModified("Invalid Instructor ID").build();
 	}	
 	
 	/**
-	 * POST an existing Instructor id. If the Instructor exists it is attached to 
-	 * the Question with the specified id.
-	 * Path = 'api/questions/{id}/instructor/{instructor_id}'
-	 * @return 200 + JSON if there is data, otherwise 204 
+	 * POST an AnswerList. If it does not contain existing AnswerList id, a new one AnswerList is created, otherwise the existing one is overwritten<br>
+	 * Path = 'api/questions/answer-list'
+	 * @param answerList 
+	 * @return 202 + JSON if there is data, otherwise 304 
 	 */
 	@POST
+	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	@Path("{id}/instructor/{instructor_id}")
-	public Response addExistingInstructorToQuestion(@PathParam("id") Long id, @PathParam("instructor_id") Long instructor_id) {
-		Question question = this.questionService.findById(id);
-		if (question != null) {
-			Instructor instructor = this.instructorService.findById(instructor_id);
-			if (instructor != null) {
-				question.setCreator(instructor);
-				this.questionService.save(question);
-		        return Response.accepted(instructor).build();
-			}
+	@Path("answer-list")
+	public Response postAnswerList(AnswerList answerList) {
+		AnswerList answer = this.answerListService.save(answerList);
+		if (answer != null) {
+			return Response.accepted(answer).build();
 		}
-		return Response.noContent().build();
-	}	
+		return Response.notModified("AnswerList not added to database").build();
+	}
 	
 	/**
-	 * POST an existing givenAnswerList id. If the AnswerList exists it is attached to 
-	 * the Question with the specified id.
+	 * POST adds an existing AnswerList to the GivenAnswers of a Question<br>
 	 * Path = 'api/questions/{id}/given-answers/{answerlist_id}'
+	 * @param id must be the id of an existing Question
+	 * @param answerlist_id must be the id of an existing AnswerList
 	 * @return 200 + JSON if there is data, otherwise 204 
 	 */
 	@POST
 	@Produces(MediaType.APPLICATION_JSON)
 	@Path("{id}/given-answers/{answerlist_id}")
-	public Response addExistingGivenAnswerListToQuestion(@PathParam("id") Long id, @PathParam("answerlist_id") Long answerlist_id) {
-		System.out.println("called: addExistingGivenAnswerListToQuestion with id " + id);
+	public Response addGivenAnswerListToQuestion(@PathParam("id") Long id, @PathParam("answerlist_id") Long answerlist_id) {
 		Question question = this.questionService.findById(id);
 		if (question != null) {
 			AnswerList answerlist = this.answerListService.findById(answerlist_id);
@@ -153,22 +175,25 @@ public class QuestionEndpoint {
 	
 	/**
 	 * POST a new correctAnswerList. The correctAnswerList is created and attached to the Question with the specified id.<br>
-	 * Path = 'api/questions/{id}/correct-answers'
+	 * Path = 'api/questions/{id}/correct-answers/{answerlist_id}'
+	 * @param id must be the id of an existing Question
+	 * @param answerlist_id must be the id of an existing AnswerList
 	 * @return 200 + JSON if there is data, otherwise 204 
 	 */
 	@POST
 	@Produces(MediaType.APPLICATION_JSON)
-	@Path("{id}/correct-answers")
-	public Response addNewCorrectAnswerListToQuestion(@PathParam("id") Long id, AnswerList answerList) {
+	@Path("{id}/correct-answers/{answerlist_id}")
+	public Response addCorrectAnswerListToQuestion(@PathParam("id") Long id, @PathParam("answerlist_id") Long answerlist_id) {
 		Question question = this.questionService.findById(id);
 		if (question != null) {
-			this.answerListService.save(answerList);
-			question.setCorrectAnswers(answerList);
-			this.questionService.save(question);
-	        return Response.accepted(answerList).build();
-		} else {
-			return Response.noContent().build();
+			AnswerList answerlist = this.answerListService.findById(answerlist_id);
+			if (answerlist != null) {
+				question.setCorrectAnswers(answerlist);
+				this.questionService.save(question);
+		        return Response.accepted(answerlist).build();
+			}
 		}
+		return Response.noContent().build();
 	}
 	
 	/**
