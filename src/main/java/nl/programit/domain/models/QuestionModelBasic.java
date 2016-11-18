@@ -35,8 +35,11 @@ public class QuestionModelBasic {
 
 	public InstructorModelName getCreator() {
 		Instructor creator = this.question.getCreator();
-		InstructorModelName modelName = new InstructorModelName(creator);
-		return modelName;
+		if (creator != null) {
+			InstructorModelName modelName = new InstructorModelName(creator);
+			return modelName;
+		}
+		return null;
 	}
 	
 	public List<String> getPossibleAnswers() {

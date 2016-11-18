@@ -15,7 +15,7 @@ import nl.programit.domain.Instructor;
 import nl.programit.domain.Student;
 import nl.programit.persistence.InstructorService;
 
-@Path("/instructors")
+@Path("instructors")
 @Component
 public class InstructorEndpoint {
     @Autowired
