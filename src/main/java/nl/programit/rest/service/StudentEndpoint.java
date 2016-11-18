@@ -24,8 +24,7 @@ import nl.programit.domain.Student;
 import nl.programit.persistence.StudentService;
 
 
-@Path("/students")
-@Component
+@Path("students")
 public class StudentEndpoint {
 
     @Autowired
@@ -36,8 +35,9 @@ public class StudentEndpoint {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public Response list() {
+		System.out.println("================================= public Response list()");
         Iterable<Student> students = this.studentService.findAll();
-        
+        System.out.println(students.toString());
         return Response.ok(students).build();
     }
     // response for POST request for complete Klant class

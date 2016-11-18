@@ -56,8 +56,7 @@ public class QuestionEndpoint {
 		if (questions != null) {
 			List<QuestionModelBasic> result = new ArrayList<>();
 			for (Question question: questions) {
-				QuestionModelBasic questionModel = new QuestionModelBasic(question);
-				result.add(questionModel);
+				result.add(this.questionService.convertToModelBasic(question));
 			}
 			return Response.ok(result).build();
 		} else {
@@ -76,8 +75,7 @@ public class QuestionEndpoint {
 	public Response getQuestionById(@PathParam("id") Long id) {
 		Question question = this.questionService.findById(id);
 		if (question != null) {
-			QuestionModelBasic result = new QuestionModelBasic(question);
-			return Response.ok(result).build();
+			return Response.ok(this.questionService.convertToModelBasic(question)).build();
 		} else {
 			return Response.noContent().build();
 		}
@@ -94,8 +92,7 @@ public class QuestionEndpoint {
 	public Response getQuestionForExam(@PathParam("id") Long id) {
 		Question question = this.questionService.findById(id);
 		if (question != null) {
-			QuestionModelExam result = new QuestionModelExam(question);
-			return Response.ok(result).build();
+			return Response.ok(this.questionService.convertToModelExam(question)).build();
 		} else {
 			return Response.noContent().build();
 		}
@@ -125,7 +122,7 @@ public class QuestionEndpoint {
 				question.setCreator(creator);
 				question.setCorrectAnswers(answerList);
 				this.questionService.save(question);
-				return Response.accepted(question).build();
+				return Response.accepted(this.questionService.convertToModelBasic(question)).build();
 			}
 			return Response.notModified("Invalid AnswerList ID").build();
 		}
@@ -158,7 +155,6 @@ public class QuestionEndpoint {
 	 * @return 200 + JSON if there is data, otherwise 204 
 	 */
 	@POST
-	@Produces(MediaType.APPLICATION_JSON)
 	@Path("{id}/given-answers/{answerlist_id}")
 	public Response addGivenAnswerListToQuestion(@PathParam("id") Long id, @PathParam("answerlist_id") Long answerlist_id) {
 		Question question = this.questionService.findById(id);
@@ -167,7 +163,7 @@ public class QuestionEndpoint {
 			if (answerlist != null) {
 				question.addGivenAnswerList(answerlist);
 				this.questionService.save(question);
-		        return Response.accepted(answerlist).build();
+		        return Response.accepted().build();
 			}
 		}
 		return Response.noContent().build();
@@ -181,7 +177,6 @@ public class QuestionEndpoint {
 	 * @return 200 + JSON if there is data, otherwise 204 
 	 */
 	@POST
-	@Produces(MediaType.APPLICATION_JSON)
 	@Path("{id}/correct-answers/{answerlist_id}")
 	public Response addCorrectAnswerListToQuestion(@PathParam("id") Long id, @PathParam("answerlist_id") Long answerlist_id) {
 		Question question = this.questionService.findById(id);
@@ -190,7 +185,7 @@ public class QuestionEndpoint {
 			if (answerlist != null) {
 				question.setCorrectAnswers(answerlist);
 				this.questionService.save(question);
-		        return Response.accepted(answerlist).build();
+		        return Response.accepted().build();
 			}
 		}
 		return Response.noContent().build();

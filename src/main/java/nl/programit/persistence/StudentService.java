@@ -18,6 +18,7 @@ public class StudentService {
 
 
 		public Iterable<Student> findAll() {
+			System.out.println("================================= public Iterable<Student> findAll()");
 			Iterable<Student> result = this.studentRepository.findAll();
 			return result;
 		}

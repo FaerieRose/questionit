@@ -7,6 +7,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import nl.programit.domain.Question;
+import nl.programit.domain.models.QuestionModelBasic;
+import nl.programit.domain.models.QuestionModelExam;
 import nl.programit.domain.AnswerList;
 
 /**
@@ -91,4 +93,23 @@ public class QuestionService {
 		return result;
 	}
 	
+	/**
+	 * Converts a Question to QuestionModelBasic to prevent loops and restrict data traffic
+	 * @param question the Question to be converted
+	 * @return QuestionModelBasic version of the Question
+	 */
+	public QuestionModelBasic convertToModelBasic(Question question) {
+		QuestionModelBasic result = new QuestionModelBasic(question);
+		return result;
+	}
+	
+	/**
+	 * Converts a Question to QuestionModelExam to send only data needed to make exam
+	 * @param question the Question to be converted
+	 * @return QuestionModelExam version of the Question
+	 */
+	public QuestionModelExam convertToModelExam(Question question) {
+		QuestionModelExam result = new QuestionModelExam(question);
+		return result;
+	}
 }
