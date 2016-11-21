@@ -56,11 +56,11 @@ public class AnswerListEndpoint {
 	 */
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
-	@Produces(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.TEXT_PLAIN)
 	public Response postAnswerList(AnswerList answerList) {
 		AnswerList answers = this.answerListService.save(answerList);
 		if (answers != null) {
-			return Response.accepted(answers).build();
+			return Response.accepted(Long.toString(answers.getId())).build();
 		} 
 		return Response.notModified("AnswerList not added to database").build();		
 	}

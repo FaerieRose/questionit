@@ -7,16 +7,17 @@ import org.springframework.stereotype.Component;
 
 import nl.programit.rest.service.QuestionEndpoint;
 import nl.programit.rest.service.QuestionListEndpoint;
+import nl.programit.rest.service.AnswerListEndpoint;
 import nl.programit.rest.service.ExamEndpoint;
 import nl.programit.rest.service.StudentEndpoint;
 import nl.programit.rest.service.StudentClassEndpoint;
 import nl.programit.rest.service.InstructorEndpoint;
 
-
 @Component
 @ApplicationPath("/api")
 public class JerseyConfig extends ResourceConfig {
 	public JerseyConfig() {
+		register(AnswerListEndpoint.class);
 		register(QuestionEndpoint.class);
 		register(QuestionListEndpoint.class);
 		register(ExamEndpoint.class);
