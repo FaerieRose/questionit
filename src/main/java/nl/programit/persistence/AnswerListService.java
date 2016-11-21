@@ -45,4 +45,18 @@ public class AnswerListService {
 		answerList.setAnswer(answer, position);
 		this.answerListRepository.save(answerList);
 	}
+	
+	/**
+	 * Deletes one AnswerLest from the database with specified id if it exists.
+	 * @param id the id of the AnswerList
+	 * @return true if the AnswerList existed, false if it did not
+	 */
+	public boolean deleteAnswerListById(long id) {
+		AnswerList answerList = this.findById(id);
+		if (answerList != null) {
+			this.answerListRepository.delete(answerList);
+			return true;
+		}
+		return false;
+	}
 }

@@ -146,24 +146,6 @@ public class QuestionEndpoint {
 	}	
 	
 	/**
-	 * POST an AnswerList. If it does not contain existing AnswerList id, a new one AnswerList is created, otherwise the existing one is overwritten<br>
-	 * Path = 'api/questions/answer-list'
-	 * @param answerList 
-	 * @return 202 + JSON if there is data, otherwise 304 
-	 */
-	@POST
-	@Consumes(MediaType.APPLICATION_JSON)
-	@Produces(MediaType.APPLICATION_JSON)
-	@Path("answer-list")
-	public Response postAnswerList(AnswerList answerList) {
-		AnswerList answer = this.answerListService.save(answerList);
-		if (answer != null) {
-			return Response.accepted(answer).build();
-		}
-		return Response.notModified("AnswerList not added to database").build();
-	}
-	
-	/**
 	 * POST adds an existing AnswerList to the GivenAnswers of a Question<br>
 	 * Path = 'api/questions/{id}/given-answers/{answerlist_id}'
 	 * @param id must be the id of an existing Question
@@ -210,16 +192,15 @@ public class QuestionEndpoint {
 	/**
 	 * DELETE one Question with specified id
 	 * Path = 'api/questions/{id}'
-	 * @return 200 + JSON if there is data, otherwise 404 
+	 * @return 200 if there was data, otherwise 404 
 	 */
 	@DELETE
-	@Produces(MediaType.APPLICATION_JSON)
 	@Path("{id}")
 	public Response removeQuestion(@PathParam("id") Long id) {
 		Question question = this.questionService.findById(id);
 		if (question != null) {
-			Question result = this.questionService.deleteById(id);
-			return Response.ok(result).build();
+			this.questionService.deleteById(id);
+			return Response.ok().build();
 		} else {
 			return Response.status(Status.NOT_FOUND).build();
 		}
