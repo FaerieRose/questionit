@@ -4,6 +4,13 @@ import java.util.List;
 
 import nl.programit.domain.Question;
 
+/**
+ * A model for Question which only gets information necessary for the exam
+ * 
+ * @author FaerieRose
+ * @version v0.1
+ * @since 2016-11-04
+ */
 public class QuestionModelExam {
 	private Question question;
 	

@@ -20,7 +20,6 @@ import nl.programit.domain.AnswerList;
 import nl.programit.domain.Instructor;
 import nl.programit.domain.Question;
 import nl.programit.domain.models.QuestionModelBasic;
-import nl.programit.domain.models.QuestionModelExam;
 import nl.programit.persistence.AnswerListService;
 import nl.programit.persistence.InstructorService;
 import nl.programit.persistence.QuestionService;
@@ -82,8 +81,8 @@ public class QuestionEndpoint {
 	}
 
 	/**
-	 * GET one Question with specified id
-	 * Path = 'api/questions/{id}'
+	 * GET one Question in exam format with specified id
+	 * Path = 'api/questions/exam/{id}'
 	 * @return 200 + JSON if there is data, otherwise 204 (noContent)
 	 */
 	@GET
@@ -93,6 +92,23 @@ public class QuestionEndpoint {
 		Question question = this.questionService.findById(id);
 		if (question != null) {
 			return Response.ok(this.questionService.convertToModelExam(question)).build();
+		} else {
+			return Response.noContent().build();
+		}
+	}
+
+	/**
+	 * GET one Question in exam review format with specified id
+	 * Path = 'api/questions/examreview/{id}'
+	 * @return 200 + JSON if there is data, otherwise 204 (noContent)
+	 */
+	@GET
+	@Produces(MediaType.APPLICATION_JSON)
+	@Path("examreview/{id}")
+	public Response getQuestionForExamReview(@PathParam("id") Long id) {
+		Question question = this.questionService.findById(id);
+		if (question != null) {
+			return Response.ok(this.questionService.convertToModelExamReview(question)).build();
 		} else {
 			return Response.noContent().build();
 		}
