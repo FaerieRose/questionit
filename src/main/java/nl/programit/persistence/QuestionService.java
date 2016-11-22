@@ -35,7 +35,7 @@ public class QuestionService {
 	 * is created, otherwise an existing one is overwritten
 	 * @param question the Question to be saved
 	 */
-	public void save(Question question) {
+	public Question save(Question question) {
 		AnswerList answerList = question.getCorrectAnswers();
 		if (answerList == null) {
 			answerList = new AnswerList();
@@ -50,7 +50,7 @@ public class QuestionService {
 		}
 		question.setObsolete(false);
 		question.setCorrectAnswers(answerList);
-		this.questionRepository.save(question);
+		return this.questionRepository.save(question); 
 	}
 
 	/**

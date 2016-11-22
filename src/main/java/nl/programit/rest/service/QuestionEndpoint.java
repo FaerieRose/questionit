@@ -46,7 +46,7 @@ public class QuestionEndpoint {
 	/**
 	 * GET all Questions
 	 * Path = 'api/questions'
-	 * @return 200 + JSON if there is data, otherwise 204 (noContent) 
+	 * @return 200 + JSON if there is data, otherwise 404 (Not Found) 
 	 */
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
@@ -59,14 +59,14 @@ public class QuestionEndpoint {
 			}
 			return Response.ok(result).build();
 		} else {
-			return Response.noContent().build();
+			return Response.status(Status.NOT_FOUND).build();
 		}
 	}
 
 	/**
 	 * GET one Question with specified id
 	 * Path = 'api/questions/{id}'
-	 * @return 200 + JSON if there is data, otherwise 204 (noContent)
+	 * @return 200 + JSON if there is data, otherwise 404 (Not Found)
 	 */
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
@@ -76,14 +76,14 @@ public class QuestionEndpoint {
 		if (question != null) {
 			return Response.ok(this.questionService.convertToModelBasic(question)).build();
 		} else {
-			return Response.noContent().build();
+			return Response.status(Status.NOT_FOUND).build();
 		}
 	}
 
 	/**
 	 * GET one Question in exam format with specified id
 	 * Path = 'api/questions/exam/{id}'
-	 * @return 200 + JSON if there is data, otherwise 204 (noContent)
+	 * @return 200 + JSON if there is data, otherwise 404 (Not Found)
 	 */
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
@@ -93,14 +93,14 @@ public class QuestionEndpoint {
 		if (question != null) {
 			return Response.ok(this.questionService.convertToModelExam(question)).build();
 		} else {
-			return Response.noContent().build();
+			return Response.status(Status.NOT_FOUND).build();
 		}
 	}
 
 	/**
 	 * GET one Question in exam review format with specified id
 	 * Path = 'api/questions/examreview/{id}'
-	 * @return 200 + JSON if there is data, otherwise 204 (noContent)
+	 * @return 200 + JSON if there is data, otherwise 404 (Not Found)
 	 */
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
@@ -110,7 +110,7 @@ public class QuestionEndpoint {
 		if (question != null) {
 			return Response.ok(this.questionService.convertToModelExamReview(question)).build();
 		} else {
-			return Response.noContent().build();
+			return Response.status(Status.NOT_FOUND).build();
 		}
 	}
 
@@ -122,11 +122,11 @@ public class QuestionEndpoint {
 	 * @param instructor_id must be a valid existing instructor that will be attached to Creator
 	 * @param answerlist_id must be a valid existing answerlist that will be attached to CorrectAnswers
 	 * @param question new Question
-	 * @return 202 + JSON if new entry created, otherwise 304 
+	 * @return 200 + ID if new entry created, 404 if answerlist or instructor did not exist, 500 otherwise 
 	 */
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
-	@Produces(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.TEXT_PLAIN)
 	@Path("creator/{instructor_id}/correct-answers/{answerlist_id}")
 	public Response postQuestion(@PathParam("instructor_id") Long instructor_id, @PathParam("answerlist_id") Long answerlist_id, Question question) {
 		Instructor creator = this.instructorService.findById(instructor_id);
@@ -137,12 +137,15 @@ public class QuestionEndpoint {
 				question.setCreationDateTime(dateNow);
 				question.setCreator(creator);
 				question.setCorrectAnswers(answerList);
-				this.questionService.save(question);
-				return Response.accepted(this.questionService.convertToModelBasic(question)).build();
+				Question result = this.questionService.save(question);
+				if (result != null) {
+					return Response.ok(Long.toString(result.getId())).build();
+				} 
+				return Response.status(Status.INTERNAL_SERVER_ERROR).build();		
 			}
-			return Response.notModified("Invalid AnswerList ID").build();
+			return Response.status(Status.NOT_FOUND).build();
 		}
-		return Response.notModified("Invalid Instructor ID").build();
+		return Response.status(Status.NOT_FOUND).build();
 	}	
 	
 	/**
@@ -150,7 +153,7 @@ public class QuestionEndpoint {
 	 * Path = 'api/questions/{id}/given-answers/{answerlist_id}'
 	 * @param id must be the id of an existing Question
 	 * @param answerlist_id must be the id of an existing AnswerList
-	 * @return 200 + JSON if there is data, otherwise 204 
+	 * @return 200 + JSON if there is data, otherwise 404 
 	 */
 	@POST
 	@Path("{id}/given-answers/{answerlist_id}")
@@ -161,10 +164,10 @@ public class QuestionEndpoint {
 			if (answerlist != null) {
 				question.addGivenAnswerList(answerlist);
 				this.questionService.save(question);
-		        return Response.accepted().build();
+		        return Response.ok().build();
 			}
 		}
-		return Response.noContent().build();
+		return Response.status(Status.NOT_FOUND).build();
 	}	
 	
 	/**
@@ -172,7 +175,7 @@ public class QuestionEndpoint {
 	 * Path = 'api/questions/{id}/correct-answers/{answerlist_id}'
 	 * @param id must be the id of an existing Question
 	 * @param answerlist_id must be the id of an existing AnswerList
-	 * @return 200 + JSON if there is data, otherwise 204 
+	 * @return 200 + JSON if there is data, otherwise 404 
 	 */
 	@POST
 	@Path("{id}/correct-answers/{answerlist_id}")
@@ -183,10 +186,10 @@ public class QuestionEndpoint {
 			if (answerlist != null) {
 				question.setCorrectAnswers(answerlist);
 				this.questionService.save(question);
-		        return Response.accepted().build();
+		        return Response.ok().build();
 			}
 		}
-		return Response.noContent().build();
+		return Response.status(Status.NOT_FOUND).build();
 	}
 	
 	/**

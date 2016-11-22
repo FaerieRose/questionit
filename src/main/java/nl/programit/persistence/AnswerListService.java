@@ -25,6 +25,7 @@ public class AnswerListService {
 	 * Saves a question to the database. If no id included, a new entry
 	 * is created, otherwise an existing one is overwritten
 	 * @param answerList the answerList to be saved
+	 * @return created AnswerList or null in case of failure
 	 */
 	public AnswerList save(AnswerList answerList) {
 		return this.answerListRepository.save(answerList);
