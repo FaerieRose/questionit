@@ -70,48 +70,21 @@ public class QuestionEndpoint {
 	 */
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
-	@Path("{id}")
-	public Response getQuestionById(@PathParam("id") Long id) {
+	@Path("{id}/{format}")
+	public Response getQuestionById(@PathParam("id") Long id, @PathParam("format") String format) {
+		System.out.println(format);
 		Question question = this.questionService.findById(id);
 		if (question != null) {
-			return Response.ok(this.questionService.convertToModelBasic(question)).build();
-		} else {
-			return Response.status(Status.NOT_FOUND).build();
-		}
-	}
-
-	/**
-	 * GET one Question in exam format with specified id
-	 * Path = 'api/questions/exam/{id}'
-	 * @return 200 + JSON if there is data, otherwise 404 (Not Found)
-	 */
-	@GET
-	@Produces(MediaType.APPLICATION_JSON)
-	@Path("exam/{id}")
-	public Response getQuestionForExam(@PathParam("id") Long id) {
-		Question question = this.questionService.findById(id);
-		if (question != null) {
-			return Response.ok(this.questionService.convertToModelExam(question)).build();
-		} else {
-			return Response.status(Status.NOT_FOUND).build();
-		}
-	}
-
-	/**
-	 * GET one Question in exam review format with specified id
-	 * Path = 'api/questions/examreview/{id}'
-	 * @return 200 + JSON if there is data, otherwise 404 (Not Found)
-	 */
-	@GET
-	@Produces(MediaType.APPLICATION_JSON)
-	@Path("examreview/{id}")
-	public Response getQuestionForExamReview(@PathParam("id") Long id) {
-		Question question = this.questionService.findById(id);
-		if (question != null) {
-			return Response.ok(this.questionService.convertToModelExamReview(question)).build();
-		} else {
-			return Response.status(Status.NOT_FOUND).build();
-		}
+			if (format.equals("exam")) {
+				return Response.ok(this.questionService.convertToModelExam(question)).build();
+			} else if (format.equals("examreview")) {
+				return Response.ok(this.questionService.convertToModelExamReview(question)).build();
+			} else if (format.equals("basic")) {
+				return Response.ok(this.questionService.convertToModelBasic(question)).build();
+			}
+			return Response.status(Status.BAD_REQUEST).build();
+		} 
+		return Response.status(Status.NOT_FOUND).build();
 	}
 
 	/**
@@ -143,7 +116,6 @@ public class QuestionEndpoint {
 				} 
 				return Response.status(Status.INTERNAL_SERVER_ERROR).build();		
 			}
-			return Response.status(Status.NOT_FOUND).build();
 		}
 		return Response.status(Status.NOT_FOUND).build();
 	}	
@@ -156,41 +128,26 @@ public class QuestionEndpoint {
 	 * @return 200 + JSON if there is data, otherwise 404 
 	 */
 	@POST
-	@Path("{id}/given-answers/{answerlist_id}")
-	public Response addGivenAnswerListToQuestion(@PathParam("id") Long id, @PathParam("answerlist_id") Long answerlist_id) {
+	@Path("{id}/{answerlist_id}/{field}")
+	public Response addAnswerListToQuestion(@PathParam("id") Long id, @PathParam("answerlist_id") Long answerlist_id, @PathParam("field") String field) {
 		Question question = this.questionService.findById(id);
 		if (question != null) {
 			AnswerList answerlist = this.answerListService.findById(answerlist_id);
 			if (answerlist != null) {
-				question.addGivenAnswerList(answerlist);
-				this.questionService.save(question);
-		        return Response.ok().build();
+				if (field.equals("correct")) {
+					question.setCorrectAnswers(answerlist);
+					this.questionService.save(question);
+			        return Response.ok().build();
+				} else if (field.equals("given")) {
+					question.addGivenAnswerList(answerlist);
+					this.questionService.save(question);
+			        return Response.ok().build();
+				}
+				return Response.status(Status.BAD_REQUEST).build();
 			}
 		}
 		return Response.status(Status.NOT_FOUND).build();
 	}	
-	
-	/**
-	 * POST a new correctAnswerList. The correctAnswerList is created and attached to the Question with the specified id.<br>
-	 * Path = 'api/questions/{id}/correct-answers/{answerlist_id}'
-	 * @param id must be the id of an existing Question
-	 * @param answerlist_id must be the id of an existing AnswerList
-	 * @return 200 + JSON if there is data, otherwise 404 
-	 */
-	@POST
-	@Path("{id}/correct-answers/{answerlist_id}")
-	public Response addCorrectAnswerListToQuestion(@PathParam("id") Long id, @PathParam("answerlist_id") Long answerlist_id) {
-		Question question = this.questionService.findById(id);
-		if (question != null) {
-			AnswerList answerlist = this.answerListService.findById(answerlist_id);
-			if (answerlist != null) {
-				question.setCorrectAnswers(answerlist);
-				this.questionService.save(question);
-		        return Response.ok().build();
-			}
-		}
-		return Response.status(Status.NOT_FOUND).build();
-	}
 	
 	/**
 	 * DELETE one Question with specified id
@@ -208,6 +165,5 @@ public class QuestionEndpoint {
 			return Response.status(Status.NOT_FOUND).build();
 		}
 	}
-	
 	
 }
