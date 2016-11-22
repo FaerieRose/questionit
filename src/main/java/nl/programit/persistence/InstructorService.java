@@ -26,12 +26,12 @@ public class InstructorService {
 	}
 
 	/**
-	 * Retrieves one Question from the database with specified id. If the id
+	 * Retrieves one Instructor from the database with specified id. If the id
 	 * does not exist, null is returned
 	 * 
 	 * @param id
-	 *            the id of the Question
-	 * @return requested Question or null if it does not exist
+	 *            the id of the Instructor
+	 * @return requested Instructor or null if it does not exist
 	 */
 	public Instructor findById(long id) {
 		return this.instructorRepository.findOne(id);
