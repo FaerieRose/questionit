@@ -18,7 +18,7 @@ public class Person {
 	private String lastName;
 	private String email;
 	private String password;
-	private boolean isValid;
+	private boolean isValid=true;
 
 	// Methods
 	public boolean checkPassword(){

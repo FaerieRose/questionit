@@ -16,6 +16,8 @@ public class Instructor extends Person implements Serializable {
 
 	private static final long serialVersionUID = -4795224222157957673L;
 	
+
+	
 	@OneToMany(fetch=FetchType.EAGER)
 	@Fetch(FetchMode.SELECT)
 	private List<StudentClass> studentClasses = new ArrayList<>();

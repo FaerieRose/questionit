@@ -40,13 +40,16 @@ public class InstructorEndpoint {
     public Response getInstructorById(@PathParam("id") Long id) {
     	Instructor instructor = this.instructorService.findById(id);
     	return Response.ok(instructor).build();
+
     }
     
     
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response postStudent(Instructor instructor) {
+    @Path("api/instructors/{instructor_id}")
+    public Response postInstuctor(Instructor instructor) {
+    	
         this.instructorService.save(instructor);
         return Response.accepted(instructor).build();
     }
