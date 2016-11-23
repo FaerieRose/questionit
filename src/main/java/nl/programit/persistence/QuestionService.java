@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import nl.programit.domain.Question;
 import nl.programit.domain.models.QuestionModelBasic;
+import nl.programit.domain.models.QuestionModelName;
 import nl.programit.domain.models.QuestionModelExam;
 import nl.programit.domain.models.QuestionModelExamReview;
 import nl.programit.domain.AnswerList;
@@ -35,7 +36,7 @@ public class QuestionService {
 	 * is created, otherwise an existing one is overwritten
 	 * @param question the Question to be saved
 	 */
-	public void save(Question question) {
+	public Question save(Question question) {
 		AnswerList answerList = question.getCorrectAnswers();
 		if (answerList == null) {
 			answerList = new AnswerList();
@@ -50,7 +51,7 @@ public class QuestionService {
 		}
 		question.setObsolete(false);
 		question.setCorrectAnswers(answerList);
-		this.questionRepository.save(question);
+		return this.questionRepository.save(question); 
 	}
 
 	/**
@@ -123,4 +124,15 @@ public class QuestionService {
 		QuestionModelExamReview result = new QuestionModelExamReview(question);
 		return result;
 	}
+	
+	
+	/**
+	 * Converts a Question to QuestionModelName to send only id and name
+	 * @param question the Question to be converted
+	 * @return QuestionModelName version of the Question
+	 */
+	public QuestionModelName convertToModelName(Question question) {
+		QuestionModelName result = new QuestionModelName(question);
+		return result;
+	}	
 }

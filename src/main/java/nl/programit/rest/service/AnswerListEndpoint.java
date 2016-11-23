@@ -33,7 +33,7 @@ public class AnswerListEndpoint {
 	/**
 	 * GET one AnswerList with specified id
 	 * Path = 'api/answers/{id}'
-	 * @return 200 + JSON if there is data, otherwise 204 (noContent)
+	 * @return 200 + JSON if there is data, otherwise 404 (Not Found)
 	 */
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
@@ -43,7 +43,7 @@ public class AnswerListEndpoint {
 		if (answerList != null) {
 			return Response.ok(answerList).build();
 		} else {
-			return Response.noContent().build();
+			return Response.status(Status.NOT_FOUND).build();
 		}
 	}
 	
@@ -52,23 +52,23 @@ public class AnswerListEndpoint {
 	 * POST an AnswerList. If it does not contain existing AnswerList id, a new one AnswerList is created, otherwise the existing one is overwritten<br>
 	 * Path = 'api/answers'
 	 * @param answerList 
-	 * @return 202 + JSON if there is data, otherwise 304 
+	 * @return 200 + ID if post succeeded, otherwise 500
 	 */
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.TEXT_PLAIN)
 	public Response postAnswerList(AnswerList answerList) {
-		AnswerList answers = this.answerListService.save(answerList);
-		if (answers != null) {
-			return Response.accepted(Long.toString(answers.getId())).build();
+		AnswerList result = this.answerListService.save(answerList);
+		if (result != null) {
+			return Response.ok(Long.toString(result.getId())).build();
 		} 
-		return Response.notModified("AnswerList not added to database").build();		
+		return Response.status(Status.INTERNAL_SERVER_ERROR).build();		
 	}
 
 	/**
 	 * DELETE one AnswerList with specified id
 	 * Path = 'api/answers/{id}'
-	 * @return 200 if there is data, otherwise 404 
+	 * @return 200 if there is data, otherwise 404 (Not Found)
 	 */
 	@DELETE
 	@Path("{id}")
