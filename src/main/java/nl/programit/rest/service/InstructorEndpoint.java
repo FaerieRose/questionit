@@ -47,7 +47,7 @@ public class InstructorEndpoint {
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    @Path("api/instructors/{instructor_id}")
+ //   @Path("api/instructors")
     public Response postInstuctor(Instructor instructor) {
     	
         this.instructorService.save(instructor);
