@@ -34,7 +34,7 @@ public class InstructorEndpoint {
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	@Path("{id}")
-	public Response getInstructorById(@PathParam("id") long id) {
+	public Response getInstructorById(@PathParam("id") Long id) {
 		Instructor instructor = this.instructorService.findById(id);
 		return Response.ok(instructor).build();
 
@@ -57,7 +57,7 @@ public class InstructorEndpoint {
 	 */
 	@DELETE
 	@Path("{id}")
-	public Response removeInstructor(@PathParam("id") long id) {
+	public Response removeInstructor(@PathParam("id") Long id) {
 		Instructor instructor = this.instructorService.findById(id);
 		if (instructor != null) {
 			this.instructorService.deleteById(id);

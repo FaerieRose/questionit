@@ -36,7 +36,7 @@ public class StudentEndpoint {
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	@Path("{id}")
-	public Response getStudentById(@PathParam("id") long id) {
+	public Response getStudentById(@PathParam("id") Long id) {
 		Student student = this.studentService.findById(id);
 		return Response.ok(student).build();
 
@@ -58,7 +58,7 @@ public class StudentEndpoint {
 	 */
 	@DELETE
 	@Path("{id}")
-	public Response removeStudent(@PathParam("id") long id) {
+	public Response removeStudent(@PathParam("id") Long id) {
 		Student student = this.studentService.findById(id);
 		if (student != null) {
 			this.studentService.deleteById(id);
