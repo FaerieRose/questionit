@@ -4,9 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import nl.programit.domain.Instructor;
 import nl.programit.domain.Student;
-import nl.programit.persistence.StudentRepository;
 
 @Service
 @Transactional
@@ -25,15 +23,15 @@ public class StudentService {
 		this.studentRepository.save(student);
 	}
 
-	public Student findById(Long id) {
+	public Student findById(long id) {
 
 		return this.studentRepository.findOne(id);
 	}
 
-	public Student deleteById(Long id) {
+	public Student deleteById(long id) {
 		// Find the correct student
 		Student result = this.findById(id);
-		//Delete the student
+		// Delete the student
 		this.studentRepository.delete(id);
 		return result;
 	}

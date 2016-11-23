@@ -15,53 +15,49 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import nl.programit.domain.Instructor;
-import nl.programit.domain.Question;
-import nl.programit.domain.Student;
 import nl.programit.persistence.InstructorService;
 
 @Path("instructors")
 @Component
 public class InstructorEndpoint {
-    @Autowired
-    private InstructorService instructorService;
-    
+	@Autowired
+	private InstructorService instructorService;
 
-    // response for Get request for the complete Klant class
-    @GET
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response list() {
-        Iterable<Instructor> instructors = this.instructorService.findAll();        
-        return Response.ok(instructors).build();
-    }
-    
-    @GET
-    @Produces(MediaType.APPLICATION_JSON)
-    @Path("{id}")
-    public Response getInstructorById(@PathParam("id") Long id) {
-    	Instructor instructor = this.instructorService.findById(id);
-    	return Response.ok(instructor).build();
+	// response for Get request for the complete Klant class
+	@GET
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response list() {
+		Iterable<Instructor> instructors = this.instructorService.findAll();
+		return Response.ok(instructors).build();
+	}
 
-    }
-    
-    
-    @POST
-    @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.APPLICATION_JSON)
- //   @Path("api/instructors")
-    public Response postInstuctor(Instructor instructor) {
-    	
-        this.instructorService.save(instructor);
-        return Response.accepted(instructor).build();
-    }
-    
+	@GET
+	@Produces(MediaType.APPLICATION_JSON)
+	@Path("{id}")
+	public Response getInstructorById(@PathParam("id") long id) {
+		Instructor instructor = this.instructorService.findById(id);
+		return Response.ok(instructor).build();
+
+	}
+
+	@POST
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	// @Path("api/instructors")
+	public Response postInstuctor(Instructor instructor) {
+
+		this.instructorService.save(instructor);
+		return Response.accepted(instructor).build();
+	}
+
 	/**
-	 * DELETE one Instructor with specified id
-	 * Path = 'api/instructors/{id}'
-	 * @return 200 if there was data, otherwise 404 
+	 * DELETE one Instructor with specified id Path = 'api/instructors/{id}'
+	 * 
+	 * @return 200 if there was data, otherwise 404
 	 */
 	@DELETE
 	@Path("{id}")
-	public Response removeInstructor(@PathParam("id") Long id) {
+	public Response removeInstructor(@PathParam("id") long id) {
 		Instructor instructor = this.instructorService.findById(id);
 		if (instructor != null) {
 			this.instructorService.deleteById(id);
@@ -70,7 +66,5 @@ public class InstructorEndpoint {
 			return Response.status(Status.NOT_FOUND).build();
 		}
 	}
-
-
 
 }
