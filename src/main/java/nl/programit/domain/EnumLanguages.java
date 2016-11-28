@@ -1,5 +1,7 @@
 package nl.programit.domain;
 
+import java.util.ArrayList;
+
 /**
  * Enum for allowed programming languages<br>
  *  0 = None<br>
@@ -8,12 +10,35 @@ package nl.programit.domain;
  *  3 = PHP<br>
  *  4 = C#
  * 
- * @author FaerieRose
+ * @author FaerieRose, S.Martens
  * @version v0.1
- * @since 2016-11-08
+ * @since 2016-11-28
  */
 public enum EnumLanguages {
-	NONE ("None"), JAVA ("Java"), HTML_CSS_JS ("HTML, CSS, JavaScript"), PHP ("PHP"), C_SHARP ("C#");
+	NONE ("None"), 
+	JAVA ("Java"){
+		public ArrayList<String> getLevels(){
+			ArrayList<String> levels = new ArrayList<String>();
+			levels.add("OCA");
+			levels.add("OCP");
+			return levels;
+		}
+	}, 
+	HTML_CSS_JS ("HTML, CSS, JavaScript"){
+		public ArrayList<String> getLevels(){
+			ArrayList<String> levels = new ArrayList<String>();
+			levels.add("70_480");
+			return levels;
+		}
+	}, 
+	PHP ("PHP"), 
+	C_SHARP ("C#"){
+		public ArrayList<String> getLevels(){
+			ArrayList<String> levels = new ArrayList<String>();
+			levels.add("70_483");
+			return levels;
+		}
+	};
 	private final String language;
 	
 	/**
@@ -28,5 +53,11 @@ public enum EnumLanguages {
 	// GETTER for Language	
 	public String getLanguage() {
 		return this.language;
+	}
+	
+	public  ArrayList<String> getLevels(){
+		 ArrayList<String> levels = new  ArrayList<String>();
+		return levels;
+		
 	}
 }
