@@ -21,6 +21,11 @@ public class StudentClassService {
 	public void save(StudentClass studentClass) {
 		this.studentClassRepository.save(studentClass);
 	}
+
+	public StudentClass findById(Long id) {
+		return this.studentClassRepository.findOne(id);
+
+	}
 	
 	
 }

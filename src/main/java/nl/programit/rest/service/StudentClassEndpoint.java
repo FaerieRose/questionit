@@ -2,6 +2,7 @@ package nl.programit.rest.service;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -26,5 +27,12 @@ public class StudentClassEndpoint {
         Iterable<StudentClass> studentClasses = this.studentClassService.findAll();        
         return Response.ok(studentClasses).build();
     }
-
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    @Path("{id}")
+    public Response getStudentClassById(@PathParam("id") Long id){
+    	StudentClass studentClass = this.studentClassService.findById(id);
+    	return Response.ok(studentClass).build();
+    	
+    }
 }
