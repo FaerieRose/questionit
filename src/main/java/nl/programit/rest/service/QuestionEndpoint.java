@@ -14,6 +14,8 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
+
+import org.apache.commons.lang3.EnumUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import nl.programit.domain.AnswerList;
@@ -65,8 +67,21 @@ public class QuestionEndpoint {
 			return Response.status(Status.NOT_FOUND).build();
 		}
 	}
-
 	
+	/**
+	 * GET levels corresponding with language
+	 * Path = 'api/questions/language'
+	 * @return 200 + JSON if there is data, otherwise 404 (Not Found) 
+	 */
+	@GET
+	@Produces(MediaType.APPLICATION_JSON)
+	@Path("{language}")
+	public Response getLevelsOfLanguage(@PathParam("language") EnumLanguages language) {
+		ArrayList<String> levels = new ArrayList<String>();
+		levels = language.getLevels();
+		return Response.ok(levels).build();
+	}
+
 	/**
 	 * GET all Questions
 	 * Path = 'api/questions'
