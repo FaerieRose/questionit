@@ -3,6 +3,7 @@ package nl.programit.domain;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -23,7 +24,7 @@ public class StudentClass {
 	
 	private String name;
 	
-	@ManyToMany
+	@ManyToMany(fetch=FetchType.EAGER, cascade = CascadeType.ALL)
 	private List<Instructor> instructors = new ArrayList<>();
 	
 	@OneToMany(fetch=FetchType.EAGER)
