@@ -6,6 +6,8 @@ import java.util.List;
 
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
 import org.hibernate.annotations.Fetch;
@@ -17,6 +19,8 @@ public class Instructor extends Person implements Serializable {
 	private static final long serialVersionUID = -4795224222157957673L;
 	
 	@OneToMany(fetch=FetchType.EAGER)
+//	@ManyToOne(fetch=FetchType.EAGER)
+//	@ManyToMany(fetch=FetchType.EAGER)
 	@Fetch(FetchMode.SELECT)
 	private List<StudentClass> studentClasses = new ArrayList<>();
 

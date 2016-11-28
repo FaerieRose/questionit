@@ -1,5 +1,6 @@
 package nl.programit.domain;
 
+import java.io.Serializable;
 import java.util.List;
 
 import javax.persistence.Entity;
@@ -13,7 +14,12 @@ import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 
 @Entity
-public class StudentClass {
+public class StudentClass implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -1786057267133705669L;
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private long id;
