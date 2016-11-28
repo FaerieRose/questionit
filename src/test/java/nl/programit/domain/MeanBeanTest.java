@@ -3,8 +3,6 @@ package nl.programit.domain;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.meanbean.test.BeanTester;
-import org.meanbean.test.Configuration;
-import org.meanbean.test.ConfigurationBuilder;
 import org.springframework.boot.test.SpringApplicationConfiguration;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
