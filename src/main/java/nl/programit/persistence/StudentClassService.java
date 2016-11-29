@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import nl.programit.domain.StudentClass;
+import nl.programit.domain.models.StudentClassModelBasic;
 
 @Service
 @Transactional
@@ -25,6 +26,10 @@ public class StudentClassService {
 	public StudentClass findById(Long id) {
 		return this.studentClassRepository.findOne(id);
 
+	}
+	public StudentClassModelBasic convertToModelBasic(StudentClass studentClass) {
+		StudentClassModelBasic result = new StudentClassModelBasic(studentClass);
+		return result;
 	}
 	
 	
