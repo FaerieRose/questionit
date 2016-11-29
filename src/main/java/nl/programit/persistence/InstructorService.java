@@ -5,6 +5,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import nl.programit.domain.Instructor;
+import nl.programit.domain.Question;
+import nl.programit.domain.models.InstructorModelBasic;
+import nl.programit.domain.models.QuestionModelBasic;
 
 @Service
 @Transactional
@@ -41,4 +44,15 @@ public class InstructorService {
 		this.instructorRepository.delete(id);
 		return result;
 	}
+
+	/**
+	 * Converts a Question to QuestionModelBasic to prevent loops and restrict data traffic
+	 * @param question the Question to be converted
+	 * @return QuestionModelBasic version of the Question
+	 */
+	public InstructorModelBasic convertToModelBasic(Instructor instructor) {
+		InstructorModelBasic result = new InstructorModelBasic(instructor);
+		return result;
+	}
+
 }
