@@ -1,5 +1,8 @@
 package nl.programit.rest.service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -15,7 +18,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import nl.programit.domain.Instructor;
+import nl.programit.domain.models.InstructorModelBasic;
 import nl.programit.persistence.InstructorService;
+
 
 @Path("instructors")
 @Component
@@ -28,7 +33,14 @@ public class InstructorEndpoint {
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response list() {
 		Iterable<Instructor> instructors = this.instructorService.findAll();
-		return Response.ok(instructors).build();
+		if (instructors != null) {
+			List<InstructorModelBasic> result = new ArrayList<>();
+			for (Instructor instructor: instructors) {
+				result.add(this.instructorService.convertToModelBasic(instructor));
+			}
+			return Response.ok(result).build();
+		}
+		return Response.status(Status.NOT_FOUND).build();
 	}
 
 	@GET
@@ -36,8 +48,10 @@ public class InstructorEndpoint {
 	@Path("{id}")
 	public Response getInstructorById(@PathParam("id") Long id) {
 		Instructor instructor = this.instructorService.findById(id);
-		return Response.ok(instructor).build();
-
+		if (instructor != null) {
+			return Response.ok(this.instructorService.convertToModelBasic(instructor)).build();
+		}
+		return Response.status(Status.NOT_FOUND).build();
 	}
 
 	@POST
@@ -45,7 +59,6 @@ public class InstructorEndpoint {
 	@Produces(MediaType.APPLICATION_JSON)
 	// @Path("api/instructors")
 	public Response postInstuctor(Instructor instructor) {
-
 		this.instructorService.save(instructor);
 		return Response.accepted(instructor).build();
 	}
