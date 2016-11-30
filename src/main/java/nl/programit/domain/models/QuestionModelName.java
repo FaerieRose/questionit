@@ -1,7 +1,5 @@
 package nl.programit.domain.models;
 
-import java.util.List;
-
 import nl.programit.domain.Question;
 
 /**
