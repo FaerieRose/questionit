@@ -17,11 +17,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import nl.programit.domain.AnswerList;
 import nl.programit.domain.Question;
 import nl.programit.domain.QuestionList;
+import nl.programit.domain.Student;
 import nl.programit.domain.models.TimesModelExam;
 import nl.programit.domain.Exam;
 import nl.programit.persistence.AnswerListService;
 import nl.programit.persistence.ExamService;
+import nl.programit.persistence.QuestionListService;
 import nl.programit.persistence.QuestionService;
+import nl.programit.persistence.StudentService;
 
 /**
  * Endpoint for serveral ReST services to GET, POST and DELETE Exams
@@ -35,6 +38,12 @@ public class ExamEndpoint {
 
 	@Autowired
 	ExamService examService;
+	
+	@Autowired
+	QuestionListService questionListService;
+	
+	@Autowired
+	StudentService studentService;
 	
 	/**
 	 * GET all Exams
@@ -73,6 +82,7 @@ public class ExamEndpoint {
 	 * GET QuestionList of one Exam with id
 	 * Path = 'api/exams'
 	 * @return 200 + JSON if there is data, otherwise 204 (noContent) 
+	 * @author S.Martens
 	 */
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
@@ -90,6 +100,7 @@ public class ExamEndpoint {
 	 * GET givenAnswers of one Exam with id
 	 * Path = 'api/exams'
 	 * @return 200 + JSON if there is data, otherwise 204 (noContent) 
+	 * @author S.Martens
 	 */
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
@@ -107,12 +118,13 @@ public class ExamEndpoint {
 	 * GET markedQuestions of one Exam with id
 	 * Path = 'api/exams'
 	 * @return 200 + JSON if there is data, otherwise 204 (noContent) 
+	 * @author S.Martens
 	 */
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	@Path("{id}/markedQuestions")
 	public Response getMarkedQuestions(@PathParam("id") Long id) {
-		List<Boolean> result = this.examService.findById(id).getMarkedQuestions();
+		List<Integer> result = this.examService.findById(id).getMarkedQuestions();
 		if (result != null) {
 			return Response.ok(result).build();
 		} else {
@@ -124,6 +136,7 @@ public class ExamEndpoint {
 	 * GET times of one Exam with id
 	 * Path = 'api/exams'
 	 * @return 200 + JSON if there is data, otherwise 204 (noContent) 
+	 * @author S.Martens
 	 */
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
@@ -147,6 +160,7 @@ public class ExamEndpoint {
 	 * GET question of one Exam with id and number
 	 * Path = 'api/exams'
 	 * @return 200 + JSON if there is data, or 204 (noContent), or 406 "Not Acceptable when number is not corresponding 
+	 * @author S.Martens
 	 */
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
@@ -166,7 +180,8 @@ public class ExamEndpoint {
 	/**
 	 * GET answer of question from one Exam with id and number
 	 * Path = 'api/exams'
-	 * @return 200 + JSON if there is data, otherwise 204 (noContent), or 406 "Not Acceptable when number is not corresponding  
+	 * @return 200 + JSON if there is data, otherwise 204 (noContent), or 406 "Not Acceptable when number is not corresponding 
+	 * @author S.Martens 
 	 */
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
@@ -188,11 +203,39 @@ public class ExamEndpoint {
 	 * Creator, correctAnswers & givenAnswers may not be included in JSON<br>
 	 * Path = 'api/exams'
 	 * @return 204 + JSON if there is data, otherwise 404 
+	 * @author S.Martens
 	 */
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response postNewExam(Exam exam) {
+	@Path("start/{questionlist_id}/{student_id}")
+	public Response postNewExam(@PathParam("questionlist_id") Long ql_id, @PathParam("student_id") Long s_id) {
+		if (this.questionListService.findById(ql_id) == null || this.studentService.findById(s_id) == null){
+			return Response.notAcceptable(null).build();
+		}
+		else{
+			Exam exam = new Exam();
+			exam.setQuestionList(this.questionListService.findById(ql_id));
+			this.examService.save(exam);
+			Student student = this.studentService.findById(s_id);
+			
+			student.getExams().add(exam);
+			
+			this.studentService.save(student);
+			
+			return Response.accepted(exam.getId()).build();
+		}	
+	}
+	
+	/**
+	 * POST one new Exam selecting a questionList
+	 * Path = 'api/exams'
+	 * @return 204 + JSON id exam data, otherwise 404 
+	 */
+	@POST
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response postStartNewExam(Exam exam) {
 		this.examService.save(exam);
 		return Response.accepted(exam).build();
 	}

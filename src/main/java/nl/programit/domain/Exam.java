@@ -38,7 +38,7 @@ public class Exam {
 	private QuestionList questionList;
 	
 	@ElementCollection(fetch=FetchType.EAGER)
-	private List<Boolean> markedQuestions = new ArrayList<Boolean>();
+	private List<Integer> markedQuestions = new ArrayList<Integer>();
 	
 	@OneToMany(fetch=FetchType.EAGER)
 	@Fetch(FetchMode.SELECT)
@@ -91,10 +91,10 @@ public class Exam {
 
 	// ---------------------------------------------------
 	// GETTER & SETTER for markedQuestions
-	public List<Boolean> getMarkedQuestions() {
+	public List<Integer> getMarkedQuestions() {
 		return markedQuestions;
 	}
-	public void setMarkedQuestions(List<Boolean> markedQuestions) {
+	public void setMarkedQuestions(List<Integer> markedQuestions) {
 		this.markedQuestions = markedQuestions;
 	}
 
