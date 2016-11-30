@@ -17,13 +17,9 @@ import javax.ws.rs.core.Response.Status;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import nl.programit.domain.Instructor;
 import nl.programit.domain.StudentClass;
 import nl.programit.domain.models.StudentClassModelBasic;
 import nl.programit.persistence.StudentClassService;
-
-
-
 
 
 @Path("studentclasses")
