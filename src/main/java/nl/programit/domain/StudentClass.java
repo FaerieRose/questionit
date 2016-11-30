@@ -31,6 +31,14 @@ public class StudentClass {
 	@Fetch(FetchMode.SELECT)
 	private List<Student> students;
 	
+	public void addInstructor(Instructor instructor) {
+		instructors.add(instructor);
+	}
+	
+	public void addStudent(Student student) {
+		students.add(student);
+	}
+	
 	public long getId() {
 		return id;
 	}
