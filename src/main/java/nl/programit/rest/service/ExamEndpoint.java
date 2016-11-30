@@ -6,6 +6,7 @@ import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
@@ -166,6 +167,10 @@ public class ExamEndpoint {
 	@Produces(MediaType.APPLICATION_JSON)
 	@Path("{id}/question/{nr}")
 	public Response getQuestion(@PathParam("id") Long id, @PathParam("nr") Integer nr) {
+		if (this.examService.findById(id) == null || this.examService.findById(id).getQuestionList() == null || 
+				this.examService.findById(id).getQuestionList().getQuestions() == null){
+			return Response.noContent().build();
+		}
 		if (nr < 1 || nr > this.examService.findById(id).getQuestionList().getQuestions().size()){
 			return Response.notAcceptable(null).build();
 		}
@@ -187,6 +192,10 @@ public class ExamEndpoint {
 	@Produces(MediaType.APPLICATION_JSON)
 	@Path("{id}/question/{nr}/correctAnswers")
 	public Response getCorrectAnswerOfQuestion(@PathParam("id") Long id, @PathParam("nr") Integer nr) {
+		if (this.examService.findById(id) == null || this.examService.findById(id).getQuestionList() == null || 
+				this.examService.findById(id).getQuestionList().getQuestions() == null){
+			return Response.noContent().build();
+		}
 		if (nr < 1 || nr > this.examService.findById(id).getQuestionList().getQuestions().size()){
 			return Response.notAcceptable(null).build();
 		}
@@ -202,11 +211,10 @@ public class ExamEndpoint {
 	 * POST one Exam. If no id included, a new entry is created, otherwise an existing one is overwritten.
 	 * Creator, correctAnswers & givenAnswers may not be included in JSON<br>
 	 * Path = 'api/exams'
-	 * @return 204 + JSON if there is data, otherwise 404 
+	 * @return 204 + JSON if there is data, otherwise 404, or 406 "Not Acceptable when id is not active 
 	 * @author S.Martens
 	 */
 	@POST
-	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	@Path("start/{questionlist_id}/{student_id}")
 	public Response postNewExam(@PathParam("questionlist_id") Long ql_id, @PathParam("student_id") Long s_id) {
@@ -217,14 +225,90 @@ public class ExamEndpoint {
 			Exam exam = new Exam();
 			exam.setQuestionList(this.questionListService.findById(ql_id));
 			this.examService.save(exam);
-			Student student = this.studentService.findById(s_id);
-			
-			student.getExams().add(exam);
-			
+			Student student = this.studentService.findById(s_id);	
+			student.getExams().add(exam);	
 			this.studentService.save(student);
 			
 			return Response.accepted(exam.getId()).build();
 		}	
+	}
+	
+	/**
+	 * PUT for one Exam for elapsed time a ping for increment of 10sec is given
+	 * Path = 'api/exams'
+	 * @return 204 + JSON if there is data, otherwise 404 
+	 * @author S.Martens
+	 */
+	@PUT
+	@Produces(MediaType.APPLICATION_JSON)
+	@Path("{id}/ping")
+	public Response putPing(@PathParam("id") Long id) {
+		if (this.examService.findById(id) == null){
+			return Response.noContent().build();
+		} else {
+			Exam exam = this.examService.findById(id);
+			exam.setTimeToCompleteInSeconds(exam.getTimeToCompleteInSeconds() + 10);
+			this.examService.save(exam);
+			
+			return Response.accepted(exam.getTimeToCompleteInSeconds()).build();
+		}
+	}
+	
+	/**
+	 * PUT for one Exam for a marked number to add to marked question list
+	 * Path = 'api/exams'
+	 * @return 204 + JSON if there is data, otherwise 404,  or 406 "Not Acceptable when number is not allowed
+	 * @author S.Martens
+	 */
+	@PUT
+	@Produces(MediaType.APPLICATION_JSON)
+	@Path("{id}/mark/{question_nr}")
+	public Response putMark(@PathParam("id") Long id, @PathParam("question_nr") Integer nr) {
+		if (this.examService.findById(id) == null || this.examService.findById(id).getQuestionList() == null || 
+				this.examService.findById(id).getQuestionList().getQuestions() == null || this.examService.findById(id).getMarkedQuestions() == null){
+			return Response.noContent().build();
+		}
+		if (nr < 1 || nr > this.examService.findById(id).getQuestionList().getQuestions().size()){
+			return Response.notAcceptable(null).build();
+		} else {
+			Exam exam = this.examService.findById(id);
+			if (exam.getMarkedQuestions().contains(nr)){
+				return Response.noContent().build();
+			} else {
+			exam.getMarkedQuestions().add(nr);
+			this.examService.save(exam);
+			
+			return Response.accepted(exam.getMarkedQuestions()).build();
+			}
+		}
+	}
+	
+	/**
+	 * PUT for one Exam to un-marked a number to remove from the marked question list
+	 * Path = 'api/exams'
+	 * @return 204 + JSON if there is data, otherwise 404,  or 406 "Not Acceptable when number is not allowed
+	 * @author S.Martens
+	 */
+	@PUT
+	@Produces(MediaType.APPLICATION_JSON)
+	@Path("{id}/unmark/{question_nr}")
+	public Response putUnmark(@PathParam("id") Long id, @PathParam("question_nr") Integer nr) {
+		if (this.examService.findById(id) == null || this.examService.findById(id).getQuestionList() == null || 
+				this.examService.findById(id).getQuestionList().getQuestions() == null || this.examService.findById(id).getMarkedQuestions() == null){
+			return Response.noContent().build();
+		}
+		if (nr < 1 || nr > this.examService.findById(id).getQuestionList().getQuestions().size()){
+			return Response.notAcceptable(null).build();
+		} 
+		Exam exam = this.examService.findById(id);
+		if (!exam.getMarkedQuestions().contains(nr)){
+			return Response.noContent().build();
+		} else {
+			exam.getMarkedQuestions().remove(nr);
+			this.examService.save(exam);
+			
+			return Response.accepted(exam.getMarkedQuestions()).build();
+		}
 	}
 	
 	/**

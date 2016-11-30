@@ -29,8 +29,8 @@ public class Exam {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private long id;
 	
-	private Date endDateTime = new Date();
 	private Date startDateTime = new Date();
+	private Date endDateTime;
 	private int timeToCompleteInSeconds;
 	
 	@OneToOne(fetch=FetchType.EAGER)
