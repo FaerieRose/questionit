@@ -1,5 +1,6 @@
 package nl.programit.domain.models;
 
+import org.junit.Test;
 //import org.junit.Test;
 import org.junit.runner.RunWith;
 //import org.meanbean.test.BeanTester;
@@ -48,5 +49,10 @@ public class MeanBeanTest {
 //	public void testQuestionModelName() {
 //		new BeanTester().testBean(QuestionModelName.class);
 //	}
+	
+	@Test
+	public void testFoo(){
+		
+	}
 	
 }
