@@ -17,6 +17,8 @@ import javax.ws.rs.core.Response.Status;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import nl.programit.persistence.InstructorService;
+import nl.programit.domain.Instructor;
 import nl.programit.domain.StudentClass;
 import nl.programit.domain.models.StudentClassModelBasic;
 import nl.programit.persistence.StudentClassService;
@@ -27,7 +29,7 @@ import nl.programit.persistence.StudentClassService;
 public class StudentClassEndpoint {
     @Autowired
     private StudentClassService studentClassService;
-
+    private InstructorService instructorService;
     // response for Get request for the complete Klant class
     @GET
     @Produces(MediaType.APPLICATION_JSON)
@@ -82,6 +84,28 @@ public class StudentClassEndpoint {
 			return Response.status(Status.NOT_FOUND).build();
 		}
 	}
+	
+	
+	@POST
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	@Path("{id}/instructor/{instructor_id}")
+	public Response postInstructorToStudentClass(@PathParam("id")Long studentClassId,@PathParam("instructor_id") Long instructorId) {
+		
+		StudentClass studentClass = this.studentClassService.findById(studentClassId);
+		Instructor instructor = this.instructorService.findById(instructorId);
+		if (studentClass != null){
+			if (instructor != null){
+				studentClass.getInstructors().add(instructor);
+				this.studentClassService.save(studentClass);
+				return Response.ok().build();
+			}
+		}
+		
+		return Response.accepted(studentClass).build();
+	}
+	
+	
 }
 
 
