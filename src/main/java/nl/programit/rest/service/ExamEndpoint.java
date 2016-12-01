@@ -224,6 +224,10 @@ public class ExamEndpoint {
 		else{
 			Exam exam = new Exam();
 			exam.setQuestionList(this.questionListService.findById(ql_id));
+			for (int i = 0; i < exam.getQuestionList().getQuestions().size(); i++){
+				AnswerList answerList = new AnswerList();
+//				exam.getGivenAnswers().add(answerList);
+			}
 			this.examService.save(exam);
 			Student student = this.studentService.findById(s_id);	
 			student.getExams().add(exam);	
