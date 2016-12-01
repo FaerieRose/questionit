@@ -211,7 +211,6 @@ public class ExamEndpoint {
 			return Response.noContent().build();
 		}
 	}
-
 	
 	/**
 	 * GET answer of question from one Exam with id and number
