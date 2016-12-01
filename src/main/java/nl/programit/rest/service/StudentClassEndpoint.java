@@ -29,7 +29,10 @@ import nl.programit.persistence.StudentClassService;
 public class StudentClassEndpoint {
     @Autowired
     private StudentClassService studentClassService;
+
+    @Autowired
     private InstructorService instructorService;
+
     // response for Get request for the complete Klant class
     @GET
     @Produces(MediaType.APPLICATION_JSON)
@@ -88,21 +91,24 @@ public class StudentClassEndpoint {
 	
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
-	@Produces(MediaType.APPLICATION_JSON)
 	@Path("{id}/instructor/{instructor_id}")
-	public Response postInstructorToStudentClass(@PathParam("id")Long studentClassId,@PathParam("instructor_id") Long instructorId) {
-		
+	public Response postInstructorToStudentClass(@PathParam("id") Long studentClassId, @PathParam("instructor_id") Long instructorId, StudentClass studentClass2) {
 		StudentClass studentClass = this.studentClassService.findById(studentClassId);
-		Instructor instructor = this.instructorService.findById(instructorId);
+		System.out.println("========================================================");
+		System.out.println("======== studentClassId    = " + studentClassId);
+		System.out.println("======== instructorId      = " + instructorId);
 		if (studentClass != null){
+			System.out.println("======== studentClass.name = " + studentClass.getName());
+			System.out.println("======== studentClass.getInstructors().size = " + studentClass.getInstructors().size());
+			Instructor instructor = this.instructorService.findById(instructorId);
+			System.out.println("======== instructor.firstName = " + instructor.getFirstName());
 			if (instructor != null){
 				studentClass.getInstructors().add(instructor);
 				this.studentClassService.save(studentClass);
 				return Response.ok().build();
 			}
 		}
-		
-		return Response.accepted(studentClass).build();
+		return Response.status(Status.NOT_FOUND).build();
 	}
 	
 	
