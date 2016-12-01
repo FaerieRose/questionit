@@ -19,6 +19,7 @@ import nl.programit.domain.AnswerList;
 import nl.programit.domain.Question;
 import nl.programit.domain.QuestionList;
 import nl.programit.domain.Student;
+import nl.programit.domain.models.QuestionModelExam;
 import nl.programit.domain.models.TimesModelExam;
 import nl.programit.domain.Exam;
 import nl.programit.persistence.AnswerListService;
@@ -45,6 +46,9 @@ public class ExamEndpoint {
 	
 	@Autowired
 	StudentService studentService;
+	
+	@Autowired
+	AnswerListService answerListService;
 	
 	/**
 	 * GET all Exams
@@ -176,11 +180,38 @@ public class ExamEndpoint {
 		}
 		Question result = this.examService.findById(id).getQuestionList().getQuestions().get(nr-1);
 		if (result != null) {
+			QuestionModelExam resultModelExam = new QuestionModelExam(result);
+			return Response.ok(resultModelExam).build();
+		} else {
+			return Response.noContent().build();
+		}
+	}
+	
+	/**
+	 * GET answerList from givenAnswers corresponding with number relating to index
+	 *  ( number = index + 1 )
+	 * Path = 'api/exams'
+	 * @return 200 + JSON if there is data, or 204 (noContent), or 406 "Not Acceptable when number is not corresponding 
+	 * @author S.Martens
+	 */
+	@GET
+	@Produces(MediaType.APPLICATION_JSON)
+	@Path("{id}/answerlist/{nr}")	
+	public Response getAnswerList(@PathParam("id") Long id, @PathParam("nr") Integer nr) {
+		if (this.examService.findById(id) == null || this.examService.findById(id).getGivenAnswers() == null){
+			return Response.noContent().build();
+		}
+		if (nr < 1 || nr > this.examService.findById(id).getGivenAnswers().size()){
+			return Response.notAcceptable(null).build();
+		}
+		AnswerList result = this.examService.findById(id).getGivenAnswers().get(nr -1); 
+		if (result != null) {
 			return Response.ok(result).build();
 		} else {
 			return Response.noContent().build();
 		}
 	}
+
 	
 	/**
 	 * GET answer of question from one Exam with id and number
@@ -224,10 +255,12 @@ public class ExamEndpoint {
 		else{
 			Exam exam = new Exam();
 			exam.setQuestionList(this.questionListService.findById(ql_id));
+			
 			for (int i = 0; i < exam.getQuestionList().getQuestions().size(); i++){
 				AnswerList answerList = new AnswerList();
-//				exam.getGivenAnswers().add(answerList);
-			}
+				this.answerListService.save(answerList);
+				exam.getGivenAnswers().add(answerList);
+			}			
 			this.examService.save(exam);
 			Student student = this.studentService.findById(s_id);	
 			student.getExams().add(exam);	
