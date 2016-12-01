@@ -29,8 +29,8 @@ public class Exam {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private long id;
 	
-	private Date endDateTime = new Date();
 	private Date startDateTime = new Date();
+	private Date endDateTime;
 	private int timeToCompleteInSeconds;
 	
 	@OneToOne(fetch=FetchType.EAGER)
@@ -38,7 +38,7 @@ public class Exam {
 	private QuestionList questionList;
 	
 	@ElementCollection(fetch=FetchType.EAGER)
-	private List<Boolean> markedQuestions = new ArrayList<Boolean>();
+	private List<Integer> markedQuestions = new ArrayList<Integer>();
 	
 	@OneToMany(fetch=FetchType.EAGER)
 	@Fetch(FetchMode.SELECT)
@@ -91,10 +91,10 @@ public class Exam {
 
 	// ---------------------------------------------------
 	// GETTER & SETTER for markedQuestions
-	public List<Boolean> getMarkedQuestions() {
+	public List<Integer> getMarkedQuestions() {
 		return markedQuestions;
 	}
-	public void setMarkedQuestions(List<Boolean> markedQuestions) {
+	public void setMarkedQuestions(List<Integer> markedQuestions) {
 		this.markedQuestions = markedQuestions;
 	}
 
