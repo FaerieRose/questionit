@@ -3,7 +3,6 @@ package nl.programit.rest.service;
 import java.util.List;
 
 import javax.ws.rs.Consumes;
-import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
@@ -12,7 +11,6 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import javax.ws.rs.core.Response.Status;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import nl.programit.domain.AnswerList;
@@ -25,7 +23,6 @@ import nl.programit.domain.Exam;
 import nl.programit.persistence.AnswerListService;
 import nl.programit.persistence.ExamService;
 import nl.programit.persistence.QuestionListService;
-import nl.programit.persistence.QuestionService;
 import nl.programit.persistence.StudentService;
 
 /**

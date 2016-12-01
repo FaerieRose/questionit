@@ -5,9 +5,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import nl.programit.domain.Instructor;
-import nl.programit.domain.Question;
 import nl.programit.domain.models.InstructorModelBasic;
-import nl.programit.domain.models.QuestionModelBasic;
+
 
 @Service
 @Transactional
