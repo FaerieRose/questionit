@@ -1,5 +1,6 @@
 package nl.programit.rest.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.ws.rs.Consumes;
@@ -133,6 +134,59 @@ public class ExamEndpoint {
 			return Response.noContent().build();
 		}
 	}
+	
+	/**
+	 * GET invalid answered questions where true/false count is not the same as in the correct answers. 
+	 * for a review at the end of the exam a list is requested of the invalid answered questions
+	 * Path = 'api/exams'
+	 * @return 200 + JSON if there is data, otherwise 204 (noContent) or 406 "Not Acceptable when number is not corresponding 
+	 * @author S.Martens
+	 */
+	@GET
+	@Produces(MediaType.APPLICATION_JSON)
+	@Path("{id}/review")	
+	public Response getInvalidAnsweredQuestions(@PathParam("id") Long id) {
+		if (this.examService.findById(id) == null || this.examService.findById(id).getGivenAnswers() == null ||
+				this.examService.findById(id).getQuestionList() == null || 
+				this.examService.findById(id).getQuestionList().getQuestions() == null ){
+			return Response.noContent().build();
+		}
+		List<AnswerList> givenAnswers = this.examService.findById(id).getGivenAnswers();
+		List<AnswerList> correctAnswers = new ArrayList<>(); 
+		QuestionList questionList = this.examService.findById(id).getQuestionList();
+		List<Question> listQuestions = questionList.getQuestions();
+		for (Question correctQuestion : listQuestions){
+			correctAnswers.add(correctQuestion.getCorrectAnswers());
+		}
+		if (givenAnswers.size() != correctAnswers.size()){
+			return Response.notAcceptable(null).build();
+		}
+	
+		List<Integer> result = new ArrayList<>();
+		int counter = 1;
+		int trueCountGiven = 0;
+		int trueCountCorrect = 0;
+		for (int k = 0; k < givenAnswers.size() ; k++) {
+			trueCountGiven = 0;
+			trueCountCorrect = 0;
+			for (int i = 0; i < givenAnswers.get(k).getAnswers().size(); i++) {
+			    if (givenAnswers.get(k).getAnswers().get(i) ) {
+			        trueCountGiven++;
+			    }
+			}
+		    for (int j = 0; j < correctAnswers.get(k).getAnswers().size(); j++) {
+			    if (correctAnswers.get(k).getAnswers().get(j) ) {
+			        trueCountCorrect++;	
+			    }
+			}
+		    if (trueCountGiven != trueCountCorrect){
+				result.add(counter);
+			}
+		    counter++;
+		}
+		return Response.ok(result).build();	
+	}
+	
 	
 	/**
 	 * GET times of one Exam with id
@@ -342,6 +396,31 @@ public class ExamEndpoint {
 			
 			return Response.accepted(exam.getMarkedQuestions()).build();
 		}
+	}
+	
+	/**
+	 * PUT answerList from givenAnswers corresponding with number relating to index
+	 *  ( number = index + 1 )
+	 * Path = 'api/exams'
+	 * @return 200 + JSON if there is data, or 204 (noContent), or 406 "Not Acceptable when number is not corresponding 
+	 * @author S.Martens
+	 */
+	@PUT
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	@Path("{id}/answerlist/{nr}")
+	public Response putAnswerList(@PathParam("id") Long id, @PathParam("nr") Integer nr, AnswerList answerListIn) {
+		if (this.examService.findById(id) == null || this.examService.findById(id).getGivenAnswers() == null){
+			return Response.noContent().build();
+		}
+		if (nr < 1 || nr > this.examService.findById(id).getGivenAnswers().size()){
+			return Response.notAcceptable(null).build();
+		}
+		AnswerList answerListDb = this.examService.findById(id).getGivenAnswers().get(nr -1); 
+		answerListDb.setAnswers(answerListIn.getAnswers());
+		this.answerListService.save(answerListDb);
+		
+		return Response.ok(answerListDb).build();
 	}
 	
 	/**
