@@ -1,6 +1,7 @@
 package nl.programit.rest.service;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.ws.rs.Consumes;
@@ -24,6 +25,7 @@ import nl.programit.domain.Exam;
 import nl.programit.persistence.AnswerListService;
 import nl.programit.persistence.ExamService;
 import nl.programit.persistence.QuestionListService;
+import nl.programit.persistence.QuestionService;
 import nl.programit.persistence.StudentService;
 
 /**
@@ -47,6 +49,9 @@ public class ExamEndpoint {
 	
 	@Autowired
 	AnswerListService answerListService;
+	
+	@Autowired
+	QuestionService questionService;
 	
 	/**
 	 * GET all Exams
@@ -300,12 +305,12 @@ public class ExamEndpoint {
 	@Path("start/{questionlist_id}/{student_id}")
 	public Response postNewExam(@PathParam("questionlist_id") Long ql_id, @PathParam("student_id") Long s_id) {
 		if (this.questionListService.findById(ql_id) == null || this.studentService.findById(s_id) == null){
-			return Response.notAcceptable(null).build();
+			return Response.noContent().build();
 		}
-		else{
+		else {
 			Exam exam = new Exam();
 			exam.setQuestionList(this.questionListService.findById(ql_id));
-			
+
 			for (int i = 0; i < exam.getQuestionList().getQuestions().size(); i++){
 				AnswerList answerList = new AnswerList();
 				this.answerListService.save(answerList);
@@ -315,11 +320,47 @@ public class ExamEndpoint {
 			Student student = this.studentService.findById(s_id);	
 			student.getExams().add(exam);	
 			this.studentService.save(student);
-			
+
 			return Response.accepted(exam.getId()).build();
 		}	
 	}
 	
+	/**
+	 * POST to end one Exam.
+	 * Creator, correctAnswers & givenAnswers may not be included in JSON<br>
+	 * Path = 'api/exams'
+	 * @return 204 + JSON if there is data, otherwise 404, or 406 "Not Acceptable when id is not active 
+	 * @author S.Martens
+	 */
+	@POST
+	@Produces(MediaType.APPLICATION_JSON)
+	@Path("{id}/end")		
+	public Response postEndExam(@PathParam("id") Long id) {
+		if (this.examService.findById(id) == null){
+			return Response.noContent().build();
+		}
+		else if (this.examService.findById(id).getEndDateTime() != null){
+			return Response.notAcceptable(null).build();
+		}
+		else {
+			Exam exam = this.examService.findById(id);
+			exam.setEndDateTime(new Date());
+			exam.setTimeToCompleteInSeconds(exam.getTimeToCompleteInSeconds() + 10);
+			
+			List<AnswerList> givenAnswers = this.examService.findById(id).getGivenAnswers(); 
+			QuestionList questionList = this.examService.findById(id).getQuestionList();
+			List<Question> listQuestions = questionList.getQuestions();
+			for (int i = 0; i < givenAnswers.size(); i++ ){
+				listQuestions.get(i).getGivenAnswers().add(givenAnswers.get(i));
+				this.questionService.save(listQuestions.get(i));
+			}
+			
+			this.examService.save(exam);
+			
+			return Response.accepted(exam.getId()).build();
+		}	
+	}
+	 
 	/**
 	 * PUT for one Exam for elapsed time a ping for increment of 10sec is given
 	 * Path = 'api/exams'
