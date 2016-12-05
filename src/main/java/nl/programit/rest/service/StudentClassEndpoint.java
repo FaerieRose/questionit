@@ -62,6 +62,17 @@ public class StudentClassEndpoint {
 		return Response.status(Status.NOT_FOUND).build();
 	}
     
+//    @GET
+//	@Produces(MediaType.APPLICATION_JSON)
+//	@Path("{id}")
+//	public Response getInstructorForClassById(@PathParam("id") Long id) {
+//    	Instructor instructor = this.instructorService.findById(id);
+//		if (instructor != null) {
+//			return Response.ok(this.instructorService.convertToModelBasic(instructor)).build();
+//		}
+//		return Response.status(Status.NOT_FOUND).build();
+//	}
+    
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
