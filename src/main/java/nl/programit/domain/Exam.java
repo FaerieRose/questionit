@@ -107,4 +107,11 @@ public class Exam {
 		this.givenAnswers = givenAnswers;
 	}
 	
+
+	// ---------------------------------------------------
+	// Get Scores
+	public int GetScores(){
+		return -1;
+	}
+	
 }
