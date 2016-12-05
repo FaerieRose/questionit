@@ -39,7 +39,9 @@ public class StudentClass {
 	}
 	
 	public void addStudent(Student student) {
+		if (!students.contains(students)) {
 		students.add(student);
+		}
 	}
 	
 	public long getId() {

@@ -17,11 +17,13 @@ import javax.ws.rs.core.Response.Status;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import nl.programit.persistence.InstructorService;
 import nl.programit.domain.Instructor;
+import nl.programit.domain.Student;
 import nl.programit.domain.StudentClass;
 import nl.programit.domain.models.StudentClassModelBasic;
+import nl.programit.persistence.InstructorService;
 import nl.programit.persistence.StudentClassService;
+import nl.programit.persistence.StudentService;
 
 
 @Path("studentclasses")
@@ -29,6 +31,9 @@ import nl.programit.persistence.StudentClassService;
 public class StudentClassEndpoint {
     @Autowired
     private StudentClassService studentClassService;
+    
+    @Autowired
+    private StudentService studentService;
 
     @Autowired
     private InstructorService instructorService;
@@ -109,6 +114,21 @@ public class StudentClassEndpoint {
 		Instructor instructor = this.instructorService.findById(instructorId);
 		if (studentClass != null || instructor != null){
 			studentClass.addInstructor(instructor);
+			this.studentClassService.save(studentClass);
+			return Response.ok().build();
+		}
+		return Response.status(Status.NOT_FOUND).build();
+	}
+	
+	@POST
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	@Path("{id}/student/{student_id}")
+	public Response postStudentToStudentClass(@PathParam("id") Long studentClassId, @PathParam("student_id") Long studentId, StudentClass studentClass2) {
+		StudentClass studentClass = this.studentClassService.findById(studentClassId);
+		Student student = this.studentService.findById(studentId);
+		if (studentClass != null || student != null){
+			studentClass.addStudent(student);
 			this.studentClassService.save(studentClass);
 			return Response.ok().build();
 		}
