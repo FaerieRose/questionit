@@ -24,7 +24,8 @@ public class StudentClass {
 	
 	private String name;
 	
-	@ManyToMany(fetch=FetchType.EAGER, cascade = CascadeType.ALL)
+	@ManyToMany(fetch=FetchType.EAGER)
+	@Fetch(FetchMode.SELECT)
 	private List<Instructor> instructors = new ArrayList<>();
 	
 	@OneToMany(fetch=FetchType.EAGER)
@@ -32,7 +33,9 @@ public class StudentClass {
 	private List<Student> students;
 	
 	public void addInstructor(Instructor instructor) {
-		instructors.add(instructor);
+		if (!instructors.contains(instructor)) {
+			instructors.add(instructor);
+		}
 	}
 	
 	public void addStudent(Student student) {
