@@ -167,28 +167,8 @@ public class AttemptEndpoint {
 			return Response.notAcceptable(null).build();
 		}
 	
-		List<Integer> result = new ArrayList<>();
-		int counter = 1;
-		int trueCountGiven = 0;
-		int trueCountCorrect = 0;
-		for (int k = 0; k < givenAnswers.size() ; k++) {
-			trueCountGiven = 0;
-			trueCountCorrect = 0;
-			for (int i = 0; i < givenAnswers.get(k).getAnswers().size(); i++) {
-			    if (givenAnswers.get(k).getAnswers().get(i) ) {
-			        trueCountGiven++;
-			    }
-			}
-		    for (int j = 0; j < correctAnswers.get(k).getAnswers().size(); j++) {
-			    if (correctAnswers.get(k).getAnswers().get(j) ) {
-			        trueCountCorrect++;	
-			    }
-			}
-		    if (trueCountGiven != trueCountCorrect){
-				result.add(counter);
-			}
-		    counter++;
-		}
+		List<Integer> result = this.attemptService.supplyInvalidAnsweredQuestionsStream(givenAnswers, correctAnswers);
+		
 		return Response.ok(result).build();	
 	}
 	
