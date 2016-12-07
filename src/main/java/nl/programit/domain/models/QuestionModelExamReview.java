@@ -24,6 +24,6 @@ public class QuestionModelExamReview extends QuestionModelAttempt {
 	}
 	
 	public String getExplanationAnswer() {
-		return this.question.getExplantionAnswer();
+		return this.question.getExplanationAnswer();
 	}
 }
