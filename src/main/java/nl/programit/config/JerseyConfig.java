@@ -6,7 +6,7 @@ import org.glassfish.jersey.server.ResourceConfig;
 import org.springframework.stereotype.Component;
 
 import nl.programit.rest.service.QuestionEndpoint;
-import nl.programit.rest.service.QuestionListEndpoint;
+import nl.programit.rest.service.TestTemplateEndpoint;
 import nl.programit.rest.service.AnswerListEndpoint;
 import nl.programit.rest.service.ExamEndpoint;
 import nl.programit.rest.service.StudentEndpoint;
@@ -19,7 +19,7 @@ public class JerseyConfig extends ResourceConfig {
 	public JerseyConfig() {
 		register(AnswerListEndpoint.class);
 		register(QuestionEndpoint.class);
-		register(QuestionListEndpoint.class);
+		register(TestTemplateEndpoint.class);
 		register(ExamEndpoint.class);
 		register(StudentEndpoint.class);
 		register(StudentClassEndpoint.class);

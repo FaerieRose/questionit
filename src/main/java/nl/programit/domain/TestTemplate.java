@@ -19,7 +19,7 @@ import org.hibernate.annotations.FetchMode;
  * @since 2016-11-04
 */
 @Entity
-public class QuestionList extends QuestionTemplate implements Serializable {
+public class TestTemplate extends QuestionTemplate implements Serializable {
 
 	private static final long serialVersionUID = 3352150692313343918L;
 	

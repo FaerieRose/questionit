@@ -61,7 +61,7 @@ public class MeanBeanTest {
 	
 	@Test
 	public void testQuestionList() {
-		new BeanTester().testBean(QuestionList.class);
+		new BeanTester().testBean(TestTemplate.class);
 	}
 	
 //	@Test

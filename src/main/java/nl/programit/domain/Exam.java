@@ -35,7 +35,7 @@ public class Exam {
 	
 	@OneToOne(fetch=FetchType.EAGER)
 	@Fetch(FetchMode.SELECT)
-	private QuestionList questionList;
+	private TestTemplate testTemplate;
 	
 	@ElementCollection(fetch=FetchType.EAGER)
 	private List<Integer> markedQuestions = new ArrayList<Integer>();
@@ -81,12 +81,12 @@ public class Exam {
 	}
 
 	// ---------------------------------------------------
-	// GETTER & SETTER for questionList
-	public QuestionList getQuestionList() {
-		return questionList;
+	// GETTER & SETTER for testTemplate
+	public TestTemplate getQuestionList() {
+		return testTemplate;
 	}
-	public void setQuestionList(QuestionList questionList) {
-		this.questionList = questionList;
+	public void setQuestionList(TestTemplate testTemplate) {
+		this.testTemplate = testTemplate;
 	}
 
 	// ---------------------------------------------------

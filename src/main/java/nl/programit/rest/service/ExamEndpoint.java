@@ -17,14 +17,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import nl.programit.domain.AnswerList;
 import nl.programit.domain.Question;
-import nl.programit.domain.QuestionList;
+import nl.programit.domain.TestTemplate;
 import nl.programit.domain.Student;
 import nl.programit.domain.models.QuestionModelExam;
 import nl.programit.domain.models.TimesModelExam;
 import nl.programit.domain.Exam;
 import nl.programit.persistence.AnswerListService;
 import nl.programit.persistence.ExamService;
-import nl.programit.persistence.QuestionListService;
+import nl.programit.persistence.TestTemplateService;
 import nl.programit.persistence.QuestionService;
 import nl.programit.persistence.StudentService;
 
@@ -42,7 +42,7 @@ public class ExamEndpoint {
 	ExamService examService;
 	
 	@Autowired
-	QuestionListService questionListService;
+	TestTemplateService testTemplateService;
 	
 	@Autowired
 	StudentService studentService;
@@ -87,7 +87,7 @@ public class ExamEndpoint {
 	}
 	
 	/**
-	 * GET QuestionList of one Exam with id
+	 * GET TestTemplate of one Exam with id
 	 * Path = 'api/exams'
 	 * @return 200 + JSON if there is data, otherwise 204 (noContent) 
 	 * @author S.Martens
@@ -96,7 +96,7 @@ public class ExamEndpoint {
 	@Produces(MediaType.APPLICATION_JSON)
 	@Path("{id}/questionLists")
 	public Response getQuestionList(@PathParam("id") Long id) {
-		QuestionList result = this.examService.findById(id).getQuestionList();
+		TestTemplate result = this.examService.findById(id).getQuestionList();
 		if (result != null) {
 			return Response.ok(result).build();
 		} else {
@@ -158,8 +158,8 @@ public class ExamEndpoint {
 		}
 		List<AnswerList> givenAnswers = this.examService.findById(id).getGivenAnswers();
 		List<AnswerList> correctAnswers = new ArrayList<>(); 
-		QuestionList questionList = this.examService.findById(id).getQuestionList();
-		List<Question> listQuestions = questionList.getQuestions();
+		TestTemplate testTemplate = this.examService.findById(id).getQuestionList();
+		List<Question> listQuestions = testTemplate.getQuestions();
 		for (Question correctQuestion : listQuestions){
 			correctAnswers.add(correctQuestion.getCorrectAnswers());
 		}
@@ -304,12 +304,12 @@ public class ExamEndpoint {
 	@Produces(MediaType.APPLICATION_JSON)
 	@Path("start/{questionlist_id}/{student_id}")
 	public Response postNewExam(@PathParam("questionlist_id") Long ql_id, @PathParam("student_id") Long s_id) {
-		if (this.questionListService.findById(ql_id) == null || this.studentService.findById(s_id) == null){
+		if (this.testTemplateService.findById(ql_id) == null || this.studentService.findById(s_id) == null){
 			return Response.noContent().build();
 		}
 		else {
 			Exam exam = new Exam();
-			exam.setQuestionList(this.questionListService.findById(ql_id));
+			exam.setQuestionList(this.testTemplateService.findById(ql_id));
 
 			for (int i = 0; i < exam.getQuestionList().getQuestions().size(); i++){
 				AnswerList answerList = new AnswerList();
@@ -348,8 +348,8 @@ public class ExamEndpoint {
 			exam.setTimeToCompleteInSeconds(exam.getTimeToCompleteInSeconds() + 10);
 			
 			List<AnswerList> givenAnswers = this.examService.findById(id).getGivenAnswers(); 
-			QuestionList questionList = this.examService.findById(id).getQuestionList();
-			List<Question> listQuestions = questionList.getQuestions();
+			TestTemplate testTemplate = this.examService.findById(id).getQuestionList();
+			List<Question> listQuestions = testTemplate.getQuestions();
 			for (int i = 0; i < givenAnswers.size(); i++ ){
 				listQuestions.get(i).getGivenAnswers().add(givenAnswers.get(i));
 				this.questionService.save(listQuestions.get(i));
