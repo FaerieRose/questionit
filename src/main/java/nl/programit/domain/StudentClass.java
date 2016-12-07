@@ -9,7 +9,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
-import javax.persistence.OneToMany;
 
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
@@ -43,6 +42,16 @@ public class StudentClass {
 		}
 	}
 	
+	public void removeStudent(Student student) {
+		if (!students.contains(student)) {
+		students.remove(student);
+		}
+	}
+	public void removeInstructor(Instructor instructor) {
+		if (!instructors.contains(instructor)) {
+			instructors.remove(instructor);
+		}
+	}
 	public long getId() {
 		return id;
 	}

@@ -93,15 +93,28 @@ public class StudentClassEndpoint {
 	 * @return 200 if there was data, otherwise 404
 	 */
 	@DELETE
-	@Path("{id}")
-	public Response removeInstructor(@PathParam("id") Long id) {
-		StudentClass studentClass = this.studentClassService.findById(id);
-		if (studentClass != null) {
-			this.studentClassService.deleteById(id);
+	@Path("{id}/instructor/{instructor_id}")
+	public Response removeInstructor(@PathParam("id") Long studentClassId, @PathParam("instructor_id") Long instructorId, StudentClass studentClass2) {
+		StudentClass studentClass = this.studentClassService.findById(studentClassId);
+		Instructor instructor = this.instructorService.findById(instructorId);
+		if (studentClass != null || instructor != null){
+			studentClass.removeInstructor(instructor);
 			return Response.ok().build();
 		} else {
 			return Response.status(Status.NOT_FOUND).build();
 		}
+	}
+	
+	@DELETE
+	@Path("{id}/student/{student_id}")
+	public Response removeStudent(@PathParam("id") Long studentClassId, @PathParam("student_id") Long studentId, StudentClass studentClass2) {
+		StudentClass studentClass = this.studentClassService.findById(studentClassId);
+		Student student = this.studentService.findById(studentId);
+		if (studentClass != null || student != null){
+			studentClass.removeStudent(student);
+			return Response.ok().build();
+		}
+		return Response.status(Status.NOT_FOUND).build();
 	}
 	
 	
