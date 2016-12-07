@@ -12,18 +12,18 @@ import org.hibernate.annotations.FetchMode;
 
 
 /**
- * Exam with a list of questions and an exam time in minutes
+ * Attempt with a list of questions and an exam time in minutes
  * 
  * @author FaerieRose
  * @version v0.1
  * @since 2016-11-04
 */
 @Entity
-public class QuestionList extends QuestionTemplate implements Serializable {
+public class TestTemplate extends QuestionTemplate implements Serializable {
 
 	private static final long serialVersionUID = 3352150692313343918L;
 	
-	private int examTimeInMinutes;
+	private int attemptTimeInMinutes;
 	
 	@ManyToMany(fetch=FetchType.EAGER)
 	@Fetch(FetchMode.SELECT)
@@ -31,11 +31,11 @@ public class QuestionList extends QuestionTemplate implements Serializable {
 
 	// ---------------------------------------------------
 	// GETTER & SETTER for examTimeInMinutes
-	public int getExamTimeInMinutes() {
-		return examTimeInMinutes;
+	public int getAttemptTimeInMinutes() {
+		return attemptTimeInMinutes;
 	}
-	public void setExamTimeInMinutes(int examTimeInMinutes) {
-		this.examTimeInMinutes = examTimeInMinutes;
+	public void setAttemptTimeInMinutes(int attemptTimeInMinutes) {
+		this.attemptTimeInMinutes = attemptTimeInMinutes;
 	}
 
 	// ---------------------------------------------------
@@ -49,7 +49,7 @@ public class QuestionList extends QuestionTemplate implements Serializable {
 	
 	// ---------------------------------------------------
 	/**
-	 * Method to add a Question to the Questionlist
+	 * Method to add a Question to the TestTemplate
 	 * @param question
 	 */
 	public void addQuestion(Question question) {
