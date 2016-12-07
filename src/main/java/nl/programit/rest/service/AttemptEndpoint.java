@@ -336,8 +336,8 @@ public class AttemptEndpoint {
 	 */
 	@POST
 	@Produces(MediaType.APPLICATION_JSON)
-	@Path("start/{questionlist_id}/{student_id}")
-	public Response postNewAttempt(@PathParam("questionlist_id") Long ql_id, @PathParam("student_id") Long s_id) {
+	@Path("start/{questionTemplate_id}/{student_id}")
+	public Response postNewAttempt(@PathParam("questionTemplate_id") Long ql_id, @PathParam("student_id") Long s_id) {
 		if (this.testTemplateService.findById(ql_id) == null || this.studentService.findById(s_id) == null){
 			return Response.noContent().build();
 		}
