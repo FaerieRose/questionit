@@ -35,7 +35,7 @@ import nl.programit.persistence.StudentService;
  * @version v0.1
  * @since 2016-11-29
  */
-@Path("exams")
+@Path("attempts")
 public class AttemptEndpoint {
 
 	@Autowired
@@ -55,7 +55,7 @@ public class AttemptEndpoint {
 	
 	/**
 	 * GET all Attempts
-	 * Path = 'api/exams'
+	 * Path = 'api/attempts'
 	 * @return 200 + JSON if there is data, otherwise 204 (noContent) 
 	 */
 	@GET
@@ -71,7 +71,7 @@ public class AttemptEndpoint {
 	
 	/**
 	 * GET one Attempt with id
-	 * Path = 'api/exams'
+	 * Path = 'api/attempts'
 	 * @return 200 + JSON if there is data, otherwise 204 (noContent) 
 	 */
 	@GET
@@ -88,7 +88,7 @@ public class AttemptEndpoint {
 	
 	/**
 	 * GET TestTemplate of one Attempt with id
-	 * Path = 'api/exams'
+	 * Path = 'api/attempts'
 	 * @return 200 + JSON if there is data, otherwise 204 (noContent) 
 	 * @author S.Martens
 	 */
@@ -106,7 +106,7 @@ public class AttemptEndpoint {
 	
 	/**
 	 * GET givenAnswers of one Attempt with id
-	 * Path = 'api/exams'
+	 * Path = 'api/attempts'
 	 * @return 200 + JSON if there is data, otherwise 204 (noContent) 
 	 * @author S.Martens
 	 */
@@ -124,7 +124,7 @@ public class AttemptEndpoint {
 	
 	/**
 	 * GET markedQuestions of one Attempt with id
-	 * Path = 'api/exams'
+	 * Path = 'api/attempts'
 	 * @return 200 + JSON if there is data, otherwise 204 (noContent) 
 	 * @author S.Martens
 	 */
@@ -143,7 +143,7 @@ public class AttemptEndpoint {
 	/**
 	 * GET invalid answered questions where true/false count is not the same as in the correct answers. 
 	 * for a review at the end of the exam a list is requested of the invalid answered questions
-	 * Path = 'api/exams'
+	 * Path = 'api/attempts'
 	 * @return 200 + JSON if there is data, otherwise 204 (noContent) or 406 "Not Acceptable when number is not corresponding 
 	 * @author S.Martens
 	 */
@@ -195,7 +195,7 @@ public class AttemptEndpoint {
 	
 	/**
 	 * GET times of one Attempt with id
-	 * Path = 'api/exams'
+	 * Path = 'api/attempts'
 	 * @return 200 + JSON if there is data, otherwise 204 (noContent) 
 	 * @author S.Martens
 	 */
@@ -219,7 +219,7 @@ public class AttemptEndpoint {
 	
 	/**
 	 * GET question of one Attempt with id and number
-	 * Path = 'api/exams'
+	 * Path = 'api/attempts'
 	 * @return 200 + JSON if there is data, or 204 (noContent), or 406 "Not Acceptable when number is not corresponding 
 	 * @author S.Martens
 	 */
@@ -246,7 +246,7 @@ public class AttemptEndpoint {
 	/**
 	 * GET answerList from givenAnswers corresponding with number relating to index
 	 *  ( number = index + 1 )
-	 * Path = 'api/exams'
+	 * Path = 'api/attempts'
 	 * @return 200 + JSON if there is data, or 204 (noContent), or 406 "Not Acceptable when number is not corresponding 
 	 * @author S.Martens
 	 */
@@ -270,7 +270,7 @@ public class AttemptEndpoint {
 	
 	/**
 	 * GET answer of question from one Attempt with id and number
-	 * Path = 'api/exams'
+	 * Path = 'api/attempts'
 	 * @return 200 + JSON if there is data, otherwise 204 (noContent), or 406 "Not Acceptable when number is not corresponding 
 	 * @author S.Martens 
 	 */
@@ -296,7 +296,7 @@ public class AttemptEndpoint {
 	/**
 	 * POST one Attempt. If no id included, a new entry is created, otherwise an existing one is overwritten.
 	 * Creator, correctAnswers & givenAnswers may not be included in JSON<br>
-	 * Path = 'api/exams'
+	 * Path = 'api/attempts'
 	 * @return 204 + JSON if there is data, otherwise 404, or 406 "Not Acceptable when id is not active 
 	 * @author S.Martens
 	 */
@@ -328,7 +328,7 @@ public class AttemptEndpoint {
 	/**
 	 * POST to end one Attempt.
 	 * Creator, correctAnswers & givenAnswers may not be included in JSON<br>
-	 * Path = 'api/exams'
+	 * Path = 'api/attempts'
 	 * @return 204 + JSON if there is data, otherwise 404, or 406 "Not Acceptable when id is not active 
 	 * @author S.Martens
 	 */
@@ -363,7 +363,7 @@ public class AttemptEndpoint {
 	 
 	/**
 	 * PUT for one Attempt for elapsed time a ping for increment of 10sec is given
-	 * Path = 'api/exams'
+	 * Path = 'api/attempts'
 	 * @return 204 + JSON if there is data, otherwise 404 
 	 * @author S.Martens
 	 */
@@ -384,7 +384,7 @@ public class AttemptEndpoint {
 	
 	/**
 	 * PUT for one Attempt for a marked number to add to marked question list
-	 * Path = 'api/exams'
+	 * Path = 'api/attempts'
 	 * @return 204 + JSON if there is data, otherwise 404,  or 406 "Not Acceptable when number is not allowed
 	 * @author S.Martens
 	 */
@@ -413,7 +413,7 @@ public class AttemptEndpoint {
 	
 	/**
 	 * PUT for one Attempt to un-marked a number to remove from the marked question list
-	 * Path = 'api/exams'
+	 * Path = 'api/attempts'
 	 * @return 204 + JSON if there is data, otherwise 404,  or 406 "Not Acceptable when number is not allowed
 	 * @author S.Martens
 	 */
@@ -442,7 +442,7 @@ public class AttemptEndpoint {
 	/**
 	 * PUT answerList from givenAnswers corresponding with number relating to index
 	 *  ( number = index + 1 )
-	 * Path = 'api/exams'
+	 * Path = 'api/attempts'
 	 * @return 200 + JSON if there is data, or 204 (noContent), or 406 "Not Acceptable when number is not corresponding 
 	 * @author S.Martens
 	 */
@@ -466,7 +466,7 @@ public class AttemptEndpoint {
 	
 	/**
 	 * POST one new Attempt selecting a questionList
-	 * Path = 'api/exams'
+	 * Path = 'api/attempts'
 	 * @return 204 + JSON id exam data, otherwise 404 
 	 */
 	@POST
