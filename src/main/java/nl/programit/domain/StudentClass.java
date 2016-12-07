@@ -45,8 +45,11 @@ public class StudentClass {
 	public void removeStudent(Student student) {
 		System.out.println("--------------------------------------------------------------------in de removestudent");
 		if (students.contains(student)) {
+			System.out.println("lengte van de list : " + this.students.size());
 			System.out.println("-in de removestudent Student gevonden" + student.getFirstName());
-		students.remove(student);
+		this.students.remove(student);
+		System.out.println("lengte van de list : " + this.students.size());
+	
 		
 		}
 	}

@@ -116,7 +116,8 @@ public class StudentClassEndpoint {
 		Student student = this.studentService.findById(studentId);
 		if (studentClass != null || student != null){
 			studentClass.removeStudent(student);
-//			this.studentClassService.save(studentClass);
+
+			this.studentClassService.save(studentClass);
 			return Response.ok().build();
 		}
 		return Response.status(Status.NOT_FOUND).build();
