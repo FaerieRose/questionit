@@ -9,7 +9,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
-import javax.persistence.OneToMany;
 
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
@@ -43,6 +42,22 @@ public class StudentClass {
 		}
 	}
 	
+	public void removeStudent(Student student) {
+		System.out.println("--------------------------------------------------------------------in de removestudent");
+		if (students.contains(student)) {
+			System.out.println("lengte van de list : " + this.students.size());
+			System.out.println("-in de removestudent Student gevonden" + student.getFirstName());
+		this.students.remove(student);
+		System.out.println("lengte van de list : " + this.students.size());
+	
+		
+		}
+	}
+	public void removeInstructor(Instructor instructor) {
+		if (instructors.contains(instructor)) {
+			instructors.remove(instructor);
+		}
+	}
 	public long getId() {
 		return id;
 	}
