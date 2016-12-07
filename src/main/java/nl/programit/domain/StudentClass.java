@@ -43,12 +43,15 @@ public class StudentClass {
 	}
 	
 	public void removeStudent(Student student) {
-		if (!students.contains(student)) {
+		System.out.println("--------------------------------------------------------------------in de removestudent");
+		if (students.contains(student)) {
+			System.out.println("-in de removestudent Student gevonden" + student.getFirstName());
 		students.remove(student);
+		
 		}
 	}
 	public void removeInstructor(Instructor instructor) {
-		if (!instructors.contains(instructor)) {
+		if (instructors.contains(instructor)) {
 			instructors.remove(instructor);
 		}
 	}

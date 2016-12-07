@@ -105,15 +105,18 @@ public class StudentClassEndpoint {
 		}
 	}
 	
-	@DELETE
-	@Path("{id}/student/{student_id}")
+//	@DELETE
+	@POST
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	@Path("{id}/studentremove/{student_id}")
 	public Response removeStudentFromClass(@PathParam("id") Long studentClassId, @PathParam("student_id") Long studentId, StudentClass studentClass2) {
-		System.out.println("in de removeStudentFromClass met studentClassId :" + studentClassId + " en studentId :" + studentId);
+		System.out.println("----------------------------------in de removeStudentFromClass met studentClassId :" + studentClassId + " en studentId :" + studentId);
 		StudentClass studentClass = this.studentClassService.findById(studentClassId);
 		Student student = this.studentService.findById(studentId);
 		if (studentClass != null || student != null){
 			studentClass.removeStudent(student);
-			this.studentClassService.save(studentClass);
+//			this.studentClassService.save(studentClass);
 			return Response.ok().build();
 		}
 		return Response.status(Status.NOT_FOUND).build();
@@ -141,6 +144,7 @@ public class StudentClassEndpoint {
 	@Path("{id}/student/{student_id}")
 	public Response postStudentToStudentClass(@PathParam("id") Long studentClassId, @PathParam("student_id") Long studentId, StudentClass studentClass2) {
 		StudentClass studentClass = this.studentClassService.findById(studentClassId);
+		System.out.println("===============in de postStudentToStudentClass=====================");
 		Student student = this.studentService.findById(studentId);
 		if (studentClass != null || student != null){
 			studentClass.addStudent(student);
