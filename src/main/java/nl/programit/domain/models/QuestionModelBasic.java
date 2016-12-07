@@ -34,7 +34,7 @@ public class QuestionModelBasic {
 	}
 
 	public String getExplantionAnswer() {
-		return this.question.getExplantionAnswer();
+		return this.question.getExplanationAnswer();
 	}
 
 	public String getTypeOfQuestion() {
