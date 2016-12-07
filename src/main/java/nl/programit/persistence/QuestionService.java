@@ -9,7 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 import nl.programit.domain.Question;
 import nl.programit.domain.models.QuestionModelBasic;
 import nl.programit.domain.models.QuestionModelName;
-import nl.programit.domain.models.QuestionModelExam;
+import nl.programit.domain.models.QuestionModelAttempt;
 import nl.programit.domain.models.QuestionModelExamReview;
 import nl.programit.domain.AnswerList;
 
@@ -106,12 +106,12 @@ public class QuestionService {
 	}
 	
 	/**
-	 * Converts a Question to QuestionModelExam to send only data needed to make exam
+	 * Converts a Question to QuestionModelAttempt to send only data needed to make exam
 	 * @param question the Question to be converted
-	 * @return QuestionModelExam version of the Question
+	 * @return QuestionModelAttempt version of the Question
 	 */
-	public QuestionModelExam convertToModelExam(Question question) {
-		QuestionModelExam result = new QuestionModelExam(question);
+	public QuestionModelAttempt convertToModelExam(Question question) {
+		QuestionModelAttempt result = new QuestionModelAttempt(question);
 		return result;
 	}
 	

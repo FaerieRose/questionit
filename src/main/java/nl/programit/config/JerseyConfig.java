@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 import nl.programit.rest.service.QuestionEndpoint;
 import nl.programit.rest.service.TestTemplateEndpoint;
 import nl.programit.rest.service.AnswerListEndpoint;
-import nl.programit.rest.service.ExamEndpoint;
+import nl.programit.rest.service.AttemptEndpoint;
 import nl.programit.rest.service.StudentEndpoint;
 import nl.programit.rest.service.StudentClassEndpoint;
 import nl.programit.rest.service.InstructorEndpoint;
@@ -20,7 +20,7 @@ public class JerseyConfig extends ResourceConfig {
 		register(AnswerListEndpoint.class);
 		register(QuestionEndpoint.class);
 		register(TestTemplateEndpoint.class);
-		register(ExamEndpoint.class);
+		register(AttemptEndpoint.class);
 		register(StudentEndpoint.class);
 		register(StudentClassEndpoint.class);
 		register(InstructorEndpoint.class);

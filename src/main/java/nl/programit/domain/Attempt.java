@@ -24,7 +24,7 @@ import org.hibernate.annotations.FetchMode;
  * @since 2016-11-03
 */
 @Entity
-public class Exam {
+public class Attempt {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private long id;
@@ -82,10 +82,10 @@ public class Exam {
 
 	// ---------------------------------------------------
 	// GETTER & SETTER for testTemplate
-	public TestTemplate getQuestionList() {
+	public TestTemplate getTestTemplate() {
 		return testTemplate;
 	}
-	public void setQuestionList(TestTemplate testTemplate) {
+	public void setTestTemplate(TestTemplate testTemplate) {
 		this.testTemplate = testTemplate;
 	}
 
