@@ -1,6 +1,6 @@
 package nl.programit.domain.models;
 
-import nl.programit.domain.models.QuestionModelExam;
+import nl.programit.domain.models.QuestionModelAttempt;
 import nl.programit.domain.AnswerList;
 import nl.programit.domain.Question;
 
@@ -11,7 +11,7 @@ import nl.programit.domain.Question;
  * @version v0.1
  * @since 2016-11-21
  */
-public class QuestionModelExamReview extends QuestionModelExam {
+public class QuestionModelExamReview extends QuestionModelAttempt {
 	private Question question;
 
 	public QuestionModelExamReview(Question question) {
@@ -24,6 +24,6 @@ public class QuestionModelExamReview extends QuestionModelExam {
 	}
 	
 	public String getExplanationAnswer() {
-		return this.question.getExplantionAnswer();
+		return this.question.getExplanationAnswer();
 	}
 }

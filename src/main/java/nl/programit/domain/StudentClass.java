@@ -3,7 +3,6 @@ package nl.programit.domain;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -24,19 +23,24 @@ public class StudentClass {
 	
 	private String name;
 	
-	@ManyToMany(fetch=FetchType.EAGER, cascade = CascadeType.ALL)
+	@ManyToMany(fetch=FetchType.EAGER)
+	@Fetch(FetchMode.SELECT)
 	private List<Instructor> instructors = new ArrayList<>();
 	
-	@OneToMany(fetch=FetchType.EAGER)
+	@ManyToMany(fetch=FetchType.EAGER)
 	@Fetch(FetchMode.SELECT)
 	private List<Student> students;
 	
 	public void addInstructor(Instructor instructor) {
-		instructors.add(instructor);
+		if (!instructors.contains(instructor)) {
+			instructors.add(instructor);
+		}
 	}
 	
 	public void addStudent(Student student) {
+		if (!students.contains(student)) {
 		students.add(student);
+		}
 	}
 	
 	public long getId() {

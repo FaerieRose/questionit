@@ -25,7 +25,7 @@ public enum EnumExams {
 	}
 	
 	// ---------------------------------------------------
-	// GETTER for Exam	
+	// GETTER for Attempt	
 	public String getExam() {
 		return this.exam;
 	}
