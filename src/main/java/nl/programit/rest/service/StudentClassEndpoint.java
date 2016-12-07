@@ -108,10 +108,12 @@ public class StudentClassEndpoint {
 	@DELETE
 	@Path("{id}/student/{student_id}")
 	public Response removeStudentFromClass(@PathParam("id") Long studentClassId, @PathParam("student_id") Long studentId, StudentClass studentClass2) {
+		System.out.println("in de removeStudentFromClass met studentClassId :" + studentClassId + " en studentId :" + studentId);
 		StudentClass studentClass = this.studentClassService.findById(studentClassId);
 		Student student = this.studentService.findById(studentId);
 		if (studentClass != null || student != null){
 			studentClass.removeStudent(student);
+			this.studentClassService.save(studentClass);
 			return Response.ok().build();
 		}
 		return Response.status(Status.NOT_FOUND).build();
