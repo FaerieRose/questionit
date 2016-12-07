@@ -157,38 +157,13 @@ public class ExamEndpoint {
 			return Response.noContent().build();
 		}
 		List<AnswerList> givenAnswers = this.examService.findById(id).getGivenAnswers();
-		List<AnswerList> correctAnswers = new ArrayList<>(); 
-		QuestionList questionList = this.examService.findById(id).getQuestionList();
-		List<Question> listQuestions = questionList.getQuestions();
-		for (Question correctQuestion : listQuestions){
-			correctAnswers.add(correctQuestion.getCorrectAnswers());
-		}
+		List<AnswerList> correctAnswers = this.examService.supplyCorrectAnswers(id);
 		if (givenAnswers.size() != correctAnswers.size()){
 			return Response.notAcceptable(null).build();
 		}
 	
-		List<Integer> result = new ArrayList<>();
-		int counter = 1;
-		int trueCountGiven = 0;
-		int trueCountCorrect = 0;
-		for (int k = 0; k < givenAnswers.size() ; k++) {
-			trueCountGiven = 0;
-			trueCountCorrect = 0;
-			for (int i = 0; i < givenAnswers.get(k).getAnswers().size(); i++) {
-			    if (givenAnswers.get(k).getAnswers().get(i) ) {
-			        trueCountGiven++;
-			    }
-			}
-		    for (int j = 0; j < correctAnswers.get(k).getAnswers().size(); j++) {
-			    if (correctAnswers.get(k).getAnswers().get(j) ) {
-			        trueCountCorrect++;	
-			    }
-			}
-		    if (trueCountGiven != trueCountCorrect){
-				result.add(counter);
-			}
-		    counter++;
-		}
+		List<Integer> result = this.examService.supplyInvalidAnsweredQuestionsStream(givenAnswers, correctAnswers);
+		
 		return Response.ok(result).build();	
 	}
 	
@@ -291,6 +266,60 @@ public class ExamEndpoint {
 		} else {
 			return Response.noContent().build();
 		}
+	}
+	
+	/**
+	 * GET list of scores of answer of questions from one Exam with id
+	 * Path = 'api/exams'
+	 * @return 200 + JSON if there is data, otherwise 204 (noContent), or 406 "Not Acceptable when number is not corresponding 
+	 * @author S.Martens 
+	 */
+	@GET
+	@Produces(MediaType.APPLICATION_JSON)
+	@Path("{id}/scoresList")
+	public Response getScores(@PathParam("id") Long id) {
+		if (this.examService.findById(id) == null || this.examService.findById(id).getQuestionList() == null || 
+				this.examService.findById(id).getQuestionList().getQuestions() == null){
+			return Response.noContent().build();
+		}
+		
+		List<AnswerList> givenAnswers = this.examService.findById(id).getGivenAnswers();
+		List<AnswerList> correctAnswers = this.examService.supplyCorrectAnswers(id);
+		if (givenAnswers.size() != correctAnswers.size()){
+			return Response.notAcceptable(null).build();
+		}
+		List<Boolean> scoresList = this.examService.supplyScoreList(givenAnswers, correctAnswers);
+		
+		return Response.ok(scoresList).build();
+		
+	}
+	
+	/**
+	 * GET rate of scores of answer of questions from one Exam with id
+	 * Path = 'api/exams'
+	 * @return 200 + JSON if there is data, otherwise 204 (noContent), or 406 "Not Acceptable when number is not corresponding 
+	 * @author S.Martens 
+	 */
+	@GET
+	@Produces(MediaType.APPLICATION_JSON)
+	@Path("{id}/scoresRate")
+	public Response getRate(@PathParam("id") Long id) {
+		if (this.examService.findById(id) == null || this.examService.findById(id).getQuestionList() == null || 
+				this.examService.findById(id).getQuestionList().getQuestions() == null){
+			return Response.noContent().build();
+		}
+		
+		List<AnswerList> givenAnswers = this.examService.findById(id).getGivenAnswers();
+		List<AnswerList> correctAnswers = this.examService.supplyCorrectAnswers(id);
+		if (givenAnswers.size() != correctAnswers.size()){
+			return Response.notAcceptable(null).build();
+		}
+		
+		List<Boolean> scoresList = this.examService.supplyScoreList(givenAnswers, correctAnswers); 
+		double scorePercentages = this.examService.calculatePercentageStream(scoresList);
+		 
+		return Response.ok(scorePercentages).build();
+		
 	}
 	
 	/**
