@@ -107,7 +107,7 @@ public class StudentClassEndpoint {
 	
 	@DELETE
 	@Path("{id}/student/{student_id}")
-	public Response removeStudent(@PathParam("id") Long studentClassId, @PathParam("student_id") Long studentId, StudentClass studentClass2) {
+	public Response removeStudentFromClass(@PathParam("id") Long studentClassId, @PathParam("student_id") Long studentId, StudentClass studentClass2) {
 		StudentClass studentClass = this.studentClassService.findById(studentClassId);
 		Student student = this.studentService.findById(studentId);
 		if (studentClass != null || student != null){
