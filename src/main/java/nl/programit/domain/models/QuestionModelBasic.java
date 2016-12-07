@@ -33,7 +33,7 @@ public class QuestionModelBasic {
 		return this.question.getQuestion();
 	}
 
-	public String getExplantionAnswer() {
+	public String getExplanationAnswer() {
 		return this.question.getExplanationAnswer();
 	}
 
