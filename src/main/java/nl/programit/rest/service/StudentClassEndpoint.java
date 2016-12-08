@@ -58,8 +58,8 @@ public class StudentClassEndpoint {
 
     @GET
 	@Produces(MediaType.APPLICATION_JSON)
-	@Path("{id}")
-	public Response getStudentClassById(@PathParam("id") Long id) {
+	@Path("{studentclass_id}")
+	public Response getStudentClassById(@PathParam("studentclass_id") Long id) {
     	StudentClass studentClass = this.studentClassService.findById(id);
 		if (studentClass != null) {
 			return Response.ok(this.studentClassService.convertToModelBasic(studentClass)).build();
@@ -95,8 +95,8 @@ public class StudentClassEndpoint {
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	@Path("{id}/instructorremove/{instructor_id}")
-	public Response removeInstructorFromClass(@PathParam("id") Long studentClassId, @PathParam("instructor_id") Long instructorId, StudentClass studentClass2) {
+	@Path("{studentclass_id}/removeinstructorfromclass/{instructor_id}")
+	public Response removeInstructorFromClass(@PathParam("studentclass_id") Long studentClassId, @PathParam("instructor_id") Long instructorId, StudentClass studentClass2) {
 		System.out.println("----------------------------------in de removeStudentFromClass met studentClassId :" + studentClassId + " en instructorId :" + instructorId);
 		StudentClass studentClass = this.studentClassService.findById(studentClassId);
 		Instructor instructor = this.instructorService.findById(instructorId);
@@ -113,8 +113,8 @@ public class StudentClassEndpoint {
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	@Path("{id}/studentremove/{student_id}")
-	public Response removeStudentFromClass(@PathParam("id") Long studentClassId, @PathParam("student_id") Long studentId, StudentClass studentClass2) {
+	@Path("{studentclass_id}/studentremove/{student_id}")
+	public Response removeStudentFromClass(@PathParam("studentclass_id") Long studentClassId, @PathParam("student_id") Long studentId, StudentClass studentClass2) {
 		System.out.println("----------------------------------in de removeStudentFromClass met studentClassId :" + studentClassId + " en studentId :" + studentId);
 		StudentClass studentClass = this.studentClassService.findById(studentClassId);
 		Student student = this.studentService.findById(studentId);
@@ -131,8 +131,8 @@ public class StudentClassEndpoint {
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	@Path("{id}/instructor/{instructor_id}")
-	public Response postInstructorToStudentClass(@PathParam("id") Long studentClassId, @PathParam("instructor_id") Long instructorId, StudentClass studentClass2) {
+	@Path("{studentclass_id}/instructor/{instructor_id}")
+	public Response postInstructorToStudentClass(@PathParam("studentclass_id") Long studentClassId, @PathParam("instructor_id") Long instructorId, StudentClass studentClass2) {
 		StudentClass studentClass = this.studentClassService.findById(studentClassId);
 		Instructor instructor = this.instructorService.findById(instructorId);
 		if (studentClass != null || instructor != null){
@@ -146,8 +146,8 @@ public class StudentClassEndpoint {
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	@Path("{id}/student/{student_id}")
-	public Response postStudentToStudentClass(@PathParam("id") Long studentClassId, @PathParam("student_id") Long studentId, StudentClass studentClass2) {
+	@Path("{studentclass_id}/student/{student_id}")
+	public Response postStudentToStudentClass(@PathParam("studentclass_id") Long studentClassId, @PathParam("student_id") Long studentId, StudentClass studentClass2) {
 		StudentClass studentClass = this.studentClassService.findById(studentClassId);
 		System.out.println("===============in de postStudentToStudentClass=====================");
 		Student student = this.studentService.findById(studentId);
