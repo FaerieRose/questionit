@@ -54,8 +54,14 @@ public class StudentClass {
 		}
 	}
 	public void removeInstructor(Instructor instructor) {
+		System.out.println("--------------------------------------------------------------------in de removeInstructor");
 		if (instructors.contains(instructor)) {
-			instructors.remove(instructor);
+			System.out.println("lengte van de list : " + this.instructors.size());
+			System.out.println("-in de removeInstructor Instructor gevonden" + instructor.getFirstName());
+		this.instructors.remove(instructor);
+		System.out.println("lengte van de list : " + this.instructors.size());
+	
+		
 		}
 	}
 	public long getId() {

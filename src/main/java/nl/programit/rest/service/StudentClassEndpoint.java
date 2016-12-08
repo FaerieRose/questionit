@@ -92,17 +92,21 @@ public class StudentClassEndpoint {
 	 * 
 	 * @return 200 if there was data, otherwise 404
 	 */
-	@DELETE
-	@Path("{id}/instructor/{instructor_id}")
-	public Response removeInstructor(@PathParam("id") Long studentClassId, @PathParam("instructor_id") Long instructorId, StudentClass studentClass2) {
+	@POST
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	@Path("{id}/instructorremove/{instructor_id}")
+	public Response removeInstructorFromClass(@PathParam("id") Long studentClassId, @PathParam("instructor_id") Long instructorId, StudentClass studentClass2) {
+		System.out.println("----------------------------------in de removeStudentFromClass met studentClassId :" + studentClassId + " en instructorId :" + instructorId);
 		StudentClass studentClass = this.studentClassService.findById(studentClassId);
 		Instructor instructor = this.instructorService.findById(instructorId);
 		if (studentClass != null || instructor != null){
 			studentClass.removeInstructor(instructor);
+
+			this.studentClassService.save(studentClass);
 			return Response.ok().build();
-		} else {
-			return Response.status(Status.NOT_FOUND).build();
 		}
+		return Response.status(Status.NOT_FOUND).build();
 	}
 	
 //	@DELETE
