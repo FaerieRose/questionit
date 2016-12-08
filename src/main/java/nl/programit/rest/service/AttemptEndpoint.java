@@ -94,7 +94,7 @@ public class AttemptEndpoint {
 	 */
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
-	@Path("{id}/questionLists")
+	@Path("{id}/TestTemplate")
 	public Response getTestTemplate(@PathParam("id") Long id) {
 		TestTemplate result = this.attemptService.findById(id).getTestTemplate();
 		if (result != null) {
