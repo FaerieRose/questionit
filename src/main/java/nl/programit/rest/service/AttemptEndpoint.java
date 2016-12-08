@@ -328,10 +328,10 @@ public class AttemptEndpoint {
 	}
 	
 	/**
-	 * POST one Attempt. If no id included, a new entry is created, otherwise an existing one is overwritten.
+	 * POST to start one Attempt. If no id included, a new entry is created, otherwise an existing one is overwritten.
 	 * Creator, correctAnswers & givenAnswers may not be included in JSON<br>
 	 * Path = 'api/attempts'
-	 * @return 204 + JSON if there is data, otherwise 404, or 406 "Not Acceptable when id is not active 
+	 * @return 202 + JSON if there is data, otherwise 204 (noContent)
 	 * @author S.Martens
 	 */
 	@POST
@@ -363,7 +363,7 @@ public class AttemptEndpoint {
 	 * POST to end one Attempt.
 	 * Creator, correctAnswers & givenAnswers may not be included in JSON<br>
 	 * Path = 'api/attempts'
-	 * @return 204 + JSON if there is data, otherwise 404, or 406 "Not Acceptable when id is not active 
+	 * @return 202 + JSON if there is data, otherwise 204, or 406 "Not Acceptable when id is not active 
 	 * @author S.Martens
 	 */
 	@POST
@@ -398,7 +398,7 @@ public class AttemptEndpoint {
 	/**
 	 * PUT for one Attempt for elapsed time a ping for increment of 10sec is given
 	 * Path = 'api/attempts'
-	 * @return 204 + JSON if there is data, otherwise 404 
+	 * @return 202 + JSON if there is data, otherwise 204 
 	 * @author S.Martens
 	 */
 	@PUT
@@ -419,7 +419,7 @@ public class AttemptEndpoint {
 	/**
 	 * PUT for one Attempt for a marked number to add to marked question list
 	 * Path = 'api/attempts'
-	 * @return 204 + JSON if there is data, otherwise 404,  or 406 "Not Acceptable when number is not allowed
+	 * @return 202 + JSON if there is data, otherwise 204,  or 406 "Not Acceptable when number is not allowed
 	 * @author S.Martens
 	 */
 	@PUT
@@ -448,7 +448,7 @@ public class AttemptEndpoint {
 	/**
 	 * PUT for one Attempt to un-marked a number to remove from the marked question list
 	 * Path = 'api/attempts'
-	 * @return 204 + JSON if there is data, otherwise 404,  or 406 "Not Acceptable when number is not allowed
+	 * @return 202 + JSON if there is data, otherwise 204,  or 406 "Not Acceptable when number is not allowed
 	 * @author S.Martens
 	 */
 	@PUT
@@ -499,9 +499,9 @@ public class AttemptEndpoint {
 	}
 	
 	/**
-	 * POST one new Attempt selecting a questionList
+	 * POST one new Attempt 
 	 * Path = 'api/attempts'
-	 * @return 204 + JSON id exam data, otherwise 404 
+	 * @return 202 + JSON attempt data
 	 */
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
