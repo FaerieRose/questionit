@@ -61,4 +61,8 @@ public class AnswerList {
 	public void setAnswer(boolean answer, int index) {
 		this.answers.set(index, answer);
 	}
+	
+	public Integer trueCount(){
+		return (int) this.getAnswers().stream().filter((x) -> x.booleanValue()).count();
+	}
 }

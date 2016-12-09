@@ -11,10 +11,10 @@ import nl.programit.domain.Question;
  * @version v0.1
  * @since 2016-11-04
  */
-public class QuestionModelExam {
+public class QuestionModelAttempt {
 	private Question question;
 	
-	public QuestionModelExam(Question question) {
+	public QuestionModelAttempt(Question question) {
 		this.question = question;
 	}
 	

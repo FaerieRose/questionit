@@ -19,15 +19,15 @@ public enum EnumLanguages {
 	JAVA ("Java"){
 		public ArrayList<String> getLevels(){
 			ArrayList<String> levels = new ArrayList<String>();
-			levels.add("OCA");
-			levels.add("OCP");
+			levels.add(EnumExams.OCA.toString());
+			levels.add(EnumExams.OCP.toString());
 			return levels;
 		}
 	}, 
 	HTML_CSS_JS ("HTML, CSS, JavaScript"){
 		public ArrayList<String> getLevels(){
 			ArrayList<String> levels = new ArrayList<String>();
-			levels.add("70_480");
+			levels.add(EnumExams._70_480.toString());
 			return levels;
 		}
 	}, 
@@ -35,7 +35,7 @@ public enum EnumLanguages {
 	C_SHARP ("C#"){
 		public ArrayList<String> getLevels(){
 			ArrayList<String> levels = new ArrayList<String>();
-			levels.add("70_483");
+			levels.add(EnumExams._70_483.toString());
 			return levels;
 		}
 	};

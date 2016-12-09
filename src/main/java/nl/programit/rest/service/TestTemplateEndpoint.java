@@ -12,23 +12,23 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import nl.programit.domain.Instructor;
 import nl.programit.domain.Question;
-import nl.programit.domain.QuestionList;
+import nl.programit.domain.TestTemplate;
 import nl.programit.persistence.InstructorService;
 import nl.programit.persistence.QuestionService;
-import nl.programit.persistence.QuestionListService;
+import nl.programit.persistence.TestTemplateService;
 
 /**
- * Endpoint for serveral ReST services to GET, POST and DELETE QuestionList
+ * Endpoint for serveral ReST services to GET, POST and DELETE TestTemplate
  * 
  * @author FaerieRose
  * @version v0.1
  * @since 2016-11-04
  */
-@Path("questionlists")
-public class QuestionListEndpoint {
+@Path("testtemplates")
+public class TestTemplateEndpoint {
 
 	@Autowired
-	QuestionListService questionListService;
+	TestTemplateService testTemplateService;
 
 	@Autowired
 	QuestionService questionService;
@@ -38,13 +38,13 @@ public class QuestionListEndpoint {
 	
 	/**
 	 * GET all Questions<br>
-	 * Path = 'api/questionlists'
+	 * Path = 'api/testtemplates'
 	 * @return 200 + JSON if there is data, otherwise 204 (noContent) 
 	 */
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response listQuestionLists() {
-		Iterable<QuestionList> result = this.questionListService.findAll();
+	public Response getTestTemplateAll() {
+		Iterable<TestTemplate> result = this.testTemplateService.findAll();
 		if (result != null) {
 			return Response.ok(result).build();
 		} else {
@@ -53,15 +53,15 @@ public class QuestionListEndpoint {
 	}	
 	
 	/**
-	 * GET one QuestionList with specified id<br>
-	 * Path = 'api/questionlists/{id}'
+	 * GET one TestTemplate with specified id<br>
+	 * Path = 'api/testtemplates/{id}'
 	 * @return 200 + JSON if there is data, otherwise 204 (noContent)
 	 */
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	@Path("{id}")	
-	public Response oneQuestionList(@PathParam("id") Long id) {
-		QuestionList result = this.questionListService.findById(id);
+	public Response getTestTemplateById(@PathParam("id") Long id) {
+		TestTemplate result = this.testTemplateService.findById(id);
 		if (result != null) {
 			return Response.ok(result).build();
 		} else {
@@ -70,33 +70,33 @@ public class QuestionListEndpoint {
 	}
 
 	/**
-	 * POST one QuestionList. If no id included, a new entry is created, otherwise an existing one
+	 * POST one TestTemplate. If no id included, a new entry is created, otherwise an existing one
 	 * is overwritten. Questions and Creator must be excluded from JSON<br>
-	 * Path = 'api/questionlists'
+	 * Path = 'api/testtemplates'
 	 * @return 200 + JSON if there is data, otherwise 404 
 	 */
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response postQuestionList(QuestionList questionList) {
-		this.questionListService.save(questionList);
-		return Response.accepted(questionList).build();
+	public Response postTestTemplate(TestTemplate testTemplate) {
+		this.testTemplateService.save(testTemplate);
+		return Response.accepted(testTemplate).build();
 	}
 	
 	/**
-	 * POST a new Question. The Question is created and attached to the QuestionList with the specified id.<br>
-	 * Path = 'api/questionlists/{id}/question'
+	 * POST a new Question. The Question is created and attached to the TestTemplate with the specified id.<br>
+	 * Path = 'api/testtemplates/{id}/question'
 	 * @return 200 + JSON if there is data, otherwise 204 
 	 */
 	@POST
 	@Produces(MediaType.APPLICATION_JSON)
 	@Path("{id}/question")
-	public Response addNewQuestionToQuestionList(@PathParam("id") Long id, Question question) {
-		QuestionList questionList = this.questionListService.findById(id);
-		if (questionList != null) {
+	public Response addNewQuestionToTestTemplate(@PathParam("id") Long id, Question question) {
+		TestTemplate testTemplate = this.testTemplateService.findById(id);
+		if (testTemplate != null) {
 			this.questionService.save(question);
-			questionList.addQuestion(question);
-			this.questionListService.save(questionList);
+			testTemplate.addQuestion(question);
+			this.testTemplateService.save(testTemplate);
 	        return Response.accepted(question).build();
 		} else {
 			return Response.noContent().build();
@@ -104,20 +104,20 @@ public class QuestionListEndpoint {
 	}
 	
 	/**
-	 * POST an existing Instructor id. If the Instructor exists it is attached to the QuestionList with the specified id.<br>
-	 * Path = 'api/questionlists/{id}/instructor/{instructor_id}'
+	 * POST an existing Instructor id. If the Instructor exists it is attached to the TestTemplate with the specified id.<br>
+	 * Path = 'api/testtemplates/{id}/instructor/{instructor_id}'
 	 * @return 200 + JSON if there is data, otherwise 204 
 	 */
 	@POST
 	@Produces(MediaType.APPLICATION_JSON)
 	@Path("{id}/instructor/{instructor_id}")
-	public Response addExistingInstructorToQuestionList(@PathParam("id") Long id, @PathParam("instructor_id") Long instructor_id) {
-		QuestionList questionList = this.questionListService.findById(id);
-		if (questionList != null) {
+	public Response addExistingInstructorToTestTemplate(@PathParam("id") Long id, @PathParam("instructor_id") Long instructor_id) {
+		TestTemplate testTemplate = this.testTemplateService.findById(id);
+		if (testTemplate != null) {
 			Instructor instructor = this.instructorService.findById(instructor_id);
 			if (instructor != null) {
-				questionList.setCreator(instructor);
-				this.questionListService.save(questionList);
+				testTemplate.setCreator(instructor);
+				this.testTemplateService.save(testTemplate);
 		        return Response.accepted(instructor).build();
 			}
 		}
@@ -125,20 +125,20 @@ public class QuestionListEndpoint {
 	}
 	
 	/**
-	 * POST a existing Question id. If the Question exists it is attached to the QuestionList with the specified id.<br>
-	 * Path = 'api/questionlists/{id}/question/{question_id}'
+	 * POST a existing Question id. If the Question exists it is attached to the TestTemplate with the specified id.<br>
+	 * Path = 'api/testtemplates/{id}/question/{question_id}'
 	 * @return 200 + JSON if there is data, otherwise 204 
 	 */
 	@POST
 	@Produces(MediaType.APPLICATION_JSON)
 	@Path("{id}/question/{question_id}")
-	public Response addExistingQuestionToQuestionList(@PathParam("id") Long id, @PathParam("question_id") Long question_id) {
-		QuestionList questionList = this.questionListService.findById(id);
-		if (questionList != null) {
+	public Response addExistingQuestionToTestTemplate(@PathParam("id") Long id, @PathParam("question_id") Long question_id) {
+		TestTemplate testTemplate = this.testTemplateService.findById(id);
+		if (testTemplate != null) {
 			Question question = this.questionService.findById(question_id);
 			if (question != null) {
-				questionList.addQuestion(question);
-				this.questionListService.save(questionList);
+				testTemplate.addQuestion(question);
+				this.testTemplateService.save(testTemplate);
 		        return Response.accepted(question).build();
 			}
 		}

@@ -4,10 +4,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import nl.programit.domain.QuestionList;
+import nl.programit.domain.TestTemplate;
 
 /**
- * This class contains several methods to interact with QuestionListRepository
+ * This class contains several methods to interact with TestTemplateRepository
  * to add, get or remove data from the database
  * 
  * @author FaerieRose
@@ -16,38 +16,38 @@ import nl.programit.domain.QuestionList;
  */
 @Service
 @Transactional
-public class QuestionListService {
+public class TestTemplateService {
 
 	@Autowired
-	private QuestionListRepository questionListRepository;
+	private TestTemplateRepository testTemplateRepository;
 
 
 	/**
 	 * Saves a questionlist to the database. If no id included, a new entry
 	 * is created, otherwise an existing one is overwritten
-	 * @param questionList the QuestionList to be saved
+	 * @param testTemplate the TestTemplate to be saved
 	 */
-	public void save(QuestionList questionList) {
-		this.questionListRepository.save(questionList);
+	public void save(TestTemplate testTemplate) {
+		this.testTemplateRepository.save(testTemplate);
 	}
 	
 	/**
 	 * Retrieves all questionLists stored in the database 
 	 * @return all questionLists
 	 */	
-	public Iterable<QuestionList> findAll() {
-		Iterable<QuestionList> result = this.questionListRepository.findAll();
+	public Iterable<TestTemplate> findAll() {
+		Iterable<TestTemplate> result = this.testTemplateRepository.findAll();
 		return result;
 	}
 	
 	/**
 	 * Retrieves one Questionlist from the database with specified id. If the id
 	 * does not exist, null is returned 
-	 * @param id the id of the QuestionList
-	 * @return requested QuestionList or null if it does not exist
+	 * @param id the id of the TestTemplate
+	 * @return requested TestTemplate or null if it does not exist
 	 */
-	public QuestionList findById(long id) {
-		QuestionList result = this.questionListRepository.findOne(id);
+	public TestTemplate findById(long id) {
+		TestTemplate result = this.testTemplateRepository.findOne(id);
 		return result;
 	}
 }

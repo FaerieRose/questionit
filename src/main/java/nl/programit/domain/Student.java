@@ -18,15 +18,17 @@ public class Student extends Person implements Serializable{
 
 	@OneToMany(fetch=FetchType.EAGER)
 	@Fetch(FetchMode.SELECT)
-	private List<Exam> exams = new ArrayList<>();
+	private List<Attempt> attempts = new ArrayList<>();
 
-	public List<Exam> getExams() {
-		return exams;
+	public List<Attempt> getAttempts() {
+		return attempts;
 	}
 
-	public void setExams(List<Exam> exams) {
-		this.exams = exams;
+	public void setAttempts(List<Attempt> attempts) {
+		this.attempts = attempts;
 	}
+
+
 
 
 }
