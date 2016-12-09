@@ -41,4 +41,12 @@ public class QuestionModelExam {
 	public String getTypeOfQuestion() {
 		return this.question.getTypeOfQuestion();
 	}
+	
+	public int getNumberOfCorrectAnswers() {
+		int count = 0;
+		for (boolean b : this.question.getCorrectAnswers().getAnswers()) {
+			if (b) count ++;
+		}
+		return count;
+	}
 }
