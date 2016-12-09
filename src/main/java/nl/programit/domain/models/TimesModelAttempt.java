@@ -3,16 +3,16 @@ package nl.programit.domain.models;
 import java.util.Date;
 
 /**
- * A model for exam times
+ * A model for attempt times
  * 
  * @author S.Martens
  * @version v0.1
  * @since 2016-11-28
  */
 
-public class TimesModelExam {
+public class TimesModelAttempt {
 	private Date creationDateTime;
-	private int examTimeInMinutes;
+	private int attemptTimeInMinutes;
 	private Date startDateTime;
 	private Date endDateTime;
 	private int timeToCompletInSeconds;
@@ -23,11 +23,11 @@ public class TimesModelExam {
 	public void setCreationDateTime(Date creationDateTime) {
 		this.creationDateTime = creationDateTime;
 	}
-	public int getExamTimeInMinutes() {
-		return examTimeInMinutes;
+	public int getAttemptTimeInMinutes() {
+		return attemptTimeInMinutes;
 	}
-	public void setExamTimeInMinutes(int examTimeInMinutes) {
-		this.examTimeInMinutes = examTimeInMinutes;
+	public void setAttemptTimeInMinutes(int attemptTimeInMinutes) {
+		this.attemptTimeInMinutes = attemptTimeInMinutes;
 	}
 	public Date getStartDateTime() {
 		return startDateTime;

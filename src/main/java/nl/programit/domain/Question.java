@@ -28,7 +28,7 @@ public class Question extends QuestionTemplate implements Serializable {
 	private static final long serialVersionUID = 7115929504873439448L;
 
 	private String question;
-	private String explantionAnswer;
+	private String explanationAnswer;
 	private String typeOfQuestion;
 	private boolean isObsolete;
 	
@@ -81,11 +81,11 @@ public class Question extends QuestionTemplate implements Serializable {
 	
 	// ---------------------------------------------------
 	// GETTER & SETTER for explanationAnswer
-	public String getExplantionAnswer() {
-		return explantionAnswer;
+	public String getExplanationAnswer() {
+		return explanationAnswer;
 	}
-	public void setExplantionAnswer(String explantionAnswer) {
-		this.explantionAnswer = explantionAnswer;
+	public void setExplanationAnswer(String explantionAnswer) {
+		this.explanationAnswer = explantionAnswer;
 	}
 	
 	// ---------------------------------------------------

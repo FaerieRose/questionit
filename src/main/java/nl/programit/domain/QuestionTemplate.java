@@ -15,7 +15,7 @@ import org.hibernate.annotations.FetchMode;
 //See: https://en.wikibooks.org/wiki/Java_Persistence/Inheritance look for Mapped Superclasses
 
 /**
- * Parent class for Question and QuestionList.
+ * Parent class for Question and TestTemplate.
  * 
  * @author FaerieRose
  * @version v0.1
