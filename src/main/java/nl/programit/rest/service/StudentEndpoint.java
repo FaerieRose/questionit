@@ -14,7 +14,9 @@ import javax.ws.rs.core.Response.Status;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import nl.programit.domain.Instructor;
 import nl.programit.domain.Student;
+import nl.programit.domain.StudentClass;
 import nl.programit.persistence.StudentService;
 
 @Path("students")
@@ -56,16 +58,20 @@ public class StudentEndpoint {
 	 * 
 	 * @return 200 if there was data, otherwise 404
 	 */
-	@DELETE
-	@Path("{id}")
-	public Response removeStudent(@PathParam("id") Long id) {
-		Student student = this.studentService.findById(id);
+	@POST
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	@Path("/removestudent/{student_id}")
+	public Response removeStudent(@PathParam("student_id") Long studentId) {
+		Student student = this.studentService.findById(studentId);
 		if (student != null) {
-			this.studentService.deleteById(id);
+			this.studentService.deleteById(studentId);
 			return Response.ok().build();
 		} else {
 			return Response.status(Status.NOT_FOUND).build();
 		}
 	}
+	
+
 
 }

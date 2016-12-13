@@ -18,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import nl.programit.domain.Instructor;
+import nl.programit.domain.Student;
 import nl.programit.domain.models.InstructorModelBasic;
 import nl.programit.persistence.InstructorService;
 
@@ -68,12 +69,16 @@ public class InstructorEndpoint {
 	 * 
 	 * @return 200 if there was data, otherwise 404
 	 */
-	@DELETE
-	@Path("{id}")
-	public Response removeInstructor(@PathParam("id") Long id) {
-		Instructor instructor = this.instructorService.findById(id);
+
+	
+	@POST
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	@Path("/removeinstructor/{instructor_id}")
+	public Response removeStudent(@PathParam("instructor_id") Long instructorId) {
+		Instructor instructor = this.instructorService.findById(instructorId);
 		if (instructor != null) {
-			this.instructorService.deleteById(id);
+			this.instructorService.deleteById(instructorId);
 			return Response.ok().build();
 		} else {
 			return Response.status(Status.NOT_FOUND).build();
