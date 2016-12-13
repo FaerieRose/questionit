@@ -94,7 +94,7 @@ public class AttemptEndpoint {
 	 */
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
-	@Path("{id}/questionLists")
+	@Path("{id}/TestTemplate")
 	public Response getTestTemplate(@PathParam("id") Long id) {
 		TestTemplate result = this.attemptService.findById(id).getTestTemplate();
 		if (result != null) {
@@ -167,28 +167,8 @@ public class AttemptEndpoint {
 			return Response.notAcceptable(null).build();
 		}
 	
-		List<Integer> result = new ArrayList<>();
-		int counter = 1;
-		int trueCountGiven = 0;
-		int trueCountCorrect = 0;
-		for (int k = 0; k < givenAnswers.size() ; k++) {
-			trueCountGiven = 0;
-			trueCountCorrect = 0;
-			for (int i = 0; i < givenAnswers.get(k).getAnswers().size(); i++) {
-			    if (givenAnswers.get(k).getAnswers().get(i) ) {
-			        trueCountGiven++;
-			    }
-			}
-		    for (int j = 0; j < correctAnswers.get(k).getAnswers().size(); j++) {
-			    if (correctAnswers.get(k).getAnswers().get(j) ) {
-			        trueCountCorrect++;	
-			    }
-			}
-		    if (trueCountGiven != trueCountCorrect){
-				result.add(counter);
-			}
-		    counter++;
-		}
+		List<Integer> result = this.attemptService.supplyInvalidAnsweredQuestionsStream(givenAnswers, correctAnswers);
+		
 		return Response.ok(result).build();	
 	}
 	
@@ -294,16 +274,70 @@ public class AttemptEndpoint {
 	}
 	
 	/**
-	 * POST one Attempt. If no id included, a new entry is created, otherwise an existing one is overwritten.
+	 * GET list of scores of answer of questions from one Attempt with id
+	 * Path = 'api/attempts'
+	 * @return 200 + JSON if there is data, otherwise 204 (noContent), or 406 "Not Acceptable when number is not corresponding 
+	 * @author S.Martens 
+	 */
+	@GET
+	@Produces(MediaType.APPLICATION_JSON)
+	@Path("{id}/scoresList")
+	public Response getScores(@PathParam("id") Long id) {
+		if (this.attemptService.findById(id) == null || this.attemptService.findById(id).getTestTemplate() == null || 
+				this.attemptService.findById(id).getTestTemplate().getQuestions() == null){
+			return Response.noContent().build();
+		}
+		
+		List<AnswerList> givenAnswers = this.attemptService.findById(id).getGivenAnswers();
+		List<AnswerList> correctAnswers = this.attemptService.supplyCorrectAnswers(id);
+		if (givenAnswers.size() != correctAnswers.size()){
+			return Response.notAcceptable(null).build();
+		}
+		List<Boolean> scoresList = this.attemptService.supplyScoreList(givenAnswers, correctAnswers);
+		
+		return Response.ok(scoresList).build();
+		
+	}
+	
+	/**
+	 * GET rate of scores of answer of questions from one Exam with id
+	 * Path = 'api/attempts'
+	 * @return 200 + JSON if there is data, otherwise 204 (noContent), or 406 "Not Acceptable when number is not corresponding 
+	 * @author S.Martens 
+	 */
+	@GET
+	@Produces(MediaType.APPLICATION_JSON)
+	@Path("{id}/scoresRate")
+	public Response getRate(@PathParam("id") Long id) {
+		if (this.attemptService.findById(id) == null || this.attemptService.findById(id).getTestTemplate() == null || 
+				this.attemptService.findById(id).getTestTemplate().getQuestions() == null){
+			return Response.noContent().build();
+		}
+		
+		List<AnswerList> givenAnswers = this.attemptService.findById(id).getGivenAnswers();
+		List<AnswerList> correctAnswers = this.attemptService.supplyCorrectAnswers(id);
+		if (givenAnswers.size() != correctAnswers.size()){
+			return Response.notAcceptable(null).build();
+		}
+		
+		List<Boolean> scoresList = this.attemptService.supplyScoreList(givenAnswers, correctAnswers); 
+		double scorePercentages = this.attemptService.calculatePercentageStream(scoresList);
+		 
+		return Response.ok(scorePercentages).build();
+		
+	}
+	
+	/**
+	 * POST to start one Attempt. If no id included, a new entry is created, otherwise an existing one is overwritten.
 	 * Creator, correctAnswers & givenAnswers may not be included in JSON<br>
 	 * Path = 'api/attempts'
-	 * @return 204 + JSON if there is data, otherwise 404, or 406 "Not Acceptable when id is not active 
+	 * @return 202 + JSON if there is data, otherwise 204 (noContent)
 	 * @author S.Martens
 	 */
 	@POST
 	@Produces(MediaType.APPLICATION_JSON)
-	@Path("start/{questionlist_id}/{student_id}")
-	public Response postNewAttempt(@PathParam("questionlist_id") Long ql_id, @PathParam("student_id") Long s_id) {
+	@Path("start/{questionTemplate_id}/{student_id}")
+	public Response postNewAttempt(@PathParam("questionTemplate_id") Long ql_id, @PathParam("student_id") Long s_id) {
 		if (this.testTemplateService.findById(ql_id) == null || this.studentService.findById(s_id) == null){
 			return Response.noContent().build();
 		}
@@ -329,7 +363,7 @@ public class AttemptEndpoint {
 	 * POST to end one Attempt.
 	 * Creator, correctAnswers & givenAnswers may not be included in JSON<br>
 	 * Path = 'api/attempts'
-	 * @return 204 + JSON if there is data, otherwise 404, or 406 "Not Acceptable when id is not active 
+	 * @return 202 + JSON if there is data, otherwise 204, or 406 "Not Acceptable when id is not active 
 	 * @author S.Martens
 	 */
 	@POST
@@ -364,7 +398,7 @@ public class AttemptEndpoint {
 	/**
 	 * PUT for one Attempt for elapsed time a ping for increment of 10sec is given
 	 * Path = 'api/attempts'
-	 * @return 204 + JSON if there is data, otherwise 404 
+	 * @return 202 + JSON if there is data, otherwise 204 
 	 * @author S.Martens
 	 */
 	@PUT
@@ -385,7 +419,7 @@ public class AttemptEndpoint {
 	/**
 	 * PUT for one Attempt for a marked number to add to marked question list
 	 * Path = 'api/attempts'
-	 * @return 204 + JSON if there is data, otherwise 404,  or 406 "Not Acceptable when number is not allowed
+	 * @return 202 + JSON if there is data, otherwise 204,  or 406 "Not Acceptable when number is not allowed
 	 * @author S.Martens
 	 */
 	@PUT
@@ -414,7 +448,7 @@ public class AttemptEndpoint {
 	/**
 	 * PUT for one Attempt to un-marked a number to remove from the marked question list
 	 * Path = 'api/attempts'
-	 * @return 204 + JSON if there is data, otherwise 404,  or 406 "Not Acceptable when number is not allowed
+	 * @return 202 + JSON if there is data, otherwise 204,  or 406 "Not Acceptable when number is not allowed
 	 * @author S.Martens
 	 */
 	@PUT
@@ -465,9 +499,9 @@ public class AttemptEndpoint {
 	}
 	
 	/**
-	 * POST one new Attempt selecting a questionList
+	 * POST one new Attempt 
 	 * Path = 'api/attempts'
-	 * @return 204 + JSON id exam data, otherwise 404 
+	 * @return 202 + JSON attempt data
 	 */
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)

@@ -70,6 +70,23 @@ public class TestTemplateEndpoint {
 	}
 
 	/**
+	 * GET the meta data (id, nr of questions, allowed time) of the TestTemplate with specified id<br>
+	 * Path = 'api/testtemplates/{id}/size'
+	 * @return 200 + JSON if there is data, otherwise 204 (noContent)
+	 */
+	@GET
+	@Produces(MediaType.APPLICATION_JSON)
+	@Path("{id}/meta")	
+	public Response getTestTemplateSizeById(@PathParam("id") Long id) {
+		TestTemplate result = this.testTemplateService.findById(id);
+		if (result != null) {
+			return Response.ok(testTemplateService.convertToTestTemplateModelMeta(result)).build();
+		} else {
+			return Response.noContent().build();
+		}
+	}
+	
+	/**
 	 * POST one TestTemplate. If no id included, a new entry is created, otherwise an existing one
 	 * is overwritten. Questions and Creator must be excluded from JSON<br>
 	 * Path = 'api/testtemplates'
