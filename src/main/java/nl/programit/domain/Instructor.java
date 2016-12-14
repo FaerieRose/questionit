@@ -4,7 +4,6 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.ManyToMany;
@@ -17,7 +16,7 @@ public class Instructor extends Person implements Serializable {
 
 	private static final long serialVersionUID = -4795224222157957673L;
 	
-	@ManyToMany(fetch=FetchType.EAGER, mappedBy = "instructors", cascade = CascadeType.ALL)
+	@ManyToMany(fetch=FetchType.EAGER, mappedBy = "instructors")
 	@Fetch(FetchMode.SELECT)
 	private List<StudentClass> studentClasses = new ArrayList<>();
 
@@ -28,6 +27,4 @@ public class Instructor extends Person implements Serializable {
 	public void setStudentClasses(List<StudentClass> studentClasses) {
 		this.studentClasses = studentClasses;
 	}
-
-	
 }
