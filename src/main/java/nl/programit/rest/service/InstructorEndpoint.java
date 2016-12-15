@@ -84,5 +84,4 @@ public class InstructorEndpoint {
 			return Response.status(Status.NOT_FOUND).build();
 		}
 	}
-
 }

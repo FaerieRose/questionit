@@ -1,4 +1,6 @@
 package nl.programit.rest.service;
+import java.util.ArrayList;
+
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -13,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import nl.programit.domain.Instructor;
 import nl.programit.domain.Question;
 import nl.programit.domain.TestTemplate;
+import nl.programit.domain.models.TestTemplateModelMeta;
 import nl.programit.persistence.InstructorService;
 import nl.programit.persistence.QuestionService;
 import nl.programit.persistence.TestTemplateService;
@@ -70,14 +73,35 @@ public class TestTemplateEndpoint {
 	}
 
 	/**
+	 * GET the meta data (id, nr of questions, allowed time, etc) of all TestTemplates in db<br>
+	 * Path = 'api/testtemplates/meta'
+	 * @return 200 + JSON if there is data, otherwise 204 (noContent)
+	 */
+	@GET
+	@Produces(MediaType.APPLICATION_JSON)
+	@Path("meta")	
+	public Response getTestTemplatesMeta() {
+		ArrayList<TestTemplateModelMeta> ttmms = new ArrayList<TestTemplateModelMeta>(); 
+		Iterable<TestTemplate> result = this.testTemplateService.findAll();
+		if (result != null) {
+			for(TestTemplate tt: result) {
+				ttmms.add(testTemplateService.convertToTestTemplateModelMeta(tt));
+			}
+			return Response.ok(ttmms).build();
+		} else {
+			return Response.noContent().build();
+		}
+	}
+
+	/**
 	 * GET the meta data (id, nr of questions, allowed time) of the TestTemplate with specified id<br>
-	 * Path = 'api/testtemplates/{id}/size'
+	 * Path = 'api/testtemplates/{id}/meta'
 	 * @return 200 + JSON if there is data, otherwise 204 (noContent)
 	 */
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	@Path("{id}/meta")	
-	public Response getTestTemplateSizeById(@PathParam("id") Long id) {
+	public Response getTestTemplateMetaById(@PathParam("id") Long id) {
 		TestTemplate result = this.testTemplateService.findById(id);
 		if (result != null) {
 			return Response.ok(testTemplateService.convertToTestTemplateModelMeta(result)).build();
@@ -85,7 +109,7 @@ public class TestTemplateEndpoint {
 			return Response.noContent().build();
 		}
 	}
-	
+
 	/**
 	 * POST one TestTemplate. If no id included, a new entry is created, otherwise an existing one
 	 * is overwritten. Questions and Creator must be excluded from JSON<br>
