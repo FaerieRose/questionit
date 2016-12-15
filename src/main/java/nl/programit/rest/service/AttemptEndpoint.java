@@ -13,20 +13,21 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+
 import org.springframework.beans.factory.annotation.Autowired;
 
 import nl.programit.domain.AnswerList;
+import nl.programit.domain.Attempt;
 import nl.programit.domain.Question;
-import nl.programit.domain.TestTemplate;
 import nl.programit.domain.Student;
+import nl.programit.domain.TestTemplate;
 import nl.programit.domain.models.QuestionModelAttempt;
 import nl.programit.domain.models.TimesModelAttempt;
-import nl.programit.domain.Attempt;
 import nl.programit.persistence.AnswerListService;
 import nl.programit.persistence.AttemptService;
-import nl.programit.persistence.TestTemplateService;
 import nl.programit.persistence.QuestionService;
 import nl.programit.persistence.StudentService;
+import nl.programit.persistence.TestTemplateService;
 
 /**
  * Endpoint for serveral ReST services to GET, POST and DELETE Attempts
