@@ -1,5 +1,6 @@
 package nl.programit.rest.service;
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
@@ -11,10 +12,10 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 
-
 import nl.programit.domain.Instructor;
 import nl.programit.domain.Question;
 import nl.programit.domain.TestTemplate;
+import nl.programit.domain.models.TestTemplateModelBasic;
 import nl.programit.domain.models.TestTemplateModelMeta;
 import nl.programit.persistence.InstructorService;
 import nl.programit.persistence.QuestionService;
@@ -23,10 +24,11 @@ import nl.programit.persistence.TestTemplateService;
 /**
  * Endpoint for serveral ReST services to GET, POST and DELETE TestTemplate
  * 
- * @author FaerieRose
+ * @author FaerieRose , S.Martens
  * @version v0.1
  * @since 2016-11-04
  */
+
 @Path("testtemplates")
 public class TestTemplateEndpoint {
 
@@ -40,35 +42,42 @@ public class TestTemplateEndpoint {
 	InstructorService instructorService;
 	
 	/**
-	 * GET all Questions<br>
+	 * GET all TestTemplate
 	 * Path = 'api/testtemplates'
 	 * @return 200 + JSON if there is data, otherwise 204 (noContent) 
+	 * @author S.Martens
 	 */
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response getTestTemplateAll() {
 		Iterable<TestTemplate> result = this.testTemplateService.findAll();
-		if (result != null) {
-			return Response.ok(result).build();
-		} else {
+		if (result == null){
 			return Response.noContent().build();
+		} else {
+			List<TestTemplateModelBasic> templateList = new ArrayList<>();
+			for (TestTemplate testTemplate : result){
+				templateList.add( new TestTemplateModelBasic(testTemplate));
+			}
+			return Response.ok(templateList).build();
 		}
 	}	
 	
 	/**
-	 * GET one TestTemplate with specified id<br>
+	 * GET one TestTemplate with specified id
 	 * Path = 'api/testtemplates/{id}'
 	 * @return 200 + JSON if there is data, otherwise 204 (noContent)
+	 * @author S.Martens
 	 */
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	@Path("{id}")	
 	public Response getTestTemplateById(@PathParam("id") Long id) {
 		TestTemplate result = this.testTemplateService.findById(id);
-		if (result != null) {
-			return Response.ok(result).build();
-		} else {
+		if (result == null) {
 			return Response.noContent().build();
+		} else {
+			TestTemplateModelBasic template = new TestTemplateModelBasic(result);
+			return Response.ok(template).build();
 		}
 	}
 
@@ -76,6 +85,7 @@ public class TestTemplateEndpoint {
 	 * GET the meta data (id, nr of questions, allowed time, etc) of all TestTemplates in db<br>
 	 * Path = 'api/testtemplates/meta'
 	 * @return 200 + JSON if there is data, otherwise 204 (noContent)
+	 * @author Bas
 	 */
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
@@ -97,6 +107,7 @@ public class TestTemplateEndpoint {
 	 * GET the meta data (id, nr of questions, allowed time) of the TestTemplate with specified id<br>
 	 * Path = 'api/testtemplates/{id}/meta'
 	 * @return 200 + JSON if there is data, otherwise 204 (noContent)
+	 * @author Bas
 	 */
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
