@@ -120,6 +120,7 @@ public class TestTemplateEndpoint {
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response postTestTemplate(TestTemplate testTemplate) {
+		System.out.println("in the postTestTemplate with testTemplate : "+testTemplate);
 		this.testTemplateService.save(testTemplate);
 		return Response.accepted(testTemplate).build();
 	}
@@ -131,9 +132,11 @@ public class TestTemplateEndpoint {
 	 */
 	@POST
 	@Produces(MediaType.APPLICATION_JSON)
-	@Path("{id}/question")
-	public Response addNewQuestionToTestTemplate(@PathParam("id") Long id, Question question) {
-		TestTemplate testTemplate = this.testTemplateService.findById(id);
+	@Path("{testtemplate_id}/addquestiontotemplate/{question_id}")
+	public Response addNewQuestionToTestTemplate(@PathParam("testtemplate_id") Long testTemplateId, @PathParam("question_id") Long questionId, Question question2) {
+		Question question = this.questionService.findById(questionId);
+		TestTemplate testTemplate = this.testTemplateService.findById(testTemplateId);
+		System.out.println("in the addNewQuestionToTestTemplate with id : "+testTemplateId + "  and Question ID:"+question.getId());
 		if (testTemplate != null) {
 			this.questionService.save(question);
 			testTemplate.addQuestion(question);
