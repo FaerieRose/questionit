@@ -329,7 +329,7 @@ public class AttemptEndpoint {
 	}
 	
 	/**
-	 * POST to start one Attempt. If no id included, a new entry is created, otherwise an existing one is overwritten.
+	 * POST to start one Attempt. a new Attempt entry is created.
 	 * Creator, correctAnswers & givenAnswers may not be included in JSON<br>
 	 * Path = 'api/attempts'
 	 * @return 202 + JSON if there is data, otherwise 204 (noContent)

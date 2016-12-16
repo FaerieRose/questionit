@@ -1,7 +1,6 @@
 package nl.programit.rest.service;
 
 import javax.ws.rs.Consumes;
-import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -14,9 +13,7 @@ import javax.ws.rs.core.Response.Status;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import nl.programit.domain.Instructor;
 import nl.programit.domain.Student;
-import nl.programit.domain.StudentClass;
 import nl.programit.persistence.StudentService;
 
 @Path("students")
