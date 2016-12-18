@@ -51,28 +51,6 @@ public class QuestionService {
 		return this.questionRepository.save(qstnToSave); 
 	}
 	
-//	/**
-//	 * Saves a Question to the database. If no id included, a new entry
-//	 * is created, otherwise an existing one is overwritten
-//	 * @param question the Question to be saved
-//	 */
-//	public Question save(Question question) {
-//		AnswerList answerList = question.getCorrectAnswers();
-//		if (answerList == null) {
-//			answerList = new AnswerList();
-//			this.answerListRepository.save(answerList);
-//		}
-//		
-//		Question qstn = this.questionRepository.findOne(question.getId());
-//		if (qstn != null) {
-//			qstn.setObsolete(true);
-//			this.questionRepository.save(qstn);
-//			question.setId(0L);
-//		}
-//		question.setObsolete(false);
-//		question.setCorrectAnswers(answerList);
-//		return this.questionRepository.save(question); 
-//	}
 
 	/**
 	 * Retrieves all Questions stored in the database 

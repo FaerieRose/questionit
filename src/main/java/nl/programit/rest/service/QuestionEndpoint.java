@@ -89,12 +89,11 @@ public class QuestionEndpoint {
 	 */
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
-	@Path("select/{for_exam}/{language}/{enabled}/{obsolete}")
+	@Path("select/{for_exam}/{language}/{enabled}")
 	public Response getQuestions(
 			@PathParam("for_exam") EnumExams exam,
 			@PathParam("language") EnumLanguages language,
-			@PathParam("enabled" ) boolean enabled,
-			@PathParam("obsolete") boolean obsolete) {
+			@PathParam("enabled" ) boolean enabled) {
 //		Iterable<Question> questions = this.questionService.findAll();
 		List<Question> questions = new ArrayList<>(); 
 		List<QuestionModelName> result = new ArrayList<>(); 
@@ -103,9 +102,7 @@ public class QuestionEndpoint {
 			if (question.getForExam() == exam.ordinal() || exam == EnumExams.NONE) {
 				if (question.getProgrammingLanguage() == language.ordinal() || language == EnumLanguages.NONE) {
 					if (question.isEnabled() == enabled) {
-						if (question.isObsolete() == obsolete) {
-							result.add(this.questionService.convertToModelName(question));
-						}
+						result.add(this.questionService.convertToModelName(question));
 					}
 				}
 			}
@@ -140,44 +137,6 @@ public class QuestionEndpoint {
 		return Response.status(Status.NOT_FOUND).build();
 	}
 	
-	
-
-//	/**
-//	 * POST a Question. A new entry is created. If the question has a valid id, that question is made obsolete.
-//	 * If no valid instructor_id or answerlist_id are supplied, the question is not saved!
-//	 * Creator, correctAnswers & givenAnswers may not be included in JSON<br>
-//	 * Path = 'api/questions/creator/{instructor_id}/correct-answers/{answerlist_id}'
-//	 * @param instructor_id must be a valid existing instructor that will be attached to Creator
-//	 * @param answerlist_id must be a valid existing answerlist that will be attached to CorrectAnswers
-//	 * @param question new Question
-//	 * @return 200 + ID if new entry created, 404 if answerlist or instructor did not exist, 500 otherwise 
-//	 */
-//	@POST
-//	@Consumes(MediaType.APPLICATION_JSON)
-//	@Produces(MediaType.TEXT_PLAIN)
-//	@Path("creator/{instructor_id}/correct-answers/{answerlist_id}")
-//	public Response postQuestion(@PathParam("instructor_id") Long instructor_id, @PathParam("answerlist_id") Long answerlist_id, Question question) {
-//		Instructor creator = this.instructorService.findById(instructor_id);
-//		if (creator != null) {
-//			AnswerList answerList = this.answerListService.findById(answerlist_id);
-//			if (answerList != null) {
-//				Date dateNow = new Date();
-//				question.setCreationDateTime(dateNow);
-//				question.setCreator(creator);
-//				question.setCorrectAnswers(answerList);
-//				question.setEnabled(true);
-//				question.setObsolete(false);
-//				Question result = this.questionService.save(question);
-//				if (result != null) {
-//					return Response.ok(Long.toString(result.getId())).build();
-//				} 
-//				return Response.status(Status.INTERNAL_SERVER_ERROR).build();		
-//			}
-//		}
-//		return Response.status(Status.NOT_FOUND).build();
-//	}	
-	
-	
 	/**
 	 * POST a Question. If question with same id already exists, it will be overwritten.
 	 * If no valid instructor_id or answerlist_id are supplied, the question is not saved!
@@ -202,7 +161,7 @@ public class QuestionEndpoint {
 				question.setCreator(creator);
 				question.setCorrectAnswers(answerList);
 				question.setEnabled(true);
-				question.setObsolete(false);
+				//question.setObsolete(false);								//obsolete field now obsolete
 				Question result = this.questionService.save(question);
 				if (result != null) {
 					return Response.ok(Long.toString(result.getId())).build();
