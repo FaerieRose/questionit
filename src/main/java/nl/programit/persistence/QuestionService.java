@@ -32,27 +32,25 @@ public class QuestionService {
 	private AnswerListRepository answerListRepository;
 
 	/**
-	 * Saves a Question to the database. If no id included, a new entry
-	 * is created, otherwise an existing one is overwritten
-	 * @param question the Question to be saved
+	 * Saves a Question to the database. If no question with same id found in db, a new entry
+	 * is created, otherwise an existing one is overwritten.
+	 * @param qstnToSave the Question to be saved
 	 */
-	public Question save(Question question) {
-		AnswerList answerList = question.getCorrectAnswers();
+	public Question save(Question qstnToSave) {
+		AnswerList answerList = qstnToSave.getCorrectAnswers();
 		if (answerList == null) {
 			answerList = new AnswerList();
 			this.answerListRepository.save(answerList);
 		}
-		
-		Question qstn = this.questionRepository.findOne(question.getId());
-		if (qstn != null) {
-			qstn.setObsolete(true);
-			this.questionRepository.save(qstn);
-			question.setId(0L);
+		qstnToSave.setCorrectAnswers(answerList);
+		//check if question with same id exists in db
+		Question existingQstn = this.questionRepository.findOne(qstnToSave.getId());
+		if (existingQstn == null) {						//if question does not exist
+			qstnToSave.setId(0L);			//id==0L will save as new question
 		}
-		question.setObsolete(false);
-		question.setCorrectAnswers(answerList);
-		return this.questionRepository.save(question); 
+		return this.questionRepository.save(qstnToSave); 
 	}
+	
 
 	/**
 	 * Retrieves all Questions stored in the database 

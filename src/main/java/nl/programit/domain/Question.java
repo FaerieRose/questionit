@@ -30,7 +30,7 @@ public class Question extends QuestionTemplate implements Serializable {
 	private String question;
 	private String explanationAnswer;
 	private String typeOfQuestion;
-	private boolean isObsolete;
+	//private boolean isObsolete;
 	
 	@OneToOne(fetch=FetchType.EAGER)
 	@Fetch(FetchMode.SELECT)
@@ -97,18 +97,6 @@ public class Question extends QuestionTemplate implements Serializable {
 		this.typeOfQuestion = typeOfQuestion;
 	}
 
-	// ---------------------------------------------------
-	// GETTER & SETTER for isObsolete
-	public boolean isObsolete() {
-		return isObsolete;
-	}
-	public void setObsolete(boolean isObsolete) {
-		this.isObsolete = isObsolete;
-	}
-
-
-	
-	// ---------------------------------------------------
 	/**
 	 * Method to add an AnswerList to the givenAnswers of Question
 	 * @param answerlist
