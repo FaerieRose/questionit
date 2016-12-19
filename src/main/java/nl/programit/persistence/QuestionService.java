@@ -32,23 +32,30 @@ public class QuestionService {
 	private AnswerListRepository answerListRepository;
 
 	/**
-	 * Saves a Question to the database. If no question with same id found in db, a new entry
-	 * is created, otherwise an existing one is overwritten.
-	 * @param qstnToSave the Question to be saved
+	 * Saves a Question to the database. If no id included, a new entry
+	 * is created, otherwise an existing one is overwritten
+	 * @param question the Question to be saved
 	 */
-	public Question save(Question qstnToSave) {
-		AnswerList answerList = qstnToSave.getCorrectAnswers();
-		if (answerList == null) {
-			answerList = new AnswerList();
-			this.answerListRepository.save(answerList);
-		}
-		qstnToSave.setCorrectAnswers(answerList);
-		//check if question with same id exists in db
-		Question existingQstn = this.questionRepository.findOne(qstnToSave.getId());
-		if (existingQstn == null) {						//if question does not exist
-			qstnToSave.setId(0L);			//id==0L will save as new question
-		}
-		return this.questionRepository.save(qstnToSave); 
+	public Question save(Question question) {
+// ======================================================================		
+// The code below has been commented out to prevent a new question from
+//		being created if an existing question is to be saved
+// ======================================================================		
+//		AnswerList answerList = question.getCorrectAnswers();
+//		if (answerList == null) {
+//			answerList = new AnswerList();
+//			this.answerListRepository.save(answerList);
+//		}
+//		
+//		Question qstn = this.questionRepository.findOne(question.getId());
+//		if (qstn != null) {
+//			qstn.setObsolete(true);
+//			this.questionRepository.save(qstn);
+//			question.setId(0L);
+//		}
+//		question.setObsolete(false);
+//		question.setCorrectAnswers(answerList);
+		return this.questionRepository.save(question); 
 	}
 	
 
