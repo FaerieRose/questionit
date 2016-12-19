@@ -67,7 +67,7 @@ public class AttemptEndpoint {
 		if ( this.attemptService.findAll() == null) {
 			return Response.noContent().build();
 		} else {
-			Iterable<Attempt> result = this.attemptService.findAll();
+			List<Attempt> result = (List) this.attemptService.findAll();
 			List<AttemptModelBasic> attemps = new ArrayList<>();
 			for (Attempt line : result){
 				attemps.add( new AttemptModelBasic(line));
