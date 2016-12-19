@@ -132,7 +132,7 @@ public class AttemptEndpoint {
 	}
 	
 	/**
-	 * GET givenAnswerslist of one Attempt with id
+	 * GET given Answers List of one Attempt with id
 	 * Path = 'api/attempts'
 	 * @return 200 + JSON if there is data, otherwise 204 (noContent) 
 	 * @author S.Martens
