@@ -132,6 +132,33 @@ public class AttemptEndpoint {
 	}
 	
 	/**
+	 * GET givenAnswerslist of one Attempt with id
+	 * Path = 'api/attempts'
+	 * @return 200 + JSON if there is data, otherwise 204 (noContent) 
+	 * @author S.Martens
+	 */
+	@GET
+	@Produces(MediaType.APPLICATION_JSON)
+	@Path("{id}/givenAnswersList")
+	public Response getGivenAnswersList(@PathParam("id") Long id) {
+		if (this.attemptService.findById(id) == null || this.attemptService.findById(id).getGivenAnswers() == null) {
+			return Response.noContent().build();
+		} else {
+			List<AnswerList> result = this.attemptService.findById(id).getGivenAnswers();
+			List<String> givenAnswersList = new ArrayList<>();
+			for (AnswerList question : result){
+				String ansewerString = new String();
+				for( int i =0 ; i < question.getAnswers().size(); i++){
+					if (question.getAnswers().get(i) == true)
+						ansewerString += ("" + (char)(65 +i) + ", " );
+				}
+				givenAnswersList.add(ansewerString);
+			}
+			return Response.ok(givenAnswersList).build();
+		}
+	}
+	
+	/**
 	 * GET markedQuestions of one Attempt with id
 	 * Path = 'api/attempts'
 	 * @return 200 + JSON if there is data, otherwise 204 (noContent) 
