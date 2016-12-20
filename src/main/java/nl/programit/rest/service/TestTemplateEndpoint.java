@@ -176,16 +176,22 @@ public class TestTemplateEndpoint {
 	 */
 	@POST
 	@Produces(MediaType.APPLICATION_JSON)
-	@Path("{id}/question/{question_id}")
-	public Response addExistingQuestionToTestTemplate(@PathParam("id") Long id, @PathParam("question_id") Long question_id) {
+	@Path("{testtemplate_id}/question/{question_id}")
+	public Response addExistingQuestionToTestTemplate(@PathParam("testtemplate_id") Long testtemplateId, @PathParam("question_id") Long question_id) {
 		System.out.println("in de addExistingQuestionToTestTemplate");
-		TestTemplate testTemplate = this.testTemplateService.findById(id);
+		TestTemplate testTemplate = this.testTemplateService.findById(testtemplateId);
+		System.out.println("-----we hebben Testtemplate gevonden :" + testTemplate.getName() + " met ID :" + testTemplate.getId()+ " voor examen :" + testTemplate.getForExam());
 		if (testTemplate != null) {
+			System.out.println("-----we hebben Testtemplate is niet null!");
 			Question question = this.questionService.findById(question_id);
+			System.out.println("-----we hebben deze question gevonden :" + question.getName() + " met ID :" + question.getId()+ " voor programmeertaal :" + question.getProgrammingLanguage());
 			if (question != null) {
+				System.out.println("-----we hebben question is niet null!");
 				testTemplate.addQuestion(question);
 				this.testTemplateService.save(testTemplate);
-		        return Response.accepted(question).build();
+				return Response.ok(testTemplateService.convertToTestTemplateModelMeta(testTemplate)).build();
+
+		     //   return Response.accepted(question).build();
 			}
 		}
 		return Response.noContent().build();

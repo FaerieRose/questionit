@@ -53,6 +53,8 @@ public class TestTemplate extends QuestionTemplate implements Serializable {
 	 * @param question
 	 */
 	public void addQuestion(Question question) {
+		System.out.println("we komen in de addquestion met vraag " + question.getName() + "  en met ID :" + question.getId());
 		questions.add(question);
+		System.out.println("vraag zou moeten zijn toegeveogd aan de list");
 	}
 }

@@ -29,7 +29,9 @@ public class TestTemplateService {
 	 * @param testTemplate the TestTemplate to be saved
 	 */
 	public void save(TestTemplate testTemplate) {
+		System.out.println("we zitten nu in de save van testtemplate met template" + testTemplate.getName() + " en met ID :"  + testTemplate.getId());
 		this.testTemplateRepository.save(testTemplate);
+		System.out.println("en die is ook gelukt");
 	}
 	
 	/**
