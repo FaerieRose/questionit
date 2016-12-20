@@ -178,6 +178,7 @@ public class TestTemplateEndpoint {
 	@Produces(MediaType.APPLICATION_JSON)
 	@Path("{id}/question/{question_id}")
 	public Response addExistingQuestionToTestTemplate(@PathParam("id") Long id, @PathParam("question_id") Long question_id) {
+		System.out.println("in de addExistingQuestionToTestTemplate");
 		TestTemplate testTemplate = this.testTemplateService.findById(id);
 		if (testTemplate != null) {
 			Question question = this.questionService.findById(question_id);

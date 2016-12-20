@@ -37,20 +37,20 @@ public class QuestionService {
 	 * @param question the Question to be saved
 	 */
 	public Question save(Question question) {
-		AnswerList answerList = question.getCorrectAnswers();
-		if (answerList == null) {
-			answerList = new AnswerList();
-			this.answerListRepository.save(answerList);
-		}
-		
-		Question qstn = this.questionRepository.findOne(question.getId());
-		if (qstn != null) {
-			qstn.setObsolete(true);
-			this.questionRepository.save(qstn);
-			question.setId(0L);
-		}
-		question.setObsolete(false);
-		question.setCorrectAnswers(answerList);
+//		AnswerList answerList = question.getCorrectAnswers();
+//		if (answerList == null) {
+//			answerList = new AnswerList();
+//			this.answerListRepository.save(answerList);
+//		}
+//		
+//		Question qstn = this.questionRepository.findOne(question.getId());
+//		if (qstn != null) {
+//			qstn.setObsolete(true);
+//			this.questionRepository.save(qstn);
+//			question.setId(0L);
+//		}
+//		question.setObsolete(false);
+//		question.setCorrectAnswers(answerList);
 		return this.questionRepository.save(question); 
 	}
 
