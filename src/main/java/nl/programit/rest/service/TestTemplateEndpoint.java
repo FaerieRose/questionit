@@ -196,5 +196,28 @@ public class TestTemplateEndpoint {
 		}
 		return Response.noContent().build();
 	}
+	
+	
+	@POST
+	@Produces(MediaType.APPLICATION_JSON)
+	@Path("{testtemplate_id}/removequestionfromtesttemplate/{question_id}")
+	public Response removeExistingQuestionToTestTemplate(@PathParam("testtemplate_id") Long testtemplateId, @PathParam("question_id") Long question_id) {
+		System.out.println("in de removequestionfromtesttemplate");
+		TestTemplate testTemplate = this.testTemplateService.findById(testtemplateId);
+		System.out.println("*****we hebben Testtemplate gevonden :" + testTemplate.getName() + " met ID :" + testTemplate.getId()+ " voor examen :" + testTemplate.getForExam());
+		if (testTemplate != null) {
+			System.out.println("*****we hebben Testtemplate is niet null!");
+			Question question = this.questionService.findById(question_id);
+			System.out.println("*****we hebben deze question gevonden :" + question.getName());
+			if (question != null) {
+				System.out.println("*****we hebben question is niet null!");
+				testTemplate.removeQuestion(question);
+				this.testTemplateService.save(testTemplate);
+				return Response.ok(testTemplateService.convertToTestTemplateModelMeta(testTemplate)).build();
 
+		     //   return Response.accepted(question).build();
+			}
+		}
+		return Response.noContent().build();
+	}
 }

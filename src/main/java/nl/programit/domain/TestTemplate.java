@@ -57,4 +57,21 @@ public class TestTemplate extends QuestionTemplate implements Serializable {
 		questions.add(question);
 		System.out.println("vraag zou moeten zijn toegeveogd aan de list");
 	}
+	public void removeQuestion(Question question) {
+		System.out.println("lengte van de list : " + this.questions.size());
+		System.out.println("we komen in de removeQuestion met vraag " + question.getName() + "  en met ID :" + question.getId());
+		System.out.println("---====DIT KLOPT WEL===--- en de waarde ="+(this.questions.contains(question)));
+		this.questions.remove(question);
+		if (this.questions.contains(question)){
+			System.out.println("---====DIT KLOPT NIET===---");
+			
+		}
+		else{
+			System.out.println("---====DIT KLOPT WEL===--- en de waarde ="+(this.questions.contains(question)));
+			this.questions.remove(question.getId());
+
+		}
+		System.out.println("lengte van de list : " + this.questions.size());
+		System.out.println("vraag zou moeten zijn verwijderd van de list");
+	}
 }
