@@ -25,6 +25,8 @@ public class Person {
 		throw new NotImplementedException("CheckPassword in Person Not implemented yet");
 	}
 	
+
+
 	// Getters and Setters
 	public String getFirstName() {
 		return firstName;
@@ -49,6 +51,11 @@ public class Person {
 	public void setPassword(String password) {
 		this.password = password;
 	}
+	
+	public String getPassword() {
+		return password;
+	}
+	
 	public long getId() {
 		return id;
 	}
