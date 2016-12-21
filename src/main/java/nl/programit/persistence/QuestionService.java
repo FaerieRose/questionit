@@ -37,6 +37,10 @@ public class QuestionService {
 	 * @param question the Question to be saved
 	 */
 	public Question save(Question question) {
+// ======================================================================		
+// The code below has been commented out to prevent a new question from
+//		being created if an existing question is to be saved
+// ======================================================================		
 //		AnswerList answerList = question.getCorrectAnswers();
 //		if (answerList == null) {
 //			answerList = new AnswerList();
@@ -53,6 +57,7 @@ public class QuestionService {
 //		question.setCorrectAnswers(answerList);
 		return this.questionRepository.save(question); 
 	}
+	
 
 	/**
 	 * Retrieves all Questions stored in the database 

@@ -13,20 +13,23 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+
 import org.springframework.beans.factory.annotation.Autowired;
 
 import nl.programit.domain.AnswerList;
-import nl.programit.domain.Question;
-import nl.programit.domain.TestTemplate;
-import nl.programit.domain.Student;
-import nl.programit.domain.models.QuestionModelAttempt;
-import nl.programit.domain.models.TimesModelAttempt;
 import nl.programit.domain.Attempt;
+import nl.programit.domain.Question;
+import nl.programit.domain.Student;
+import nl.programit.domain.TestTemplate;
+import nl.programit.domain.models.AttemptModelBasic;
+import nl.programit.domain.models.QuestionModelAttempt;
+import nl.programit.domain.models.TestTemplateModelBasic;
+import nl.programit.domain.models.TimesModelAttempt;
 import nl.programit.persistence.AnswerListService;
 import nl.programit.persistence.AttemptService;
-import nl.programit.persistence.TestTemplateService;
 import nl.programit.persistence.QuestionService;
 import nl.programit.persistence.StudentService;
+import nl.programit.persistence.TestTemplateService;
 
 /**
  * Endpoint for serveral ReST services to GET, POST and DELETE Attempts
@@ -61,11 +64,15 @@ public class AttemptEndpoint {
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response getAttemptsAll() {
-		Iterable<Attempt> result = this.attemptService.findAll();
-		if (result != null) {
-			return Response.ok(result).build();
-		} else {
+		if ( this.attemptService.findAll() == null) {
 			return Response.noContent().build();
+		} else {
+			List<Attempt> result = (List) this.attemptService.findAll();
+			List<AttemptModelBasic> attemps = new ArrayList<>();
+			for (Attempt line : result){
+				attemps.add( new AttemptModelBasic(line));
+			}
+			return Response.ok(attemps).build();
 		}
 	}
 	
@@ -80,7 +87,8 @@ public class AttemptEndpoint {
 	public Response getAttemptById(@PathParam("id") Long id) {
 		Attempt result = this.attemptService.findById(id);
 		if (result != null) {
-			return Response.ok(result).build();
+			AttemptModelBasic attempt = new AttemptModelBasic(result);
+			return Response.ok(attempt).build();
 		} else {
 			return Response.noContent().build();
 		}
@@ -98,7 +106,8 @@ public class AttemptEndpoint {
 	public Response getTestTemplate(@PathParam("id") Long id) {
 		TestTemplate result = this.attemptService.findById(id).getTestTemplate();
 		if (result != null) {
-			return Response.ok(result).build();
+			TestTemplateModelBasic template = new TestTemplateModelBasic(result);
+			return Response.ok(template).build();
 		} else {
 			return Response.noContent().build();
 		}
@@ -119,6 +128,33 @@ public class AttemptEndpoint {
 			return Response.ok(result).build();
 		} else {
 			return Response.noContent().build();
+		}
+	}
+	
+	/**
+	 * GET given Answers List of one Attempt with id
+	 * Path = 'api/attempts'
+	 * @return 200 + JSON if there is data, otherwise 204 (noContent) 
+	 * @author S.Martens
+	 */
+	@GET
+	@Produces(MediaType.APPLICATION_JSON)
+	@Path("{id}/givenAnswersList")
+	public Response getGivenAnswersList(@PathParam("id") Long id) {
+		if (this.attemptService.findById(id) == null || this.attemptService.findById(id).getGivenAnswers() == null) {
+			return Response.noContent().build();
+		} else {
+			List<AnswerList> result = this.attemptService.findById(id).getGivenAnswers();
+			List<String> givenAnswersList = new ArrayList<>();
+			for (AnswerList question : result){
+				String ansewerString = new String();
+				for( int i =0 ; i < question.getAnswers().size(); i++){
+					if (question.getAnswers().get(i) == true)
+						ansewerString += ("" + (char)(65 +i) + ", " );
+				}
+				givenAnswersList.add(ansewerString);
+			}
+			return Response.ok(givenAnswersList).build();
 		}
 	}
 	
@@ -274,6 +310,35 @@ public class AttemptEndpoint {
 	}
 	
 	/**
+	 * GET answers of all question from one Attempt with id and number
+	 * Path = 'api/attempts'
+	 * @return 200 + JSON if there is data, otherwise 204 (noContent), or 406 
+	 * @author S.Martens 
+	 */
+	@GET
+	@Produces(MediaType.APPLICATION_JSON)
+	@Path("{id}/correctAnswers")
+	public Response getCorrectAnswersOfQuestions(@PathParam("id") Long id, @PathParam("nr") Integer nr) {
+		if (this.attemptService.findById(id) == null || this.attemptService.findById(id).getTestTemplate() == null || 
+				this.attemptService.findById(id).getTestTemplate().getQuestions() == null){
+			return Response.noContent().build();
+		}
+		List<String> correctAnswersList = new ArrayList<>();
+		List<Question> questions = this.attemptService.findById(id).getTestTemplate().getQuestions();
+		for (Question question : questions){
+			AnswerList correctAnswerList = question.getCorrectAnswers();
+			String ansewerString = new String();
+			for( int i =0 ; i < correctAnswerList.getAnswers().size(); i++){
+				if (correctAnswerList.getAnswers().get(i) == true)
+					ansewerString += ("" + (char)(65 +i) + ", " );
+			}
+			correctAnswersList.add(ansewerString);
+		}
+		
+		return Response.ok(correctAnswersList).build();
+	}
+	
+	/**
 	 * GET list of scores of answer of questions from one Attempt with id
 	 * Path = 'api/attempts'
 	 * @return 200 + JSON if there is data, otherwise 204 (noContent), or 406 "Not Acceptable when number is not corresponding 
@@ -328,7 +393,7 @@ public class AttemptEndpoint {
 	}
 	
 	/**
-	 * POST to start one Attempt. If no id included, a new entry is created, otherwise an existing one is overwritten.
+	 * POST to start one Attempt. a new Attempt entry is created.
 	 * Creator, correctAnswers & givenAnswers may not be included in JSON<br>
 	 * Path = 'api/attempts'
 	 * @return 202 + JSON if there is data, otherwise 204 (noContent)

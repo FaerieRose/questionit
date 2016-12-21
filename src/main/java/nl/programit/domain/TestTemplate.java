@@ -34,6 +34,7 @@ public class TestTemplate extends QuestionTemplate implements Serializable {
 	public int getAttemptTimeInMinutes() {
 		return attemptTimeInMinutes;
 	}
+	
 	public void setAttemptTimeInMinutes(int attemptTimeInMinutes) {
 		this.attemptTimeInMinutes = attemptTimeInMinutes;
 	}

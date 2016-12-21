@@ -35,6 +35,7 @@ import nl.programit.persistence.QuestionService;
  * @version v0.1
  * @since 2016-11-03
  */
+
 @Path("questions")
 public class QuestionEndpoint {
 	
@@ -88,12 +89,11 @@ public class QuestionEndpoint {
 	 */
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
-	@Path("select/{for_exam}/{language}/{enabled}/{obsolete}")
+	@Path("select/{for_exam}/{language}/{enabled}")
 	public Response getQuestions(
 			@PathParam("for_exam") EnumExams exam,
 			@PathParam("language") EnumLanguages language,
-			@PathParam("enabled" ) boolean enabled,
-			@PathParam("obsolete") boolean obsolete) {
+			@PathParam("enabled" ) boolean enabled) {
 //		Iterable<Question> questions = this.questionService.findAll();
 		List<Question> questions = new ArrayList<>(); 
 		List<QuestionModelName> result = new ArrayList<>(); 
@@ -102,9 +102,7 @@ public class QuestionEndpoint {
 			if (question.getForExam() == exam.ordinal() || exam == EnumExams.NONE) {
 				if (question.getProgrammingLanguage() == language.ordinal() || language == EnumLanguages.NONE) {
 					if (question.isEnabled() == enabled) {
-						if (question.isObsolete() == obsolete) {
-							result.add(this.questionService.convertToModelName(question));
-						}
+						result.add(this.questionService.convertToModelName(question));
 					}
 				}
 			}
@@ -139,10 +137,8 @@ public class QuestionEndpoint {
 		return Response.status(Status.NOT_FOUND).build();
 	}
 	
-	
-
 	/**
-	 * POST a Question. A new entry is created. If the question has a valid id, that question is made obsolete.
+	 * POST a Question. If question with same id already exists, it will be overwritten.
 	 * If no valid instructor_id or answerlist_id are supplied, the question is not saved!
 	 * Creator, correctAnswers & givenAnswers may not be included in JSON<br>
 	 * Path = 'api/questions/creator/{instructor_id}/correct-answers/{answerlist_id}'
@@ -165,7 +161,7 @@ public class QuestionEndpoint {
 				question.setCreator(creator);
 				question.setCorrectAnswers(answerList);
 				question.setEnabled(true);
-				question.setObsolete(false);
+				//question.setObsolete(false);								//obsolete field now obsolete
 				Question result = this.questionService.save(question);
 				if (result != null) {
 					return Response.ok(Long.toString(result.getId())).build();
@@ -175,6 +171,7 @@ public class QuestionEndpoint {
 		}
 		return Response.status(Status.NOT_FOUND).build();
 	}	
+	
 	
 	/**
 	 * POST adds an existing AnswerList to givenAnswerList or sets an existing AnswerList to correctAnswers, depending on the field<br>
