@@ -104,6 +104,9 @@ public class AttemptEndpoint {
 	@Produces(MediaType.APPLICATION_JSON)
 	@Path("{id}/TestTemplate")
 	public Response getTestTemplate(@PathParam("id") Long id) {
+		if (this.attemptService.findById(id) == null || this.attemptService.findById(id).getTestTemplate() == null ){
+			return Response.noContent().build();
+		}
 		TestTemplate result = this.attemptService.findById(id).getTestTemplate();
 		if (result != null) {
 			TestTemplateModelBasic template = new TestTemplateModelBasic(result);
@@ -123,6 +126,9 @@ public class AttemptEndpoint {
 	@Produces(MediaType.APPLICATION_JSON)
 	@Path("{id}/givenAnswers")
 	public Response getGivenAnswers(@PathParam("id") Long id) {
+		if (this.attemptService.findById(id) == null || this.attemptService.findById(id).getGivenAnswers() == null ){
+			return Response.noContent().build();
+		}
 		List<AnswerList> result = this.attemptService.findById(id).getGivenAnswers();
 		if (result != null) {
 			return Response.ok(result).build();
@@ -168,6 +174,9 @@ public class AttemptEndpoint {
 	@Produces(MediaType.APPLICATION_JSON)
 	@Path("{id}/markedQuestions")
 	public Response getMarkedQuestions(@PathParam("id") Long id) {
+		if (this.attemptService.findById(id) == null || this.attemptService.findById(id).getMarkedQuestions() == null) {
+			return Response.noContent().build();
+		}
 		List<Integer> result = this.attemptService.findById(id).getMarkedQuestions();
 		if (result != null) {
 			return Response.ok(result).build();
@@ -219,7 +228,7 @@ public class AttemptEndpoint {
 	@Produces(MediaType.APPLICATION_JSON)
 	@Path("{id}/times")
 	public Response getTimes(@PathParam("id") Long id) {
-		if (this.attemptService.findById(id) == null){
+		if (this.attemptService.findById(id) == null || this.attemptService.findById(id).getTestTemplate() == null ){
 			return Response.noContent().build();
 		} else {
 			TimesModelAttempt result = new TimesModelAttempt();
