@@ -448,10 +448,12 @@ public class AttemptEndpoint {
 			
 			List<AnswerList> givenAnswers = this.attemptService.findById(id).getGivenAnswers(); 
 			TestTemplate testTemplate = this.attemptService.findById(id).getTestTemplate();
-			List<Question> listQuestions = testTemplate.getQuestions();
-			for (int i = 0; i < givenAnswers.size(); i++ ){
-				listQuestions.get(i).getGivenAnswers().add(givenAnswers.get(i));
-				this.questionService.save(listQuestions.get(i));
+			if (testTemplate != null){
+				List<Question> listQuestions = testTemplate.getQuestions();
+				for (int i = 0; i < givenAnswers.size(); i++ ){
+					listQuestions.get(i).getGivenAnswers().add(givenAnswers.get(i));
+					this.questionService.save(listQuestions.get(i));
+				}
 			}
 			
 			this.attemptService.save(attempt);
