@@ -104,6 +104,9 @@ public class AttemptEndpoint {
 	@Produces(MediaType.APPLICATION_JSON)
 	@Path("{id}/TestTemplate")
 	public Response getTestTemplate(@PathParam("id") Long id) {
+		if (this.attemptService.findById(id) == null || this.attemptService.findById(id).getTestTemplate() == null ){
+			return Response.noContent().build();
+		}
 		TestTemplate result = this.attemptService.findById(id).getTestTemplate();
 		if (result != null) {
 			TestTemplateModelBasic template = new TestTemplateModelBasic(result);
@@ -123,6 +126,9 @@ public class AttemptEndpoint {
 	@Produces(MediaType.APPLICATION_JSON)
 	@Path("{id}/givenAnswers")
 	public Response getGivenAnswers(@PathParam("id") Long id) {
+		if (this.attemptService.findById(id) == null || this.attemptService.findById(id).getGivenAnswers() == null ){
+			return Response.noContent().build();
+		}
 		List<AnswerList> result = this.attemptService.findById(id).getGivenAnswers();
 		if (result != null) {
 			return Response.ok(result).build();
@@ -168,6 +174,9 @@ public class AttemptEndpoint {
 	@Produces(MediaType.APPLICATION_JSON)
 	@Path("{id}/markedQuestions")
 	public Response getMarkedQuestions(@PathParam("id") Long id) {
+		if (this.attemptService.findById(id) == null || this.attemptService.findById(id).getMarkedQuestions() == null) {
+			return Response.noContent().build();
+		}
 		List<Integer> result = this.attemptService.findById(id).getMarkedQuestions();
 		if (result != null) {
 			return Response.ok(result).build();
@@ -219,7 +228,7 @@ public class AttemptEndpoint {
 	@Produces(MediaType.APPLICATION_JSON)
 	@Path("{id}/times")
 	public Response getTimes(@PathParam("id") Long id) {
-		if (this.attemptService.findById(id) == null){
+		if (this.attemptService.findById(id) == null || this.attemptService.findById(id).getTestTemplate() == null ){
 			return Response.noContent().build();
 		} else {
 			TimesModelAttempt result = new TimesModelAttempt();
@@ -448,10 +457,12 @@ public class AttemptEndpoint {
 			
 			List<AnswerList> givenAnswers = this.attemptService.findById(id).getGivenAnswers(); 
 			TestTemplate testTemplate = this.attemptService.findById(id).getTestTemplate();
-			List<Question> listQuestions = testTemplate.getQuestions();
-			for (int i = 0; i < givenAnswers.size(); i++ ){
-				listQuestions.get(i).getGivenAnswers().add(givenAnswers.get(i));
-				this.questionService.save(listQuestions.get(i));
+			if (testTemplate != null){
+				List<Question> listQuestions = testTemplate.getQuestions();
+				for (int i = 0; i < givenAnswers.size(); i++ ){
+					listQuestions.get(i).getGivenAnswers().add(givenAnswers.get(i));
+					this.questionService.save(listQuestions.get(i));
+				}
 			}
 			
 			this.attemptService.save(attempt);
