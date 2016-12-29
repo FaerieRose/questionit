@@ -10,6 +10,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
+import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -37,6 +38,9 @@ public class StudentEndpoint {
 	@Path("{id}")
 	public Response getStudentById(@PathParam("id") Long id) {
 		Student student = this.studentService.findById(id);
+		System.out.println("Student " + id + " = " + student.getFirstName());
+		//student.getAttempts().size();
+		Hibernate.initialize(student.getAttempts());
 		return Response.ok(student).build();
 
 	}
