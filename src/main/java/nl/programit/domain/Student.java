@@ -16,7 +16,7 @@ public class Student extends Person implements Serializable{
 	
 	private static final long serialVersionUID = 5536315112148141660L;
 
-	@OneToMany(fetch=FetchType.LAZY)
+	@OneToMany//(fetch=FetchType.LAZY)
 	@Fetch(FetchMode.SELECT)
 	private List<Attempt> attempts = new ArrayList<>();
 
