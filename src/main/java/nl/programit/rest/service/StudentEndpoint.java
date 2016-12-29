@@ -13,6 +13,7 @@ import javax.ws.rs.core.Response.Status;
 import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import nl.programit.domain.Student;
 import nl.programit.persistence.StudentService;
@@ -36,11 +37,12 @@ public class StudentEndpoint {
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	@Path("{id}")
+	@Transactional
 	public Response getStudentById(@PathParam("id") Long id) {
 		Student student = this.studentService.findById(id);
 		System.out.println("Student " + id + " = " + student.getFirstName());
 		//student.getAttempts().size();
-		Hibernate.initialize(student.getAttempts());
+		//Hibernate.initialize(student.getAttempts());
 		return Response.ok(student).build();
 
 	}
