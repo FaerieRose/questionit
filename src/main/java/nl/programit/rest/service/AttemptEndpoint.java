@@ -14,7 +14,9 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 
 import nl.programit.domain.AnswerList;
 import nl.programit.domain.Attempt;
@@ -412,23 +414,40 @@ public class AttemptEndpoint {
 	@Produces(MediaType.APPLICATION_JSON)
 	@Path("start/{questionTemplate_id}/{student_id}")
 	public Response postNewAttempt(@PathParam("questionTemplate_id") Long ql_id, @PathParam("student_id") Long s_id) {
-		if (this.testTemplateService.findById(ql_id) == null || this.studentService.findById(s_id) == null){
+		// Get the test template from the db
+		TestTemplate tt = this.testTemplateService.findById(ql_id);
+		// Get the student from the db, including the student's attempts
+		Student student = this.studentService.findByIdInclAttempts(s_id);
+		
+		// Check if either test template or student is null; if so we cannot continue.
+		if (tt == null || student == null){
 			return Response.noContent().build();
 		}
 		else {
+			// Both test template and student exist
+			// Create a new attempt
 			Attempt attempt = new Attempt();
-			attempt.setTestTemplate(this.testTemplateService.findById(ql_id));
 
+			// Set the test template of the new attempt to the given test template
+			attempt.setTestTemplate(tt);
+
+			// Build the answer list for the new attempt, based on the test template.
 			for (int i = 0; i < attempt.getTestTemplate().getQuestions().size(); i++){
 				AnswerList answerList = new AnswerList();
 				this.answerListService.save(answerList);
 				attempt.getGivenAnswers().add(answerList);
-			}			
+			}
+
+			// Save the new attempt to the db.
 			this.attemptService.save(attempt);
-			Student student = this.studentService.findById(s_id);	
+			
+			// Add the new attempt to the attempts of the given student
 			student.getAttempts().add(attempt);	
+			
+			// Save the student to the db.
 			this.studentService.save(student);
 
+			// Return the id of the new attempt.
 			return Response.accepted(attempt.getId()).build();
 		}	
 	}

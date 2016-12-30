@@ -13,13 +13,13 @@ public class InstructorModelBasic {
 		this.instructor = instructor;
 	}
 
-	public List<StudentClassModelBasic> getStudentClasses() {
+	/*public List<StudentClassModelBasic> getStudentClasses() {
 		List<StudentClassModelBasic> result = new ArrayList<>();
 		for (StudentClass studentClass: this.instructor.getStudentClasses()) {
 			result.add(new StudentClassModelBasic(studentClass));
 		}
 		return result;
-	}
+	}*/
 	
 	public String getFirstName() {
 		return this.instructor.getFirstName();

@@ -16,8 +16,8 @@ public class Instructor extends Person implements Serializable {
 
 	private static final long serialVersionUID = -4795224222157957673L;
 	
-	@ManyToMany(fetch=FetchType.EAGER, mappedBy = "instructors")
-	@Fetch(FetchMode.SELECT)
+	@ManyToMany(fetch=FetchType.LAZY, mappedBy = "instructors")
+	//@Fetch(FetchMode.SELECT)
 	private List<StudentClass> studentClasses = new ArrayList<>();
 
 	public List<StudentClass> getStudentClasses() {
