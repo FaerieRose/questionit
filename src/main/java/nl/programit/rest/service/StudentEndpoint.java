@@ -1,5 +1,8 @@
 package nl.programit.rest.service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -14,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import nl.programit.domain.Student;
+import nl.programit.domain.models.StudentModelBasic;
 import nl.programit.persistence.StudentService;
 
 @Path("students")
@@ -26,10 +30,13 @@ public class StudentEndpoint {
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response list() {
-		System.out.println("================================= public Response list()");
+		//System.out.println("================================= public Response list()");
 		Iterable<Student> students = this.studentService.findAll();
-		System.out.println(students.toString());
-		return Response.ok(students).build();
+		List<StudentModelBasic> sbmList = new ArrayList<>();
+		for (Student s : students) {
+			sbmList.add(new StudentModelBasic(s));
+		}
+		return Response.ok(sbmList).build();
 	}
 
 	@GET
@@ -37,8 +44,7 @@ public class StudentEndpoint {
 	@Path("{id}")
 	public Response getStudentById(@PathParam("id") Long id) {
 		Student student = this.studentService.findById(id);
-		return Response.ok(student).build();
-
+		return Response.ok(this.studentService.convertToModelBasic(student)).build();
 	}
 
 	// response for POST request for complete Klant class
