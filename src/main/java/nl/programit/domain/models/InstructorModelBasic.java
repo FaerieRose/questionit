@@ -13,6 +13,8 @@ public class InstructorModelBasic {
 		this.instructor = instructor;
 	}
 
+	// Exclude StudentClasses from this model to prevent recursive loop
+	/*
 	public List<StudentClassModelBasic> getStudentClasses() {
 		List<StudentClassModelBasic> result = new ArrayList<>();
 		for (StudentClass studentClass: this.instructor.getStudentClasses()) {
@@ -20,7 +22,7 @@ public class InstructorModelBasic {
 		}
 		return result;
 	}
-	
+	*/
 	public String getFirstName() {
 		return this.instructor.getFirstName();
 	}

@@ -45,9 +45,9 @@ public class InstructorService {
 	}
 
 	/**
-	 * Converts a Question to QuestionModelBasic to prevent loops and restrict data traffic
-	 * @param question the Question to be converted
-	 * @return QuestionModelBasic version of the Question
+	 * Converts a Instructor to InstructorModelBasic to prevent loops and restrict data traffic
+	 * @param instructor the Instructor to be converted
+	 * @return InstructorModelBasic version of the Instructor
 	 */
 	public InstructorModelBasic convertToModelBasic(Instructor instructor) {
 		InstructorModelBasic result = new InstructorModelBasic(instructor);

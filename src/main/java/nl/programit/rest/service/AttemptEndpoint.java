@@ -425,7 +425,7 @@ public class AttemptEndpoint {
 				attempt.getGivenAnswers().add(answerList);
 			}			
 			this.attemptService.save(attempt);
-			Student student = this.studentService.findById(s_id);	
+			Student student = this.studentService.findByIdWithAttempts(s_id);	
 			student.getAttempts().add(attempt);	
 			this.studentService.save(student);
 

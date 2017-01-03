@@ -32,11 +32,16 @@ public class StudentEndpoint {
 	public Response list() {
 		//System.out.println("================================= public Response list()");
 		Iterable<Student> students = this.studentService.findAll();
-		List<StudentModelBasic> sbmList = new ArrayList<>();
-		for (Student s : students) {
-			sbmList.add(new StudentModelBasic(s));
+		if (students != null) {
+			List<StudentModelBasic> sbmList = new ArrayList<>();
+			for (Student s : students) {
+				sbmList.add(this.studentService.convertToModelBasic(s));
+			}
+			//System.out.println(students.toString());
+			return Response.ok(sbmList).build();
+		} else {
+			return Response.status(Status.NOT_FOUND).build();
 		}
-		return Response.ok(sbmList).build();
 	}
 
 	@GET
@@ -44,7 +49,12 @@ public class StudentEndpoint {
 	@Path("{id}")
 	public Response getStudentById(@PathParam("id") Long id) {
 		Student student = this.studentService.findById(id);
-		return Response.ok(this.studentService.convertToModelBasic(student)).build();
+		if (student != null) {
+			StudentModelBasic sbm = this.studentService.convertToModelBasic(student);
+			return Response.ok(sbm).build();
+		} else {
+			return Response.status(Status.NOT_FOUND).build();
+		}
 	}
 
 	// response for POST request for complete Klant class
