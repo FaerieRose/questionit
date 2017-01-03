@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
+//import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
 
 import org.hibernate.annotations.Fetch;
@@ -16,7 +16,7 @@ public class Student extends Person implements Serializable{
 	
 	private static final long serialVersionUID = 5536315112148141660L;
 
-	@OneToMany//(fetch=FetchType.LAZY) // LAZY is default
+	@OneToMany//(fetch=FetchType.LAZY) // LAZY is default for ...ToMany relationships
 	@Fetch(FetchMode.SELECT)
 	private List<Attempt> attempts = new ArrayList<>();
 
