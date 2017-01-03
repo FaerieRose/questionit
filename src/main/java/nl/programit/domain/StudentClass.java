@@ -22,11 +22,11 @@ public class StudentClass {
 	
 	private String name;
 	
-	@ManyToMany(fetch=FetchType.EAGER)
+	@ManyToMany //Use default LAZY fetch type to prevent unnecessary database access.
 	@Fetch(FetchMode.SELECT)
 	private List<Instructor> instructors = new ArrayList<>();
 	
-	@ManyToMany(fetch=FetchType.EAGER)
+	@ManyToMany //Use default LAZY fetch type to prevent unnecessary database access.
 	@Fetch(FetchMode.SELECT)
 	private List<Student> students;
 	

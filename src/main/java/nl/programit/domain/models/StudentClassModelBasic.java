@@ -23,6 +23,7 @@ public class StudentClassModelBasic {
 		return this.studentClass.getName();
 	}
 
+	/*
 	public List<InstructorModelName> getInstructors() {
 		List<InstructorModelName> result = new ArrayList<>();
 		for (Instructor instructor: this.studentClass.getInstructors()) {
@@ -33,6 +34,6 @@ public class StudentClassModelBasic {
 
 	public List<Student> getStudents() {
 		return this.studentClass.getStudents();
-	}
+	}*/
 
 }
