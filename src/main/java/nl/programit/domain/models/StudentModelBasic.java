@@ -19,7 +19,7 @@ public class StudentModelBasic {
 	public long getId() {
 		return this.student.getId();
 	}
-	
+
 	public String getFirstName() {
 		return this.student.getFirstName();
 	}
@@ -35,5 +35,5 @@ public class StudentModelBasic {
 	public boolean isValid() {
 		return this.student.isValid();
 	}
-
 }
+

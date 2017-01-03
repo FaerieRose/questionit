@@ -1,12 +1,11 @@
 package nl.programit.persistence;
 
+import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import nl.programit.domain.Instructor;
 import nl.programit.domain.Student;
-import nl.programit.domain.models.InstructorModelBasic;
 import nl.programit.domain.models.StudentModelBasic;
 
 @Service
@@ -17,7 +16,6 @@ public class StudentService {
 	private StudentRepository studentRepository;
 
 	public Iterable<Student> findAll() {
-		System.out.println("================================= public Iterable<Student> findAll()");
 		Iterable<Student> result = this.studentRepository.findAll();
 		return result;
 	}
@@ -27,8 +25,13 @@ public class StudentService {
 	}
 
 	public Student findById(long id) {
-
 		return this.studentRepository.findOne(id);
+	}
+
+	public Student findByIdWithAttempts(long id) {
+		Student student = this.studentRepository.findOne(id);
+		Hibernate.initialize(student.getAttempts());
+		return student;
 	}
 
 	public Student deleteById(long id) {
