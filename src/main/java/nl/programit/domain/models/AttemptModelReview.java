@@ -51,4 +51,8 @@ public class AttemptModelReview {
 		return attempt.getTestScore();
 	}
 	
+	public List<Boolean> getQuestionScores() {
+		return attempt.getQuestionScores();
+	}
+
 }

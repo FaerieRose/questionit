@@ -16,7 +16,9 @@ import javax.ws.rs.core.Response.Status;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import nl.programit.domain.Attempt;
 import nl.programit.domain.Student;
+import nl.programit.domain.models.AttemptModelReview;
 import nl.programit.domain.models.StudentModelBasic;
 import nl.programit.persistence.StudentService;
 
@@ -57,6 +59,22 @@ public class StudentEndpoint {
 		}
 	}
 
+	@GET
+	@Produces(MediaType.APPLICATION_JSON)
+	@Path("{id}/attempts")
+	public Response getAttemptsByStudentId(@PathParam("id") Long id) {
+		Student student = this.studentService.findByIdWithAttempts(id);
+		if (student != null) {
+			List<AttemptModelReview> amrList = new ArrayList<>();
+			for (Attempt attempt : student.getAttempts()) {
+				amrList.add(new AttemptModelReview(attempt));
+			}
+			return Response.ok(amrList).build();
+		} else {
+			return Response.status(Status.NOT_FOUND).build();
+		}
+	}
+	
 	// response for POST request for complete Klant class
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
