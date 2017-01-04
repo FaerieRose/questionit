@@ -357,12 +357,12 @@ public class AttemptEndpoint {
 	@Produces(MediaType.APPLICATION_JSON)
 	@Path("{id}/scoresList")
 	public Response getScores(@PathParam("id") Long id) {
-		if (this.attemptService.findById(id) == null || this.attemptService.findById(id).getTestTemplate() == null || 
-				this.attemptService.findById(id).getTestTemplate().getQuestions() == null){
+		Attempt attempt = this.attemptService.findById(id);
+		if (attempt == null || attempt.getTestTemplate() == null || attempt.getTestTemplate().getQuestions() == null){
 			return Response.noContent().build();
 		}
-		
-		List<AnswerList> givenAnswers = this.attemptService.findById(id).getGivenAnswers();
+		/*
+		List<AnswerList> givenAnswers = attempt.getGivenAnswers();
 		List<AnswerList> correctAnswers = this.attemptService.supplyCorrectAnswers(id);
 		if (givenAnswers.size() != correctAnswers.size()){
 			return Response.notAcceptable(null).build();
@@ -370,6 +370,9 @@ public class AttemptEndpoint {
 		List<Boolean> scoresList = this.attemptService.supplyScoreList(givenAnswers, correctAnswers);
 		
 		return Response.ok(scoresList).build();
+		*/
+
+		return Response.ok(attempt.getQuestionScores()).build();
 		
 	}
 	
@@ -389,6 +392,7 @@ public class AttemptEndpoint {
 		}
 		
 		// Original code Stefan
+		// Now that everything is moved to the Attempt class we can simply call its getTestScore() method.
 		/*
 		List<AnswerList> givenAnswers = attempt.getGivenAnswers(); // Already in the attempt
 		List<AnswerList> correctAnswers = this.attemptService.supplyCorrectAnswers(id); // Now available in the attempt

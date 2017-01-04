@@ -47,6 +47,8 @@ public class AttemptModelReview {
 		return attempt.getTestTemplate().getProgrammingLanguage();
 	}
 	
-	
+	public double getTestScore() {
+		return attempt.getTestScore();
+	}
 	
 }

@@ -113,7 +113,7 @@ public class Attempt {
 	 * author Bas
 	 * Based on code from Stefan Martens
 	 * Calculates the overall score of the test take in the current attempt. 
-	 * @return correct answers: a list of AnswerLists
+	 * @return test score; number of correctly answered questions divided by the total number of questions.
 	 */
 	public double getTestScore(){
 		List<AnswerList> correctAnswers = this.getAllCorrectAnswers();
@@ -124,6 +124,22 @@ public class Attempt {
 			return this.calculatePercentage(scoresList);
 		}	
 	}
+	
+	/**
+	 * author Bas
+	 * Based on code from Stefan Martens
+	 * Public getter for the scoreList; a list of booleans indicating per question whether it was answered correctly. 
+	 * @return score list
+	 */	
+	public List<Boolean> getQuestionScores(){
+		List<AnswerList> correctAnswers = this.getAllCorrectAnswers();
+		if (this.givenAnswers.size() != correctAnswers.size()){
+			return null;
+		} else {
+			return supplyScoreList(this.givenAnswers, correctAnswers);
+		}	
+	}
+
 	
 	/**
 	 * author Bas
@@ -140,11 +156,11 @@ public class Attempt {
 		}
 		return correctAnswers;
 	}
-	
+		
 	/**
 	 * author Bas
 	 * Based on code from Stefan Martens
-	 * Retrieves a list of booleans which tell of each question in the list whether it was answered correctly.
+	 * Supplies a list of booleans which tell of each question in the list whether it was answered correctly.
 	 * Questions are multiple choice and can have one or more correct answers. Each question can have up to 10 possible answers. Each of those 10 possible answers is marked correct (true) or incorrect (false).
 	 * @return scoreList 
 	 */
