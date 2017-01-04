@@ -153,12 +153,13 @@ public class AttemptEndpoint {
 			List<AnswerList> result = this.attemptService.findById(id).getGivenAnswers();
 			List<String> givenAnswersList = new ArrayList<>();
 			for (AnswerList question : result){
-				String ansewerString = new String();
+				String answerString = new String();
 				for( int i =0 ; i < question.getAnswers().size(); i++){
-					if (question.getAnswers().get(i) == true)
-						ansewerString += ("" + (char)(65 +i) + ", " );
+					if (question.getAnswers().get(i) == true) {
+						answerString += (answerString.equals("") ? "" : ", ") + (char)(65 + i);
+					}
 				}
-				givenAnswersList.add(ansewerString);
+				givenAnswersList.add(answerString );
 			}
 			return Response.ok(givenAnswersList).build();
 		}
@@ -336,12 +337,13 @@ public class AttemptEndpoint {
 		List<Question> questions = this.attemptService.findById(id).getTestTemplate().getQuestions();
 		for (Question question : questions){
 			AnswerList correctAnswerList = question.getCorrectAnswers();
-			String ansewerString = new String();
+			String answerString = new String("");
 			for( int i =0 ; i < correctAnswerList.getAnswers().size(); i++){
-				if (correctAnswerList.getAnswers().get(i) == true)
-					ansewerString += ("" + (char)(65 +i) + ", " );
+				if (correctAnswerList.getAnswers().get(i) == true) {
+					answerString += (answerString.equals("") ? "" : ", ") + (char)(65 + i);
+				}
 			}
-			correctAnswersList.add(ansewerString);
+			correctAnswersList.add(answerString);
 		}
 		
 		return Response.ok(correctAnswersList).build();
