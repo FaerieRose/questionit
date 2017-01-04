@@ -54,77 +54,94 @@ public class AttemptService {
 	public Iterable<Attempt> findAll() {
 		return this.attemptRepository.findAll();
 	}
-	/**
-	 * Retrieves all correct answers for a questionList
-	 * @return correct answers
-	 */
-	public List<AnswerList> supplyCorrectAnswers(long idExam){	
-		List<AnswerList> correctAnswers = new ArrayList<>(); 
-		TestTemplate questionList = this.attemptRepository.findOne(idExam).getTestTemplate();
-		List<Question> listQuestions = questionList.getQuestions();
-		for (Question correctQuestion : listQuestions){
-			correctAnswers.add(correctQuestion.getCorrectAnswers());
-		}
-		
-		return correctAnswers;
-	}
+//	/**
+//	 * ===============
+//	 *  Bas: MOVED THIS METHOD TO ATTEMPT CLASS
+//	 * ===============
+//	 * Retrieves all correct answers for a questionList
+//	 * @return correct answers
+//	 */
+//	public List<AnswerList> supplyCorrectAnswers(long idExam){	
+//		List<AnswerList> correctAnswers = new ArrayList<>(); 
+//		TestTemplate questionList = this.attemptRepository.findOne(idExam).getTestTemplate();
+//		List<Question> listQuestions = questionList.getQuestions();
+//		for (Question correctQuestion : listQuestions){
+//			correctAnswers.add(correctQuestion.getCorrectAnswers());
+//		}
+//		
+//		return correctAnswers;
+//	}
+//	
+//	/**
+//	 * ===============
+//	 *  Bas: MOVED THIS METHOD TO ATTEMPT CLASS
+//	 * ===============
+//	 * Retrieves scoreList of question answered correctly
+//	 * @return scoreList 
+//	 */
+//	public List<Boolean> supplyScoreList(List<AnswerList> givenAnswers, List<AnswerList> correctAnswers){	
+//		List<Boolean> scoresList = new ArrayList<>();
+//		 for (int n = 0; n < givenAnswers.size(); n ++){
+//			 Boolean good = true;
+//			 for (int p = 0; p < givenAnswers.get(n).getAnswers().size(); p++){
+//				 //System.out.println("n: " + n + ", p: " + p + "givenAnswers.get(n).getAnswers().size(): " + givenAnswers.get(n).getAnswers().size());
+//				 System.out.println("n: " + n + ", p: " + p + " correctAnswers.get(n).getAnswers().size(): " + correctAnswers.get(n).getAnswers().size());
+//				 if (givenAnswers.get(n).getAnswers().size() == correctAnswers.get(n).getAnswers().size()){
+//					 if (givenAnswers.get(n).getAnswers().get(p) != correctAnswers.get(n).getAnswers().get(p)){
+//						 good = false;
+//						 break;
+//					 }
+//				 } else {
+//					 good = false;
+//				 }
+//				 //System.out.println("After break 1");
+//			 }
+//			 //System.out.println("After break 2");
+//			 scoresList.add(good);
+//		 }
+//		 //System.out.println("scoresList: " + scoresList.toString());
+//		return scoresList;
+//	}
 	
+//	/**
+//	 * ===============
+//	 * NOT BEING USED
+//	 * ===============
+//	 * Retrieves invalid answered questions 
+//	 * true count of amount of selected answers 
+//	 * number of selections is correctly
+//	 * @return invalid answered questions List 
+//	 */
+//	public List<Integer> supplyInvalidAnsweredQuestions(List<AnswerList> givenAnswers, List<AnswerList> correctAnswers){	
+//		List<Integer> result = new ArrayList<>();
+//		int counter = 1;
+//		int trueCountGiven = 0;
+//		int trueCountCorrect = 0;
+//		for (int k = 0; k < givenAnswers.size() ; k++) {
+//			trueCountGiven = 0;
+//			trueCountCorrect = 0;
+//			for (int i = 0; i < givenAnswers.get(k).getAnswers().size(); i++) {
+//			    if (givenAnswers.get(k).getAnswers().get(i) ) {
+//			        trueCountGiven++;
+//			    }
+//			}
+//		    for (int j = 0; j < correctAnswers.get(k).getAnswers().size(); j++) {
+//			    if (correctAnswers.get(k).getAnswers().get(j) ) {
+//			        trueCountCorrect++;	
+//			    }
+//			}
+//		    if (trueCountGiven != trueCountCorrect){
+//				result.add(counter);
+//			}
+//		    counter++;
+//		}
+//		return result;
+//	}
+//	
 	/**
-	 * Retrieves scoreList of question answered correctly
-	 * @return scoreList 
-	 */
-	public List<Boolean> supplyScoreList(List<AnswerList> givenAnswers, List<AnswerList> correctAnswers){	
-		List<Boolean> scoresList = new ArrayList<>();
-		 for (int n = 0; n < givenAnswers.size(); n ++){
-			 Boolean good = true;
-			 for (int p = 0; p < givenAnswers.get(n).getAnswers().size(); p++){
-				 if (givenAnswers.get(n).getAnswers().size() == correctAnswers.get(n).getAnswers().size()){
-					 if (givenAnswers.get(n).getAnswers().get(p) != correctAnswers.get(n).getAnswers().get(p)){
-						 good = false;
-					 }
-				 } else {
-					 good = false;
-				 }
-			 }
-			 scoresList.add(good);
-		 }
-		
-		return scoresList;
-	}
-	
-	/**
-	 * Retrieves invalid answered questions 
-	 * true count of amount of selected answers 
-	 * number of selections is correctly
-	 * @return invalid answered questions List 
-	 */
-	public List<Integer> supplyInvalidAnsweredQuestions(List<AnswerList> givenAnswers, List<AnswerList> correctAnswers){	
-		List<Integer> result = new ArrayList<>();
-		int counter = 1;
-		int trueCountGiven = 0;
-		int trueCountCorrect = 0;
-		for (int k = 0; k < givenAnswers.size() ; k++) {
-			trueCountGiven = 0;
-			trueCountCorrect = 0;
-			for (int i = 0; i < givenAnswers.get(k).getAnswers().size(); i++) {
-			    if (givenAnswers.get(k).getAnswers().get(i) ) {
-			        trueCountGiven++;
-			    }
-			}
-		    for (int j = 0; j < correctAnswers.get(k).getAnswers().size(); j++) {
-			    if (correctAnswers.get(k).getAnswers().get(j) ) {
-			        trueCountCorrect++;	
-			    }
-			}
-		    if (trueCountGiven != trueCountCorrect){
-				result.add(counter);
-			}
-		    counter++;
-		}
-		return result;
-	}
-	
-	/**
+	 * ===============
+	 * STILL TO BE MOVED TO ATTEMPT CLASS
+	 * ===============
 	 * Retrieves invalid answered questions 
 	 * true count of amount of selected answers 
 	 * number of selections is correctly
@@ -144,31 +161,35 @@ public class AttemptService {
 		 return result;
 	}
 	
-	/**
-	 * Calculates percentage correct answers
-	 * @return percentage
-	 */
-	public double calculatePercentage(List<Boolean> scoresList){
-		double count = 0;
-		 for (Boolean good : scoresList){
-			 if (good){
-				count++; 
-			 }
-		 }
-		 double scorePercentages = count / scoresList.size();
-		 return scorePercentages;
-	}
+//	/**
+//	 * ===============
+//	 * NOT BEING USED
+//	 * ===============	 * Calculates percentage correct answers
+//	 * @return percentage
+//	 */
+//	public double calculatePercentage(List<Boolean> scoresList){
+//		double count = 0;
+//		 for (Boolean good : scoresList){
+//			 if (good){
+//				count++; 
+//			 }
+//		 }
+//		 double scorePercentages = count / scoresList.size();
+//		 return scorePercentages;
+//	}
 	
-	/**
-	 * Calculates percentage correct answers
-	 * coded with OCP. stream to improve performance
-	 * @return percentage
-	 */
-	public double calculatePercentageStream(List<Boolean> scoresList){
-		double count = (double) scoresList.stream().filter((x) -> x.booleanValue()).count();
-		double scorePercentages = count / scoresList.size();
-		return scorePercentages;
-	}
+//	/**
+//	 * ===============
+//	 *  Bas: MOVED THIS METHOD TO ATTEMPT CLASS
+//	 * ===============	 * Calculates percentage correct answers
+//	 * coded with OCP. stream to improve performance
+//	 * @return percentage
+//	 */
+//	public double calculatePercentageStream(List<Boolean> scoresList){
+//		double count = (double) scoresList.stream().filter((x) -> x.booleanValue()).count();
+//		double scorePercentages = count / scoresList.size();
+//		return scorePercentages;
+//	}
 	
 }
 

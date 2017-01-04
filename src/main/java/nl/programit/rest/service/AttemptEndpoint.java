@@ -383,21 +383,26 @@ public class AttemptEndpoint {
 	@Produces(MediaType.APPLICATION_JSON)
 	@Path("{id}/scoresRate")
 	public Response getRate(@PathParam("id") Long id) {
-		if (this.attemptService.findById(id) == null || this.attemptService.findById(id).getTestTemplate() == null || 
-				this.attemptService.findById(id).getTestTemplate().getQuestions() == null){
+		Attempt attempt = this.attemptService.findById(id);
+		if (attempt == null || attempt.getTestTemplate() == null || attempt.getTestTemplate().getQuestions() == null){
 			return Response.noContent().build();
 		}
 		
-		List<AnswerList> givenAnswers = this.attemptService.findById(id).getGivenAnswers();
-		List<AnswerList> correctAnswers = this.attemptService.supplyCorrectAnswers(id);
+		// Original code Stefan
+		/*
+		List<AnswerList> givenAnswers = attempt.getGivenAnswers(); // Already in the attempt
+		List<AnswerList> correctAnswers = this.attemptService.supplyCorrectAnswers(id); // Now available in the attempt
 		if (givenAnswers.size() != correctAnswers.size()){
 			return Response.notAcceptable(null).build();
 		}
 		
-		List<Boolean> scoresList = this.attemptService.supplyScoreList(givenAnswers, correctAnswers); 
-		double scorePercentages = this.attemptService.calculatePercentageStream(scoresList);
-		 
+		List<Boolean> scoresList = this.attemptService.supplyScoreList(givenAnswers, correctAnswers); // Now available in the attempt
+		double scorePercentages = this.attemptService.calculatePercentageStream(scoresList); // Now available in the attempt
+
 		return Response.ok(scorePercentages).build();
+		*/
+		
+		return Response.ok(attempt.getTestScore()).build();	
 		
 	}
 	
