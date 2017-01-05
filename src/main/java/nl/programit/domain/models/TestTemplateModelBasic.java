@@ -36,7 +36,11 @@ public class TestTemplateModelBasic {
 	}
 	
 	public long getCreatorId() {
-	return tt.getCreator().getId();
+		if (tt.getCreator() != null) {
+			return tt.getCreator().getId();
+		} else {
+			return -1;
+		}
     }
 	
 	public String getName() {

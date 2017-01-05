@@ -1,6 +1,5 @@
 package nl.programit.rest.service;
 import java.util.ArrayList;
-import java.util.List;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
@@ -16,13 +15,12 @@ import nl.programit.domain.Instructor;
 import nl.programit.domain.Question;
 import nl.programit.domain.TestTemplate;
 import nl.programit.domain.models.TestTemplateModelBasic;
-//import nl.programit.domain.models.TestTemplateModelMeta;
 import nl.programit.persistence.InstructorService;
 import nl.programit.persistence.QuestionService;
 import nl.programit.persistence.TestTemplateService;
 
 /**
- * Endpoint for serveral ReST services to GET, POST and DELETE TestTemplate
+ * Endpoint for several ReST services to GET, POST and DELETE TestTemplate
  * 
  * @author FaerieRose , S.Martens
  * @version v0.1
@@ -41,55 +39,55 @@ public class TestTemplateEndpoint {
 	@Autowired
 	InstructorService instructorService;
 	
-	/**
-	 * GET all TestTemplate
-	 * Path = 'api/testtemplates'
-	 * @return 200 + JSON if there is data, otherwise 204 (noContent) 
-	 * @author S.Martens
-	 */
-	@GET
-	@Produces(MediaType.APPLICATION_JSON)
-	public Response getTestTemplateAll() {
-		Iterable<TestTemplate> result = this.testTemplateService.findAll();
-		if (result == null){
-			return Response.noContent().build();
-		} else {
-			List<TestTemplateModelBasic> templateList = new ArrayList<>();
-			for (TestTemplate testTemplate : result){
-				templateList.add( new TestTemplateModelBasic(testTemplate));
-			}
-			return Response.ok(templateList).build();
-		}
-	}	
+//	/**
+//	 * GET all TestTemplate
+//	 * Path = 'api/testtemplates'
+//	 * @return 200 + JSON if there is data, otherwise 204 (noContent) 
+//	 * @author S.Martens
+//	 */
+//	@GET
+//	@Produces(MediaType.APPLICATION_JSON)
+//	public Response getTestTemplateAll() {
+//		Iterable<TestTemplate> result = this.testTemplateService.findAll();
+//		if (result == null){
+//			return Response.noContent().build();
+//		} else {
+//			List<TestTemplateModelBasic> templateList = new ArrayList<>();
+//			for (TestTemplate testTemplate : result){
+//				templateList.add( new TestTemplateModelBasic(testTemplate));
+//			}
+//			return Response.ok(templateList).build();
+//		}
+//	}	
 	
-	/**
-	 * GET one TestTemplate with specified id
-	 * Path = 'api/testtemplates/{id}'
-	 * @return 200 + JSON if there is data, otherwise 204 (noContent)
-	 * @author S.Martens
-	 */
-	@GET
-	@Produces(MediaType.APPLICATION_JSON)
-	@Path("{id}")	
-	public Response getTestTemplateById(@PathParam("id") Long id) {
-		TestTemplate result = this.testTemplateService.findById(id);
-		if (result == null) {
-			return Response.noContent().build();
-		} else {
-			TestTemplateModelBasic template = new TestTemplateModelBasic(result);
-			return Response.ok(template).build();
-		}
-	}
+//	/**
+//	 * GET one TestTemplate with specified id
+//	 * Path = 'api/testtemplates/{id}'
+//	 * @return 200 + JSON if there is data, otherwise 204 (noContent)
+//	 * @author S.Martens
+//	 */
+//	@GET
+//	@Produces(MediaType.APPLICATION_JSON)
+//	@Path("{id}")	
+//	public Response getTestTemplateById(@PathParam("id") Long id) {
+//		TestTemplate result = this.testTemplateService.findById(id);
+//		if (result == null) {
+//			return Response.noContent().build();
+//		} else {
+//			TestTemplateModelBasic template = new TestTemplateModelBasic(result);
+//			return Response.ok(template).build();
+//		}
+//	}
 
 	/**
 	 * GET the meta data (id, nr of questions, allowed time, etc) of all TestTemplates in db<br>
-	 * Path = 'api/testtemplates/meta'
+	 * Path = 'api/testtemplates/basic'
 	 * @return 200 + JSON if there is data, otherwise 204 (noContent)
 	 * @author Bas
 	 */
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
-	@Path("meta")	
+	@Path("basic")		
 	public Response getTestTemplatesBasic() {
 		ArrayList<TestTemplateModelBasic> ttmbList = new ArrayList<TestTemplateModelBasic>(); 
 		Iterable<TestTemplate> result = this.testTemplateService.findAll();
@@ -111,7 +109,7 @@ public class TestTemplateEndpoint {
 	 */
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
-	@Path("{id}/meta")	
+	@Path("{id}/basic")	
 	public Response getTestTemplateMetaById(@PathParam("id") Long id) {
 		TestTemplate result = this.testTemplateService.findById(id);
 		if (result != null) {
@@ -131,7 +129,7 @@ public class TestTemplateEndpoint {
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response postTestTemplate(TestTemplate testTemplate) {
-		System.out.println("in the postTestTemplate with testTemplate : "+testTemplate);
+		//System.out.println("in the postTestTemplate with testTemplate : "+testTemplate);
 		this.testTemplateService.save(testTemplate);
 		return Response.accepted(testTemplate).build();
 	}
@@ -145,10 +143,10 @@ public class TestTemplateEndpoint {
 	@Produces(MediaType.APPLICATION_JSON)
 	@Path("{testtemplate_id}/addquestiontotemplate/{question_id}")
 	public Response addNewQuestionToTestTemplate(@PathParam("testtemplate_id") Long testTemplateId, @PathParam("question_id") Long questionId) {
-		System.out.println("in de addNewQuestionToTestTemplate");
+		//System.out.println("in de addNewQuestionToTestTemplate");
 		Question question = this.questionService.findById(questionId);
 		TestTemplate testTemplate = this.testTemplateService.findById(testTemplateId);
-		System.out.println("in the addNewQuestionToTestTemplate with id : "+testTemplateId + "  and Question ID:"+question.getId());
+		//System.out.println("in the addNewQuestionToTestTemplate with id : "+testTemplateId + "  and Question ID:"+question.getId());
 		if (testTemplate != null) {
 			this.questionService.save(question);
 			testTemplate.addQuestion(question);
@@ -189,15 +187,15 @@ public class TestTemplateEndpoint {
 	@Produces(MediaType.APPLICATION_JSON)
 	@Path("{testtemplate_id}/question/{question_id}")
 	public Response addExistingQuestionToTestTemplate(@PathParam("testtemplate_id") Long testtemplateId, @PathParam("question_id") Long question_id) {
-		System.out.println("in de addExistingQuestionToTestTemplate");
+		//System.out.println("in de addExistingQuestionToTestTemplate");
 		TestTemplate testTemplate = this.testTemplateService.findById(testtemplateId);
-		System.out.println("-----we hebben Testtemplate gevonden :" + testTemplate.getName() + " met ID :" + testTemplate.getId()+ " voor examen :" + testTemplate.getForExam());
+		//System.out.println("-----we hebben Testtemplate gevonden :" + testTemplate.getName() + " met ID :" + testTemplate.getId()+ " voor examen :" + testTemplate.getForExam());
 		if (testTemplate != null) {
-			System.out.println("-----we hebben Testtemplate is niet null!");
+			//System.out.println("-----we hebben Testtemplate is niet null!");
 			Question question = this.questionService.findById(question_id);
-			System.out.println("-----we hebben deze question gevonden :" + question.getName() + " met ID :" + question.getId()+ " voor programmeertaal :" + question.getProgrammingLanguage());
+			//System.out.println("-----we hebben deze question gevonden :" + question.getName() + " met ID :" + question.getId()+ " voor programmeertaal :" + question.getProgrammingLanguage());
 			if (question != null) {
-				System.out.println("-----we hebben question is niet null!");
+				//System.out.println("-----we hebben question is niet null!");
 				testTemplate.addQuestion(question);
 				this.testTemplateService.save(testTemplate);
 				return Response.ok(testTemplateService.convertToTestTemplateModelBasic(testTemplate)).build();
@@ -213,15 +211,15 @@ public class TestTemplateEndpoint {
 	@Produces(MediaType.APPLICATION_JSON)
 	@Path("{testtemplate_id}/removequestionfromtesttemplate/{question_id}")
 	public Response removeExistingQuestionToTestTemplate(@PathParam("testtemplate_id") Long testtemplateId, @PathParam("question_id") Long question_id) {
-		System.out.println("in de removequestionfromtesttemplate");
+		//System.out.println("in de removequestionfromtesttemplate");
 		TestTemplate testTemplate = this.testTemplateService.findById(testtemplateId);
-		System.out.println("*****we hebben Testtemplate gevonden :" + testTemplate.getName() + " met ID :" + testTemplate.getId()+ " voor examen :" + testTemplate.getForExam());
+		//System.out.println("*****we hebben Testtemplate gevonden :" + testTemplate.getName() + " met ID :" + testTemplate.getId()+ " voor examen :" + testTemplate.getForExam());
 		if (testTemplate != null) {
-			System.out.println("*****we hebben Testtemplate is niet null!");
+			//System.out.println("*****we hebben Testtemplate is niet null!");
 			Question question = this.questionService.findById(question_id);
-			System.out.println("*****we hebben deze question gevonden :" + question.getName());
+			//System.out.println("*****we hebben deze question gevonden :" + question.getName());
 			if (question != null) {
-				System.out.println("*****we hebben question is niet null!");
+				//System.out.println("*****we hebben question is niet null!");
 				testTemplate.removeQuestion(question);
 				this.testTemplateService.save(testTemplate);
 				return Response.ok(testTemplateService.convertToTestTemplateModelBasic(testTemplate)).build();
