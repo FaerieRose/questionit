@@ -90,14 +90,14 @@ public class TestTemplateEndpoint {
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	@Path("meta")	
-	public Response getTestTemplatesMeta() {
-		ArrayList<TestTemplateModelBasic> ttms = new ArrayList<TestTemplateModelBasic>(); 
+	public Response getTestTemplatesBasic() {
+		ArrayList<TestTemplateModelBasic> ttmbList = new ArrayList<TestTemplateModelBasic>(); 
 		Iterable<TestTemplate> result = this.testTemplateService.findAll();
 		if (result != null) {
 			for(TestTemplate tt: result) {
-				ttms.add(testTemplateService.convertToTestTemplateModelBasic(tt));
+				ttmbList.add(testTemplateService.convertToTestTemplateModelBasic(tt));
 			}
-			return Response.ok(ttms).build();
+			return Response.ok(ttmbList).build();
 		} else {
 			return Response.noContent().build();
 		}
