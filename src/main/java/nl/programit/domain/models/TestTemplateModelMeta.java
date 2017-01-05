@@ -10,7 +10,7 @@ import nl.programit.domain.TestTemplate;
  * @since 2016-12-12
  */
 
-public class TestTemplateModelMeta {
+public class TestTemplateModelMta {
 	private TestTemplate tt;
 	
 	public TestTemplateModelMeta(TestTemplate tt) {

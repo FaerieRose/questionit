@@ -5,7 +5,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import nl.programit.domain.TestTemplate;
-import nl.programit.domain.models.TestTemplateModelMeta;
+import nl.programit.domain.models.TestTemplateModelBasic;
 
 /**
  * This class contains several methods to interact with TestTemplateRepository
@@ -56,12 +56,12 @@ public class TestTemplateService {
 	
 	/**
 	 * 2016-12-12: Added by Bas Smulders
-	 * Converts a TestTemplate to TestTemplateModelMeta to send only meta data of given TestTemplate
+	 * Converts a TestTemplate to TestTemplateModelBasic to send only meta data of given TestTemplate
 	 * @param tt the TestTemplate to be converted
-	 * @return TestTemplateModelMeta version of the TestTemplate
+	 * @return TestTemplateModelBasic version of the TestTemplate
 	 */
-	public TestTemplateModelMeta convertToTestTemplateModelMeta(TestTemplate tt) {
-		TestTemplateModelMeta result = new TestTemplateModelMeta(tt);
+	public TestTemplateModelBasic convertToTestTemplateModelBasic(TestTemplate tt) {
+		TestTemplateModelBasic result = new TestTemplateModelBasic(tt);
 		return result;
 	}
 }
