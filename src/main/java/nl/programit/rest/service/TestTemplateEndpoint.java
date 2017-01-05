@@ -16,7 +16,7 @@ import nl.programit.domain.Instructor;
 import nl.programit.domain.Question;
 import nl.programit.domain.TestTemplate;
 import nl.programit.domain.models.TestTemplateModelBasic;
-import nl.programit.domain.models.TestTemplateModelMeta;
+//import nl.programit.domain.models.TestTemplateModelMeta;
 import nl.programit.persistence.InstructorService;
 import nl.programit.persistence.QuestionService;
 import nl.programit.persistence.TestTemplateService;
@@ -90,14 +90,14 @@ public class TestTemplateEndpoint {
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
 	@Path("meta")	
-	public Response getTestTemplatesMeta() {
-		ArrayList<TestTemplateModelMeta> ttmms = new ArrayList<TestTemplateModelMeta>(); 
+	public Response getTestTemplatesBasic() {
+		ArrayList<TestTemplateModelBasic> ttmbList = new ArrayList<TestTemplateModelBasic>(); 
 		Iterable<TestTemplate> result = this.testTemplateService.findAll();
 		if (result != null) {
 			for(TestTemplate tt: result) {
-				ttmms.add(testTemplateService.convertToTestTemplateModelMeta(tt));
+				ttmbList.add(testTemplateService.convertToTestTemplateModelBasic(tt));
 			}
-			return Response.ok(ttmms).build();
+			return Response.ok(ttmbList).build();
 		} else {
 			return Response.noContent().build();
 		}
@@ -115,7 +115,7 @@ public class TestTemplateEndpoint {
 	public Response getTestTemplateMetaById(@PathParam("id") Long id) {
 		TestTemplate result = this.testTemplateService.findById(id);
 		if (result != null) {
-			return Response.ok(testTemplateService.convertToTestTemplateModelMeta(result)).build();
+			return Response.ok(testTemplateService.convertToTestTemplateModelBasic(result)).build();
 		} else {
 			return Response.noContent().build();
 		}
@@ -200,7 +200,7 @@ public class TestTemplateEndpoint {
 				System.out.println("-----we hebben question is niet null!");
 				testTemplate.addQuestion(question);
 				this.testTemplateService.save(testTemplate);
-				return Response.ok(testTemplateService.convertToTestTemplateModelMeta(testTemplate)).build();
+				return Response.ok(testTemplateService.convertToTestTemplateModelBasic(testTemplate)).build();
 
 		     //   return Response.accepted(question).build();
 			}
@@ -224,7 +224,7 @@ public class TestTemplateEndpoint {
 				System.out.println("*****we hebben question is niet null!");
 				testTemplate.removeQuestion(question);
 				this.testTemplateService.save(testTemplate);
-				return Response.ok(testTemplateService.convertToTestTemplateModelMeta(testTemplate)).build();
+				return Response.ok(testTemplateService.convertToTestTemplateModelBasic(testTemplate)).build();
 
 		     //   return Response.accepted(question).build();
 			}

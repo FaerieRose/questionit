@@ -70,4 +70,8 @@ public class TestTemplateModelBasic {
 		}
 	}
 	
+	public long getSize() {
+		return tt.getQuestions().size();
+	}
+	
 }
