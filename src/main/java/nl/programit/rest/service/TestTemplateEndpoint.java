@@ -3,6 +3,7 @@ import java.util.ArrayList;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
+import javax.ws.rs.PUT;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
@@ -134,26 +135,61 @@ public class TestTemplateEndpoint {
 		return Response.accepted(testTemplate).build();
 	}
 	
+	
 	/**
-	 * POST a new Question. The Question is created and attached to the TestTemplate with the specified id.<br>
-	 * Path = 'api/testtemplates/{id}/question'
-	 * @return 200 + JSON if there is data, otherwise 204 
+	 * PUT a TestTemplate.
+	 * - If tt.id exists, it is overwritten, together with its list of question(IDs). Be careful, as this will remove questions
+	 * from the tt in the DB if they are not in the supplied tt. This way you can add/remove questions from the tt in DB.
+	 * 
+	 * - If tt.id == null, a new one will be created.
+	 * 
+	 * @param testTemplate Testtemplate to be created/overwritten. 
+	 * @return still needs some work
 	 */
-	@POST
+	@PUT
+	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	@Path("{testtemplate_id}/addquestion/{question_id}")
-	public Response addQuestionToTestTemplate(@PathParam("testtemplate_id") Long testTemplateId, @PathParam("question_id") Long questionId) {
-		Question question = this.questionService.findById(questionId);
-		TestTemplate testTemplate = this.testTemplateService.findById(testTemplateId);
+	//@Path("{testtemplate_id}")			//id niet uit path, maar testtemplate zelf.
+	public Response putTestTemplateWithQuestionIds(TestTemplate testTemplate) {
+		System.out.println("in the putTestTemplate with testTemplate : "+testTemplate);
 		if (testTemplate != null) {
-			this.questionService.save(question);
-			testTemplate.addQuestion(question);
+			
+			//TODO: volgens beschrijving zou dit een bestaande moeten overschrijven, en nieuwe maken if id==null
+			//TODO what's the ID of newly created tt?? needed for return
+			//TODO: ttservice.save geeft niets terug!?! hoe errorhandling?
+			//Gaat er vanuit dat er een testtemplate met questions aangeleverd wordt. questions hebben alleen field ID gevuld.
+			//TODO check if added/removed questions are being added/removed
 			this.testTemplateService.save(testTemplate);
-	        return Response.accepted().build();
-		} else {
-			return Response.noContent().build();
+			
+			return Response.accepted().build();
 		}
+		//TODO is dit correct? of is nocontent bedoeld voor no content in db?
+		return Response.noContent().build();
 	}
+	
+	
+//	not functioning properly, and made obsolete by new API call putTestTemplateWithQuestionIds
+//	
+//	/**
+//	 * POST a new Question. The Question is created and attached to the TestTemplate with the specified id.<br>
+//	 * Path = 'api/testtemplates/{id}/question'
+//	 * @return 200 + JSON if there is data, otherwise 204 
+//	 */
+//	@POST
+//	@Produces(MediaType.APPLICATION_JSON)
+//	@Path("{testtemplate_id}/addquestion/{question_id}")
+//	public Response addQuestionToTestTemplate(@PathParam("testtemplate_id") Long testTemplateId, @PathParam("question_id") Long questionId) {
+//		Question question = this.questionService.findById(questionId);
+//		TestTemplate testTemplate = this.testTemplateService.findById(testTemplateId);
+//		if (testTemplate != null) {
+//			this.questionService.save(question);
+//			testTemplate.addQuestion(question);
+//			this.testTemplateService.save(testTemplate);
+//	        return Response.accepted().build();
+//		} else {
+//			return Response.noContent().build();
+//		}
+//	}
 	
 	/**
 	 * POST an existing Instructor id. If the Instructor exists it is attached to the TestTemplate with the specified id.<br>
