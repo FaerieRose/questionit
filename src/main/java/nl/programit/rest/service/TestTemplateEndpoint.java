@@ -138,32 +138,36 @@ public class TestTemplateEndpoint {
 	
 	/**
 	 * PUT a TestTemplate.
-	 * - If tt.id exists, it is overwritten, together with its list of question(IDs). Be careful, as this will remove questions
-	 * from the tt in the DB if they are not in the supplied tt. This way you can add/remove questions from the tt in DB.
+	 * - If supplied tt.id exists, it is overwritten, together with its list of question(IDs). Be careful, as this will remove questions
+	 * from the tt in the DB that are not in the supplied tt. This way you can add/remove questions from the tt in DB.
 	 * 
-	 * - If tt.id == null, a new one will be created.
+	 * - If tt.id is not included or null in the supplied JSON object, a new tt will be created.
 	 * 
 	 * @param testTemplate Testtemplate to be created/overwritten. 
-	 * @return still needs some work
+	 * @return result only, no data included in return value.
 	 */
 	@PUT
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	//@Path("{testtemplate_id}")			//id niet uit path, maar testtemplate zelf.
 	public Response putTestTemplateWithQuestionIds(TestTemplate testTemplate) {
-		System.out.println("in the putTestTemplate with testTemplate : "+testTemplate);
+		System.out.println("in the putTestTemplate with testTemplate.id : " + testTemplate.getId());
 		if (testTemplate != null) {
 			
-			//TODO: volgens beschrijving zou dit een bestaande moeten overschrijven, en nieuwe maken if id==null
-			//TODO what's the ID of newly created tt?? needed for return
+			//TODO: volgens beschrijving zou testtemplateservice.save een bestaande moeten overschrijven, en nieuwe maken if id==null
+			//		- confirmed: new testtemplate created if id field is omitted
+			//		- still needs check what happens if existing tt.id supplied
+			//TODO what's the ID of newly created tt?? would be nice to see it in return value
 			//TODO: ttservice.save geeft niets terug!?! hoe errorhandling?
-			//Gaat er vanuit dat er een testtemplate met questions aangeleverd wordt. questions hebben alleen field ID gevuld.
+			//Gaat er vanuit dat er een testtemplate met questions aangeleverd wordt. questions hebben alleen field "id" gevuld.
 			//TODO check if added/removed questions are being added/removed
+			//		- confirmed: supplied questions are linked to tt.
+			//		- still needs check what happens if existing tt.id supplied 
 			this.testTemplateService.save(testTemplate);
 			
 			return Response.accepted().build();
 		}
-		//TODO is dit correct? of is nocontent bedoeld voor no content in db?
+		//TODO is dit correct? of is nocontent bedoeld voor no content found in db?
 		return Response.noContent().build();
 	}
 	
