@@ -143,15 +143,13 @@ public class TestTemplateEndpoint {
 	@Produces(MediaType.APPLICATION_JSON)
 	@Path("{testtemplate_id}/addquestiontotemplate/{question_id}")
 	public Response addNewQuestionToTestTemplate(@PathParam("testtemplate_id") Long testTemplateId, @PathParam("question_id") Long questionId) {
-		//System.out.println("in de addNewQuestionToTestTemplate");
 		Question question = this.questionService.findById(questionId);
 		TestTemplate testTemplate = this.testTemplateService.findById(testTemplateId);
-		//System.out.println("in the addNewQuestionToTestTemplate with id : "+testTemplateId + "  and Question ID:"+question.getId());
 		if (testTemplate != null) {
 			this.questionService.save(question);
 			testTemplate.addQuestion(question);
 			this.testTemplateService.save(testTemplate);
-	        return Response.accepted(question).build();
+	        return Response.accepted().build();
 		} else {
 			return Response.noContent().build();
 		}
