@@ -23,7 +23,7 @@ import nl.programit.persistence.TestTemplateService;
 /**
  * Endpoint for several ReST services to GET, POST and DELETE TestTemplate
  * 
- * @author FaerieRose , S.Martens
+ * @author FaerieRose , S.Martens, Dave Schellekens
  * @version v0.1
  * @since 2016-11-04
  */
@@ -120,20 +120,22 @@ public class TestTemplateEndpoint {
 		}
 	}
 
-	/**
-	 * POST one TestTemplate. If no id included, a new entry is created, otherwise an existing one
-	 * is overwritten. Questions and Creator must be excluded from JSON<br>
-	 * Path = 'api/testtemplates'
-	 * @return 200 + JSON if there is data, otherwise 404 
-	 */
-	@POST
-	@Consumes(MediaType.APPLICATION_JSON)
-	@Produces(MediaType.APPLICATION_JSON)
-	public Response postTestTemplate(TestTemplate testTemplate) {
-		//System.out.println("in the postTestTemplate with testTemplate : "+testTemplate);
-		this.testTemplateService.save(testTemplate);
-		return Response.accepted(testTemplate).build();
-	}
+// made obsolete by putTestTemplateWithQuestions
+//
+//	/**
+//	 * POST one TestTemplate. If no id included, a new entry is created, otherwise an existing one
+//	 * is overwritten. Questions and Creator must be excluded from JSON<br>
+//	 * Path = 'api/testtemplates'
+//	 * @return 200 + JSON if there is data, otherwise 404 
+//	 */
+//	@POST
+//	@Consumes(MediaType.APPLICATION_JSON)
+//	@Produces(MediaType.APPLICATION_JSON)
+//	public Response postTestTemplate(TestTemplate testTemplate) {
+//		//System.out.println("in the postTestTemplate with testTemplate : "+testTemplate);
+//		this.testTemplateService.save(testTemplate);
+//		return Response.accepted(testTemplate).build();
+//	}
 	
 	
 	/**
@@ -244,27 +246,29 @@ public class TestTemplateEndpoint {
 //		return Response.noContent().build();
 //	}
 	
-	
-	@POST
-	@Produces(MediaType.APPLICATION_JSON)
-	@Path("{testtemplate_id}/removequestionfromtesttemplate/{question_id}")
-	public Response removeExistingQuestionToTestTemplate(@PathParam("testtemplate_id") Long testtemplateId, @PathParam("question_id") Long question_id) {
-		//System.out.println("in de removequestionfromtesttemplate");
-		TestTemplate testTemplate = this.testTemplateService.findById(testtemplateId);
-		//System.out.println("*****we hebben Testtemplate gevonden :" + testTemplate.getName() + " met ID :" + testTemplate.getId()+ " voor examen :" + testTemplate.getForExam());
-		if (testTemplate != null) {
-			//System.out.println("*****we hebben Testtemplate is niet null!");
-			Question question = this.questionService.findById(question_id);
-			//System.out.println("*****we hebben deze question gevonden :" + question.getName());
-			if (question != null) {
-				//System.out.println("*****we hebben question is niet null!");
-				testTemplate.removeQuestion(question);
-				this.testTemplateService.save(testTemplate);
-				return Response.ok(testTemplateService.convertToTestTemplateModelBasic(testTemplate)).build();
+// made obsolete by putTestTemplateWithQuestions
+//
+//	@POST
+//	@Produces(MediaType.APPLICATION_JSON)
+//	@Path("{testtemplate_id}/removequestionfromtesttemplate/{question_id}")
+//	public Response removeExistingQuestionToTestTemplate(@PathParam("testtemplate_id") Long testtemplateId, @PathParam("question_id") Long question_id) {
+//		//System.out.println("in de removequestionfromtesttemplate");
+//		TestTemplate testTemplate = this.testTemplateService.findById(testtemplateId);
+//		//System.out.println("*****we hebben Testtemplate gevonden :" + testTemplate.getName() + " met ID :" + testTemplate.getId()+ " voor examen :" + testTemplate.getForExam());
+//		if (testTemplate != null) {
+//			//System.out.println("*****we hebben Testtemplate is niet null!");
+//			Question question = this.questionService.findById(question_id);
+//			//System.out.println("*****we hebben deze question gevonden :" + question.getName());
+//			if (question != null) {
+//				//System.out.println("*****we hebben question is niet null!");
+//				testTemplate.removeQuestion(question);
+//				this.testTemplateService.save(testTemplate);
+//				return Response.ok(testTemplateService.convertToTestTemplateModelBasic(testTemplate)).build();
+//
+//		     //   return Response.accepted(question).build();
+//			}
+//		}
+//		return Response.noContent().build();
+//	}
 
-		     //   return Response.accepted(question).build();
-			}
-		}
-		return Response.noContent().build();
-	}
 }
