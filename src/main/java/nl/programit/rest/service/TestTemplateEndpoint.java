@@ -3,6 +3,7 @@ import java.util.ArrayList;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
+import javax.ws.rs.PUT;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
@@ -22,7 +23,7 @@ import nl.programit.persistence.TestTemplateService;
 /**
  * Endpoint for several ReST services to GET, POST and DELETE TestTemplate
  * 
- * @author FaerieRose , S.Martens
+ * @author FaerieRose , S.Martens, Dave Schellekens
  * @version v0.1
  * @since 2016-11-04
  */
@@ -119,41 +120,82 @@ public class TestTemplateEndpoint {
 		}
 	}
 
-	/**
-	 * POST one TestTemplate. If no id included, a new entry is created, otherwise an existing one
-	 * is overwritten. Questions and Creator must be excluded from JSON<br>
-	 * Path = 'api/testtemplates'
-	 * @return 200 + JSON if there is data, otherwise 404 
-	 */
-	@POST
-	@Consumes(MediaType.APPLICATION_JSON)
-	@Produces(MediaType.APPLICATION_JSON)
-	public Response postTestTemplate(TestTemplate testTemplate) {
-		//System.out.println("in the postTestTemplate with testTemplate : "+testTemplate);
-		this.testTemplateService.save(testTemplate);
-		return Response.accepted(testTemplate).build();
-	}
+// made obsolete by putTestTemplateWithQuestions
+//
+//	/**
+//	 * POST one TestTemplate. If no id included, a new entry is created, otherwise an existing one
+//	 * is overwritten. Questions and Creator must be excluded from JSON<br>
+//	 * Path = 'api/testtemplates'
+//	 * @return 200 + JSON if there is data, otherwise 404 
+//	 */
+//	@POST
+//	@Consumes(MediaType.APPLICATION_JSON)
+//	@Produces(MediaType.APPLICATION_JSON)
+//	public Response postTestTemplate(TestTemplate testTemplate) {
+//		//System.out.println("in the postTestTemplate with testTemplate : "+testTemplate);
+//		this.testTemplateService.save(testTemplate);
+//		return Response.accepted(testTemplate).build();
+//	}
+	
 	
 	/**
-	 * POST a new Question. The Question is created and attached to the TestTemplate with the specified id.<br>
-	 * Path = 'api/testtemplates/{id}/question'
-	 * @return 200 + JSON if there is data, otherwise 204 
+	 * PUT a TestTemplate.
+	 * - If supplied tt.id exists, it is overwritten, together with its list of question(IDs). Be careful, as this will remove questions
+	 * from the tt in the DB that are not in the supplied tt. This way you can add/remove questions from the tt in DB.
+	 * 
+	 * - If tt.id is not included or null in the supplied JSON object, a new tt will be created.
+	 * 
+	 * @param testTemplate Testtemplate to be created/overwritten. 
+	 * @return result only, no data included in return value.
 	 */
-	@POST
+	@PUT
+	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	@Path("{testtemplate_id}/addquestion/{question_id}")
-	public Response addQuestionToTestTemplate(@PathParam("testtemplate_id") Long testTemplateId, @PathParam("question_id") Long questionId) {
-		Question question = this.questionService.findById(questionId);
-		TestTemplate testTemplate = this.testTemplateService.findById(testTemplateId);
+	//@Path("{testtemplate_id}")			//id niet uit path, maar testtemplate zelf.
+	public Response putTestTemplateWithQuestionIds(TestTemplate testTemplate) {
+		System.out.println("in the putTestTemplate with testTemplate.id : " + testTemplate.getId());
 		if (testTemplate != null) {
-			this.questionService.save(question);
-			testTemplate.addQuestion(question);
+			
+			//TODO: volgens beschrijving zou testtemplateservice.save een bestaande moeten overschrijven, en nieuwe maken if id==null
+			//		- confirmed: new testtemplate created if id field is omitted
+			//		- still needs check what happens if existing tt.id supplied
+			//TODO what's the ID of newly created tt?? would be nice to see it in return value
+			//TODO: ttservice.save geeft niets terug!?! hoe errorhandling?
+			//Gaat er vanuit dat er een testtemplate met questions aangeleverd wordt. questions hebben alleen field "id" gevuld.
+			//TODO check if added/removed questions are being added/removed
+			//		- confirmed: supplied questions are linked to tt.
+			//		- still needs check what happens if existing tt.id supplied 
 			this.testTemplateService.save(testTemplate);
-	        return Response.accepted().build();
-		} else {
-			return Response.noContent().build();
+			
+			return Response.accepted().build();
 		}
+		//TODO is dit correct? of is nocontent bedoeld voor no content found in db?
+		return Response.noContent().build();
 	}
+	
+	
+//	not functioning properly, and made obsolete by new API call putTestTemplateWithQuestionIds
+//	
+//	/**
+//	 * POST a new Question. The Question is created and attached to the TestTemplate with the specified id.<br>
+//	 * Path = 'api/testtemplates/{id}/question'
+//	 * @return 200 + JSON if there is data, otherwise 204 
+//	 */
+//	@POST
+//	@Produces(MediaType.APPLICATION_JSON)
+//	@Path("{testtemplate_id}/addquestion/{question_id}")
+//	public Response addQuestionToTestTemplate(@PathParam("testtemplate_id") Long testTemplateId, @PathParam("question_id") Long questionId) {
+//		Question question = this.questionService.findById(questionId);
+//		TestTemplate testTemplate = this.testTemplateService.findById(testTemplateId);
+//		if (testTemplate != null) {
+//			this.questionService.save(question);
+//			testTemplate.addQuestion(question);
+//			this.testTemplateService.save(testTemplate);
+//	        return Response.accepted().build();
+//		} else {
+//			return Response.noContent().build();
+//		}
+//	}
 	
 	/**
 	 * POST an existing Instructor id. If the Instructor exists it is attached to the TestTemplate with the specified id.<br>
@@ -204,27 +246,29 @@ public class TestTemplateEndpoint {
 //		return Response.noContent().build();
 //	}
 	
-	
-	@POST
-	@Produces(MediaType.APPLICATION_JSON)
-	@Path("{testtemplate_id}/removequestionfromtesttemplate/{question_id}")
-	public Response removeExistingQuestionToTestTemplate(@PathParam("testtemplate_id") Long testtemplateId, @PathParam("question_id") Long question_id) {
-		//System.out.println("in de removequestionfromtesttemplate");
-		TestTemplate testTemplate = this.testTemplateService.findById(testtemplateId);
-		//System.out.println("*****we hebben Testtemplate gevonden :" + testTemplate.getName() + " met ID :" + testTemplate.getId()+ " voor examen :" + testTemplate.getForExam());
-		if (testTemplate != null) {
-			//System.out.println("*****we hebben Testtemplate is niet null!");
-			Question question = this.questionService.findById(question_id);
-			//System.out.println("*****we hebben deze question gevonden :" + question.getName());
-			if (question != null) {
-				//System.out.println("*****we hebben question is niet null!");
-				testTemplate.removeQuestion(question);
-				this.testTemplateService.save(testTemplate);
-				return Response.ok(testTemplateService.convertToTestTemplateModelBasic(testTemplate)).build();
+// made obsolete by putTestTemplateWithQuestions
+//
+//	@POST
+//	@Produces(MediaType.APPLICATION_JSON)
+//	@Path("{testtemplate_id}/removequestionfromtesttemplate/{question_id}")
+//	public Response removeExistingQuestionToTestTemplate(@PathParam("testtemplate_id") Long testtemplateId, @PathParam("question_id") Long question_id) {
+//		//System.out.println("in de removequestionfromtesttemplate");
+//		TestTemplate testTemplate = this.testTemplateService.findById(testtemplateId);
+//		//System.out.println("*****we hebben Testtemplate gevonden :" + testTemplate.getName() + " met ID :" + testTemplate.getId()+ " voor examen :" + testTemplate.getForExam());
+//		if (testTemplate != null) {
+//			//System.out.println("*****we hebben Testtemplate is niet null!");
+//			Question question = this.questionService.findById(question_id);
+//			//System.out.println("*****we hebben deze question gevonden :" + question.getName());
+//			if (question != null) {
+//				//System.out.println("*****we hebben question is niet null!");
+//				testTemplate.removeQuestion(question);
+//				this.testTemplateService.save(testTemplate);
+//				return Response.ok(testTemplateService.convertToTestTemplateModelBasic(testTemplate)).build();
+//
+//		     //   return Response.accepted(question).build();
+//			}
+//		}
+//		return Response.noContent().build();
+//	}
 
-		     //   return Response.accepted(question).build();
-			}
-		}
-		return Response.noContent().build();
-	}
 }
