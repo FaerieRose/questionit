@@ -12,6 +12,7 @@ import nl.programit.rest.service.AttemptEndpoint;
 import nl.programit.rest.service.StudentEndpoint;
 import nl.programit.rest.service.StudentClassEndpoint;
 import nl.programit.rest.service.InstructorEndpoint;
+import nl.programit.rest.service.VersionEndpoint;
 
 @Component
 @ApplicationPath("/api")
@@ -24,5 +25,6 @@ public class JerseyConfig extends ResourceConfig {
 		register(StudentEndpoint.class);
 		register(StudentClassEndpoint.class);
 		register(InstructorEndpoint.class);
+		register(VersionEndpoint.class);
 	}
 }
