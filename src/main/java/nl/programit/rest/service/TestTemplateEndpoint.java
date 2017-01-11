@@ -1,4 +1,5 @@
 package nl.programit.rest.service;
+import java.util.List;
 import java.util.ArrayList;
 
 import javax.ws.rs.Consumes;
@@ -141,36 +142,27 @@ public class TestTemplateEndpoint {
 	/**
 	 * PUT a TestTemplate.
 	 * - If supplied tt.id exists, it is overwritten, together with its list of question(IDs). Be careful, as this will remove questions
-	 * from the tt in the DB that are not in the supplied tt. This way you can add/remove questions from the tt in DB.
+	 * from the tt in the DB that are not in the supplied tt. This is the correct way of adding/removing questions from the tt in DB. 
 	 * 
 	 * - If tt.id is not included or null in the supplied JSON object, a new tt will be created.
 	 * 
 	 * @param testTemplate Testtemplate to be created/overwritten. 
-	 * @return result only, no data included in return value.
+	 * @return result and Id of saved testTemplate. For an existing tt, this should be the same as the tt.id passed in.
 	 */
 	@PUT
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	//@Path("{testtemplate_id}")			//id niet uit path, maar testtemplate zelf.
 	public Response putTestTemplateWithQuestionIds(TestTemplate testTemplate) {
 		System.out.println("in the putTestTemplate with testTemplate.id : " + testTemplate.getId());
-		if (testTemplate != null) {
-			
-			//TODO: volgens beschrijving zou testtemplateservice.save een bestaande moeten overschrijven, en nieuwe maken if id==null
-			//		- confirmed: new testtemplate created if id field is omitted
-			//		- still needs check what happens if existing tt.id supplied
-			//TODO what's the ID of newly created tt?? would be nice to see it in return value
-			//TODO: ttservice.save geeft niets terug!?! hoe errorhandling?
-			//Gaat er vanuit dat er een testtemplate met questions aangeleverd wordt. questions hebben alleen field "id" gevuld.
-			//TODO check if added/removed questions are being added/removed
-			//		- confirmed: supplied questions are linked to tt.
-			//		- still needs check what happens if existing tt.id supplied 
-			this.testTemplateService.save(testTemplate);
-			
-			return Response.accepted().build();
-		}
-		//TODO is dit correct? of is nocontent bedoeld voor no content found in db?
-		return Response.noContent().build();
+		//Gaat er vanuit dat er een testtemplate met questions aangeleverd wordt. questions hebben alleen field "id" gevuld.
+		//testing if (testTemplate != null) here is redundant. Will have been catched before it reaches here and result in response 500
+						
+		//TODO: ttservice.save geeft niets terug!?! hoe errorhandling?
+		this.testTemplateService.save(testTemplate);
+		
+		//TODO still think this is weird. How am I supposed to know which code (200,201,202,...?) to return?
+		//Is this supposed to be done manually maybe?
+		return Response.ok(testTemplate.getId()).build();
 	}
 	
 	
