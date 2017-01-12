@@ -55,7 +55,7 @@ public class TestTemplateModelBasic {
 		return tt.getForExam();
 	}
 
-	public boolean isEnabled() {
+	public boolean getisEnabled() {
 		return tt.isEnabled();
 	}
 	
