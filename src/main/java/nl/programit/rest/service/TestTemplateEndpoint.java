@@ -154,7 +154,7 @@ public class TestTemplateEndpoint {
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response putTestTemplateWithQuestionIds(TestTemplate testTemplate) {
 		System.out.println("in the putTestTemplate with testTemplate.id : " + testTemplate.getId());
-		//Gaat er vanuit dat er een testtemplate met questions aangeleverd wordt. questions hebben alleen field "id" gevuld.
+		//Gaat er vanuit dat er een testtemplate met questions aangeleverd wordt. Deze questions hoeven alleen field "id" te hebben.
 		//testing if (testTemplate != null) here is redundant. Will have been catched before it reaches here and result in response 500
 						
 		//TODO: ttservice.save geeft niets terug!?! hoe errorhandling?
@@ -210,6 +210,8 @@ public class TestTemplateEndpoint {
 		return Response.noContent().build();
 	}
 	
+// made obsolete by putTestTemplateWithQuestions
+//
 //	/**
 //	 * POST a existing Question id. If the Question exists it is attached to the TestTemplate with the specified id.<br>
 //	 * Path = 'api/testtemplates/{id}/question/{question_id}'
