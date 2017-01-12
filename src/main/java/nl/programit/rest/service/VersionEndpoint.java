@@ -31,7 +31,7 @@ public class VersionEndpoint {
 	@Path("app")		
 	public Response getAppVersion() {
 		// TO DO: get version string and time stamp from POM file.
-		return Response.ok("0.3.0-SNAPSHOT-20170110_151000").build();
+		return Response.ok("0.3.0-SNAPSHOT-20170112_163500").build();
 	}
 
 }
