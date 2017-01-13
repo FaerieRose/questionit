@@ -31,7 +31,7 @@ public abstract class QuestionTemplate {
 	private EnumLanguages programmingLanguage;
 	private EnumExams forExam;
 	private Date creationDateTime = new Date();
-	private boolean isEnabled;
+	private boolean enabled;
 
 	@OneToOne(fetch=FetchType.EAGER)
 	@Fetch(FetchMode.SELECT)
@@ -95,9 +95,9 @@ public abstract class QuestionTemplate {
 	// ---------------------------------------------------
 	// GETTER & SETTER for isEnabled
 	public boolean isEnabled() {
-		return isEnabled;
+		return enabled;
 	}
-	public void setEnabled(boolean isEnabled) {
-		this.isEnabled = isEnabled;
+	public void setEnabled(boolean enabled) {
+		this.enabled = enabled;
 	}
 }

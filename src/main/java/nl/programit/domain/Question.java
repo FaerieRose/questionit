@@ -30,7 +30,6 @@ public class Question extends QuestionTemplate implements Serializable {
 	private String question;
 	private String explanationAnswer;
 	private String typeOfQuestion;
-	//private boolean isObsolete;
 	
 	@OneToOne(fetch=FetchType.EAGER)
 	@Fetch(FetchMode.SELECT)
