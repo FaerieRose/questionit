@@ -18,7 +18,7 @@ public class Person {
 	private String lastName;
 	private String email;
 	private String password;
-	private boolean isValid=true;
+	private boolean valid=true;
 
 	// Methods
 	public boolean checkPassword(){
@@ -64,14 +64,12 @@ public class Person {
 		this.id = id;
 	}
 	
-	
-	// ---------------------------------------------------
-	// GETTER & SETTER for isValid
 	public boolean isValid() {
-		return isValid;
+		return valid;
 	}
-	public void setValid(boolean isValid) {
-		this.isValid = isValid;
+	
+	public void setValid(boolean valid) {
+		this.valid = valid;
 	}
 
 	@Override
@@ -95,9 +93,5 @@ public class Person {
 			return false;
 		return true;
 	}
-	
-
-	
-	
-	
+		
 }
