@@ -147,18 +147,23 @@ public class StudentClassEndpoint {
 	@Produces(MediaType.APPLICATION_JSON)
 	@Path("{studentclass_id}/student/{student_id}")
 	public Response postStudentToStudentClass(@PathParam("studentclass_id") Long studentClassId, @PathParam("student_id") Long studentId, StudentClass studentClass2) {
+		System.out.println(1);
 		StudentClass studentClass = this.studentClassService.findById(studentClassId);
+		System.out.println(2);
 		System.out.println("===============in de postStudentToStudentClass=====================");
 		Student student = this.studentService.findById(studentId);
+		System.out.println(3);
 		if (studentClass != null || student != null){
+			System.out.println(4);
 			studentClass.addStudent(student);
+			System.out.println(5);
 			this.studentClassService.save(studentClass);
+			System.out.println(6);
 			return Response.ok().build();
 		}
+		System.out.println(7);
 		return Response.status(Status.NOT_FOUND).build();
-	}
-	
-	
+	}	
 }
 
 
