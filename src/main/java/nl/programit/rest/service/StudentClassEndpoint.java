@@ -13,8 +13,10 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
+import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import nl.programit.domain.Instructor;
 import nl.programit.domain.Student;
@@ -146,6 +148,7 @@ public class StudentClassEndpoint {
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	@Path("{studentclass_id}/student/{student_id}")
+	@Transactional
 	public Response postStudentToStudentClass(@PathParam("studentclass_id") Long studentClassId, @PathParam("student_id") Long studentId, StudentClass studentClass2) {
 		System.out.println(1);
 		StudentClass studentClass = this.studentClassService.findById(studentClassId);
@@ -159,7 +162,8 @@ public class StudentClassEndpoint {
 			System.out.println(5);
 			this.studentClassService.save(studentClass);
 			System.out.println(6);
-			return Response.ok().build();
+			//Hibernate.initialize(studentClass.getInstructors());
+			return Response.ok(studentClass).build();
 		}
 		System.out.println(7);
 		return Response.status(Status.NOT_FOUND).build();

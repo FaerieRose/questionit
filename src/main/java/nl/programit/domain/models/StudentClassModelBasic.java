@@ -1,10 +1,10 @@
 package nl.programit.domain.models;
 
-import java.util.ArrayList;
-import java.util.List;
+//import java.util.ArrayList;
+//import java.util.List;
 
-import nl.programit.domain.Instructor;
-import nl.programit.domain.Student;
+//import nl.programit.domain.Instructor;
+//import nl.programit.domain.Student;
 import nl.programit.domain.StudentClass;
 
 public class StudentClassModelBasic {
