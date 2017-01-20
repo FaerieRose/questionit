@@ -2,6 +2,7 @@ package nl.programit.domain;
 
 import java.io.Serializable;
 
+import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -27,8 +28,12 @@ public class Question extends QuestionTemplate implements Serializable {
 	
 	private static final long serialVersionUID = 7115929504873439448L;
 
+	@Column(length=2000) // Allow up to 2000 characters in a question (default is 255)
 	private String question;
+	
+	@Column(length=2000) // Allow up to 2000 characters in an explanation (default is 255)
 	private String explanationAnswer;
+	
 	private String typeOfQuestion;
 	
 	@OneToOne(fetch=FetchType.EAGER)
@@ -36,6 +41,7 @@ public class Question extends QuestionTemplate implements Serializable {
 	private AnswerList correctAnswers;
 
 	@ElementCollection(fetch=FetchType.EAGER)
+	@Column(length=1000) // Allow up to 1000 characters in an answer (default is 255)
 	private List<String> possibleAnswers = new ArrayList<String>();
 	
 	@OneToMany(fetch=FetchType.EAGER)
